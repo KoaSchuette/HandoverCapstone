@@ -1,0 +1,17 @@
+
+
+
+note for lab computer to run "getent group render" to find group number
+
+
+
+how to make ros node 
+
+Python package with a starter node
+
+ros2 pkg create handover_voice --build-type ament_python --dependencies rclpy std_msgs --node-name command_listener
+                 example name                lang    
+
+
+Custom messages/services package
+ros2 pkg create handover_interfaces --build-type ament_cmake

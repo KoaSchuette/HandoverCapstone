@@ -14,15 +14,19 @@
 ],
   "containerEnv": {
     "DISPLAY": "${localEnv:DISPLAY}",
-    "QT_X11_NO_MITSHM": "1"
+    "QT_X11_NO_MITSHM": "1",
+    "LEAPC_HEADER_OVERRIDE": "/usr/lib/ultraleap-hand-tracking-service/leapc_cffi/LeapC.h",
+    "LEAPC_LIB_OVERRIDE": "/usr/lib/ultraleap-hand-tracking-service/libLeapC.so",
+    "LD_LIBRARY_PATH": "/usr/lib/ultraleap-hand-tracking-service"
   },
   "mounts": [
-    "source=/tmp/.X11-unix,target=/tmp/.X11-unix,type=bind"
+  "source=/tmp/.X11-unix,target=/tmp/.X11-unix,type=bind",
+  "source=/usr/lib/ultraleap-hand-tracking-service,target=/usr/lib/ultraleap-hand-tracking-service,type=bind,readonly"
   ],
   "customizations": {
     "vscode": {
       "extensions": ["ms-python.python", "ms-vscode.cpptools"]
     }
   },
-  "postCreateCommand": "sudo apt-get update && rosdep install --from-paths src --ignore-src -y"
+  "postCreateCommand": "bash .devcontainer/linux-gpu/post-create.sh"
 }

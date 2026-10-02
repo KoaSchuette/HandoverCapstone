@@ -15,3 +15,15 @@ ros2 pkg create handover_voice --build-type ament_python --dependencies rclpy st
 
 Custom messages/services package
 ros2 pkg create handover_interfaces --build-type ament_cmake
+
+
+how to colcon build
+cd /workspaces/HandoverCapstone
+colcon build --packages-select handover_hand_tracking
+source install/setup.bash
+ros2 run handover_hand_tracking leap_node
+
+
+How to run Ultra leap software no C library
+run this in termial(linux only)
+ultraleap-hand-tracking-control-panel

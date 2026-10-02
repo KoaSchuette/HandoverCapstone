@@ -1,11 +1,17 @@
 {
   "name": "HandoverCapstone (ROS 2 Jazzy)",
   "build": {
-    "dockerfile": "Dockerfile",
-    "context": ".."
+    "dockerfile": "../Dockerfile",
+    "context": "../.."
   },
   "remoteUser": "ubuntu",
-  "runArgs": ["--network=host", "--ipc=host"],
+  "runArgs": [
+  "--network=host",
+  "--ipc=host",
+  "--device=/dev/dri",
+  "--group-add=video",
+  "--group-add=110"
+],
   "containerEnv": {
     "DISPLAY": "${localEnv:DISPLAY}",
     "QT_X11_NO_MITSHM": "1"

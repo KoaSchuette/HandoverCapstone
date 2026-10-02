@@ -23,6 +23,9 @@ colcon build --packages-select handover_hand_tracking
 source install/setup.bash
 ros2 run handover_hand_tracking leap_node
 
+or run whole transform with rviz
+ros2 launch handover_hand_tracking hand_tracking.launch.py
+
 
 How to run Ultra leap software no C library
 run this in termial(linux only)

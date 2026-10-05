@@ -30,3 +30,24 @@ ros2 launch handover_hand_tracking hand_tracking.launch.py
 How to run Ultra leap software no C library
 run this in termial(linux only)
 ultraleap-hand-tracking-control-panel
+
+
+
+ultraleap output
+
+hand
+├── type, id, confidence
+├── grab_strength, pinch_strength
+├── palm
+│   ├── position      (x, y, z in mm)
+│   ├── orientation   (quaternion)
+│   ├── normal, direction, velocity, width
+├── arm
+│   ├── prev_joint    (elbow position)
+│   └── next_joint    (wrist position)
+└── digits[5]         (thumb, index, middle, ring, pinky)
+    └── bones[4]      (metacarpal, proximal, intermediate, distal)
+        ├── prev_joint   (x, y, z where the bone starts)
+        ├── next_joint   (x, y, z where the bone ends)
+        ├── rotation     (quaternion)
+        └── width

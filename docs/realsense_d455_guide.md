@@ -92,6 +92,11 @@ ros2 launch realsense2_camera rs_launch.py --show-args
 ```
  
 Parameter names have changed between versions (for example `depth_module.profile` vs `depth_module.depth_profile`, and `align_depth` became `align_depth.enable`), so treat `--show-args` as the source of truth.
+
+NOTE: 
+The host display may refuse the container's connection when trying to run the rqt_image_view. To remedy this open a teminal inside the "ubuntu" host and run "xhost +local:"
+
+It should "print non-network local connections being added to access control list." Then go back to the container and retry:
  
 ---
  

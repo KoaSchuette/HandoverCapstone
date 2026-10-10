@@ -11,9 +11,9 @@ float32 grab_strength
 float32 pinch_strength
 
 geometry_msgs/Vector3 palm_normal
-geometry_msgs/Vector3 palm_velocity
 geometry_msgs/Vector3 palm_direction
-float32 width
+geometry_msgs/Vector3 palm_velocity
+float32 palm_width
 
 geometry_msgs/Pose palm
 geometry_msgs/Point wrist_joint

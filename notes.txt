@@ -44,7 +44,9 @@ hand
 │   ├── normal, direction, velocity, width
 ├── arm
 │   ├── prev_joint    (elbow position)
-│   └── next_joint    (wrist position)
+│   ├── next_joint    (wrist position)
+│   ├── rotation    (quaternion)
+│   └── widith    
 └── digits[5]         (thumb, index, middle, ring, pinky)
     └── bones[4]      (metacarpal, proximal, intermediate, distal)
         ├── prev_joint   (x, y, z where the bone starts)

@@ -1,0 +1,10 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "ros-env",
+      "type": "shell",
+      "command": "bash -c 'source /opt/ros/jazzy/setup.bash && source install/setup.bash && env | grep -E \"^(PATH|PYTHONPATH|LD_LIBRARY_PATH|AMENT_PREFIX_PATH|CMAKE_PREFIX_PATH|COLCON_PREFIX_PATH|ROS_|RMW_)\" > .vscode/ros.env'"
+    }
+  ]
+}

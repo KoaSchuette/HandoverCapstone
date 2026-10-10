@@ -2,10 +2,13 @@
   "version": "0.2.0",
   "configurations": [
     {
-      "name": "Attach to ROS node",
+      "name": "Debug current ROS node",
       "type": "debugpy",
-      "request": "attach",
-      "connect": { "host": "localhost", "port": 5678 },
+      "request": "launch",
+      "program": "${file}",
+      "console": "integratedTerminal",
+      "envFile": "${workspaceFolder}/.vscode/ros.env",
+      "preLaunchTask": "ros-env",
       "justMyCode": true
     }
   ]

@@ -8,10 +8,13 @@ RUN apt-get update && apt-get install -y \
     git \
     sudo \
     mesa-utils \
+    usbutils \
     ros-jazzy-ur \
     ros-jazzy-ur-simulation-gz \
+    ros-jazzy-realsense2-camera \
+    ros-jazzy-realsense2-description \
+    ros-jazzy-rqt-image-view \
     && rm -rf /var/lib/apt/lists/*
-    
 
 # Pip-only Python dependencies
 COPY requirements.txt /tmp/requirements.txt

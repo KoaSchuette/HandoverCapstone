@@ -15,7 +15,7 @@ geometry_msgs/Vector3 palm_direction
 geometry_msgs/Vector3 palm_velocity
 float32 palm_width
 
-geometry_msgs/Pose palm
+geometry_msgs/Pose palm_pose
 geometry_msgs/Point wrist_joint
 geometry_msgs/Point elbow_joint
 

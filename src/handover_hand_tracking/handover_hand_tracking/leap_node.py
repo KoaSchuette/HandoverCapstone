@@ -12,7 +12,7 @@ class LeapPublisher(Node):
         super().__init__('leap_publisher')
         self.left_hand = self.create_publisher(Hand, '/hand/left', 10)
         self.right_hand = self.create_publisher(Hand, '/hand/right', 10)
-        
+        self.hand_markers = self.create_publisher(MarkerArray,'/hand/markers', 10)
 
 class LeapListener(leap.Listener):
     def __init__(self, node):
@@ -27,7 +27,57 @@ class LeapListener(leap.Listener):
             info = event.device.get_info()
 
         print(f"Found device {info.serial}")
+    def make_marker(self, msg, marker_array):
+        line = Marker()
+        marker = Marker()
 
+        marker.type = Marker.SPHERE_LIST
+        marker.action = Marker.ADD
+        line.type = Marker.LINE_LIST 
+        line.action = Marker.ADD
+
+        marker.header = msg.header
+        line.header = msg.header
+
+        marker.scale.x = 0.01
+        marker.scale.y = 0.01
+        marker.scale.z = 0.01
+        line.scale.x = 0.002
+        line.scale.y = 0.002
+        line.scale.z = 0.002
+
+        marker.lifetime.sec = 0
+        marker.lifetime.nanosec = 100000000
+        line.lifetime = marker.lifetime
+        if msg.handedness == Hand.LEFT:
+            marker.ns = 'left_hand'
+            line.ns = 'left_hand_lines'
+            marker.color.r = 0.0
+            marker.color.g = 1.0
+            marker.color.b = 0.0
+            marker.color.a = 1.0
+        else:
+            marker.ns = 'right_hand'
+            line.ns = 'right_hand_lines'
+            marker.color.r = 1.0
+            marker.color.g = 0.0
+            marker.color.b = 0.0
+            marker.color.a = 1.0
+        line.color = marker.color
+        marker.id = 0
+        line.id = 1
+        marker.points.append(msg.palm_pose.position)
+        for i in range(len(msg.fingers)):
+            for j in range(len(msg.fingers[i].prev_joint)):
+                marker.points.append(msg.fingers[i].prev_joint[j])
+                line.points.append(msg.fingers[i].prev_joint[j])
+                line.points.append(msg.fingers[i].next_joint[j])
+            marker.points.append(msg.fingers[i].next_joint[3])
+
+    
+        marker_array.markers.append(marker)
+        marker_array.markers.append(line)
+        return marker_array
 
     def grab_data(self,hand,msg):
         msg.header.frame_id = "leap_link"
@@ -45,13 +95,13 @@ class LeapListener(leap.Listener):
         msg.palm_velocity.y = hand.palm.velocity.y/1000
         msg.palm_velocity.z = hand.palm.velocity.z/1000
         msg.palm_width = hand.palm.width/1000
-        msg.palm.position.x = hand.palm.position.x/1000 #output in mm so converted to m
-        msg.palm.position.y = hand.palm.position.y/1000
-        msg.palm.position.z = hand.palm.position.z/1000 
-        msg.palm.orientation.x = hand.palm.orientation.x
-        msg.palm.orientation.y = hand.palm.orientation.y
-        msg.palm.orientation.z = hand.palm.orientation.z
-        msg.palm.orientation.w = hand.palm.orientation.w
+        msg.palm_pose.position.x = hand.palm.position.x/1000 #output in mm so converted to m
+        msg.palm_pose.position.y = hand.palm.position.y/1000
+        msg.palm_pose.position.z = hand.palm.position.z/1000 
+        msg.palm_pose.orientation.x = hand.palm.orientation.x
+        msg.palm_pose.orientation.y = hand.palm.orientation.y
+        msg.palm_pose.orientation.z = hand.palm.orientation.z
+        msg.palm_pose.orientation.w = hand.palm.orientation.w
         msg.wrist_joint.x = hand.arm.next_joint.x/1000
         msg.wrist_joint.y = hand.arm.next_joint.y/1000
         msg.wrist_joint.z = hand.arm.next_joint.z/1000
@@ -74,21 +124,24 @@ class LeapListener(leap.Listener):
 
     def on_tracking_event(self, event):
         # self.node.get_logger().info(f"Tracking event with {len(event.hands)} hands")
+        marker_array = MarkerArray()
         for hand in event.hands:
             try:
                 msg = Hand()
                 if hand.type == leap.HandType.Left:
                     msg.handedness = Hand.LEFT
                     self.grab_data(hand,msg)
+                    marker_array = self.make_marker(msg, marker_array)
                     self.node.left_hand.publish(msg)
                 else:
                     msg.handedness = Hand.RIGHT
                     self.grab_data(hand,msg)
+                    marker_array = self.make_marker(msg, marker_array)
                     self.node.right_hand.publish(msg)
             except Exception as e:
                 self.node.get_logger().error(f"Failed to publish hand: {e!r}")
-            
-
+        
+        self.node.hand_markers.publish(marker_array)
         
 def main():
     rclpy.init()

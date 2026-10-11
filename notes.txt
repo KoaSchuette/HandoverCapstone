@@ -36,6 +36,9 @@ how to run real sense launch file
 ros2 launch handover_realsense realsense.launch.py
 
 
+how to run skeleton tracking node
+ros2 launch handover_skeleton_tracking skeleton.launch.py
+
 ultraleap output
 
 hand

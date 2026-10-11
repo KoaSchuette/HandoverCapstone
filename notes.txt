@@ -32,6 +32,9 @@ run this in termial(linux only)
 ultraleap-hand-tracking-control-panel
 
 
+how to run real sense launch file
+ros2 launch handover_realsense realsense.launch.py
+
 
 ultraleap output
 

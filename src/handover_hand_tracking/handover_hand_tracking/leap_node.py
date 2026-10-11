@@ -3,7 +3,6 @@ import leap
 from rclpy.executors import ExternalShutdownException
 from rclpy.node import Node
 from hand_msgs.msg import Hand
-from geometry_msgs.msg import PoseStamped
 from visualization_msgs.msg import Marker, MarkerArray
 
 class LeapPublisher(Node):

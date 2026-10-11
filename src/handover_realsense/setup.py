@@ -12,6 +12,7 @@ setup(
         ('share/ament_index/resource_index/packages', ['resource/handover_realsense']),
         ('share/handover_realsense', ['package.xml']),
         (os.path.join('share', 'handover_realsense', 'launch'), glob('launch/*.py')),
+        (os.path.join('share', 'handover_realsense', 'config'), glob('config/*.xml')),
     ],
     install_requires=['setuptools'],
     zip_safe=True,

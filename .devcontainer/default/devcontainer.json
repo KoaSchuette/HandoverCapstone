@@ -1,20 +1,24 @@
 {
-  "name": "HandoverCapstone (ROS 2 Jazzy)",
+  "name": "HandoverCapstone (Windows / WSL)",
   "build": {
     "dockerfile": "../Dockerfile",
     "context": "../.."
   },
   "remoteUser": "ubuntu",
-  "runArgs": ["--privileged", //USB Passthrough
-              "--network=host", 
-              "--ipc=host"],
+  "runArgs": [
+    "--network=host",
+    "--ipc=host"
+  ],
   "containerEnv": {
-    "DISPLAY": "${localEnv:DISPLAY}",
-    "QT_X11_NO_MITSHM": "1"
+    "DISPLAY": ":0",
+    "WAYLAND_DISPLAY": "wayland-0",
+    "XDG_RUNTIME_DIR": "/mnt/wslg/runtime-dir",
+    "QT_X11_NO_MITSHM": "1",
+    "LIBGL_ALWAYS_SOFTWARE": "1"
   },
   "mounts": [
     "source=/tmp/.X11-unix,target=/tmp/.X11-unix,type=bind",
-    "source=/dev,target=/dev,type=bind" // USB Passthrough
+    "source=/mnt/wslg,target=/mnt/wslg,type=bind"
   ],
   "customizations": {
     "vscode": {

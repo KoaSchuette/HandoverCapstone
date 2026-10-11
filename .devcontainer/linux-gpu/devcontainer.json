@@ -1,5 +1,5 @@
 {
-  "name": "HandoverCapstone (ROS 2 Jazzy)",
+  "name": "HandoverCapstone (Linux hardware)",
   "build": {
     "dockerfile": "../Dockerfile",
     "context": "../.."
@@ -8,20 +8,22 @@
   "runArgs": [
   "--network=host",
   "--ipc=host",
-  "--device=/dev/dri",
-  "--group-add=video",
-  "--group-add=110"
+  "--privileged",
+  "--group-add=${localEnv:RENDER_GID:video}",
+  "--gpus=all"
 ],
   "containerEnv": {
     "DISPLAY": "${localEnv:DISPLAY}",
     "QT_X11_NO_MITSHM": "1",
     "LEAPC_HEADER_OVERRIDE": "/usr/lib/ultraleap-hand-tracking-service/leapc_cffi/LeapC.h",
     "LEAPC_LIB_OVERRIDE": "/usr/lib/ultraleap-hand-tracking-service/libLeapC.so",
-    "LD_LIBRARY_PATH": "/usr/lib/ultraleap-hand-tracking-service"
+    "LD_LIBRARY_PATH": "/usr/lib/ultraleap-hand-tracking-service",
+    "NVIDIA_DRIVER_CAPABILITIES": "all"
   },
   "mounts": [
   "source=/tmp/.X11-unix,target=/tmp/.X11-unix,type=bind",
-  "source=/usr/lib/ultraleap-hand-tracking-service,target=/usr/lib/ultraleap-hand-tracking-service,type=bind,readonly"
+  "source=/usr/lib/ultraleap-hand-tracking-service,target=/usr/lib/ultraleap-hand-tracking-service,type=bind,readonly",
+  "source=/dev,target=/dev,type=bind" 
   ],
   "customizations": {
     "vscode": {

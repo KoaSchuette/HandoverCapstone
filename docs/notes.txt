@@ -27,7 +27,7 @@ How ot run ultra leap node with rviz
 ros2 launch handover_hand_tracking hand_tracking.launch.py
 
 
-How to run Ultra leap software no C library
+How to run Ultra leap software 
 run this in termial(linux only)
 ultraleap-hand-tracking-control-panel
 
@@ -84,3 +84,9 @@ Left/right = the PERSON's left/right, not the camera's
 16 right ankle
 
 Arm joints for motion prediction: 5 to 10
+
+
+
+How to run Gazebo/rvizz (need gpu for gazebo)
+
+ros2 launch ur_simulation_gz ur_sim_moveit.launch.py

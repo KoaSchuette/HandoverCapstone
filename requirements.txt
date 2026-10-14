@@ -1,5 +1,7 @@
 # Keep NumPy 1.x: ROS 2 Jazzy's cv_bridge is built against it
 numpy<2
+# setuptools 80+ dropped `develop --uninstall`, which colcon uses for ament_python packages
+setuptools<80
 torch
 torchvision
 ultralytics

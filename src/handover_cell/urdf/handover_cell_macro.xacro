@@ -1,0 +1,105 @@
+<?xml version="1.0"?>
+<!--
+  The static parts of the work cell, exported from "Capstone Assembly Actual.step".
+
+  Cell frame (= the "world" frame in the sim):
+    origin = on the floor, directly under the centre of the robot mounting plate
+    +X = right, +Y = toward the pegboard, +Z = up      (same axes as the CAD model)
+    units = metres
+
+  Meshes were exported already in this frame, so every mesh sits at origin 0 0 0.
+  Masses are estimates from CAD volume (aluminium frame, hardboard pegboard).
+-->
+<robot xmlns:xacro="http://wiki.ros.org/xacro">
+
+  <xacro:macro name="handover_cell" params="parent">
+
+    <xacro:property name="mesh_dir" value="file://$(find handover_cell)/meshes"/>
+
+    <!-- ===== Mobile base (aluminium frame, casters, robot plate) ===== -->
+    <link name="cell_base">
+      <visual>
+        <geometry><mesh filename="${mesh_dir}/visual/cart.stl"/></geometry>
+        <material name="aluminium"><color rgba="0.62 0.65 0.69 1.0"/></material>
+      </visual>
+      <collision>
+        <!-- one box per CAD part: much faster than the detailed mesh -->
+        <geometry><mesh filename="${mesh_dir}/collision/cart.stl"/></geometry>
+      </collision>
+      <inertial>
+        <origin xyz="-0.0112 -0.2250 0.3973"/>
+        <mass value="55.49"/>
+        <inertia ixx="6.83" iyy="6.16" izz="7.20" ixy="0" ixz="0" iyz="0"/>
+      </inertial>
+    </link>
+    <joint name="cell_base_joint" type="fixed">
+      <parent link="${parent}"/>
+      <child link="cell_base"/>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+    </joint>
+
+    <!-- ===== Pegboard uprights and the two arms that tie them to the base ===== -->
+    <link name="pegboard_frame">
+      <visual>
+        <geometry><mesh filename="${mesh_dir}/visual/pegboard_frame.stl"/></geometry>
+        <material name="dark_aluminium"><color rgba="0.40 0.44 0.48 1.0"/></material>
+      </visual>
+      <collision>
+        <geometry><mesh filename="${mesh_dir}/collision/pegboard_frame.stl"/></geometry>
+      </collision>
+      <inertial>
+        <origin xyz="0.0069 0.3375 0.7266"/>
+        <mass value="6.66"/>
+        <inertia ixx="0.932" iyy="0.883" izz="0.176" ixy="0" ixz="0" iyz="0"/>
+      </inertial>
+    </link>
+    <joint name="pegboard_frame_joint" type="fixed">
+      <parent link="cell_base"/>
+      <child link="pegboard_frame"/>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+    </joint>
+
+    <!-- ===== Pegboard panel (400 x 300 x 10 mm) ===== -->
+    <link name="pegboard">
+      <visual>
+        <geometry><mesh filename="${mesh_dir}/visual/pegboard.stl"/></geometry>
+        <material name="hardboard"><color rgba="0.78 0.63 0.42 1.0"/></material>
+      </visual>
+      <collision>
+        <geometry><mesh filename="${mesh_dir}/collision/pegboard.stl"/></geometry>
+      </collision>
+      <inertial>
+        <origin xyz="0.0053 0.5125 1.0683"/>
+        <mass value="0.79"/>
+        <inertia ixx="0.00593" iyy="0.01645" izz="0.01054" ixy="0" ixz="0" iyz="0"/>
+      </inertial>
+    </link>
+    <joint name="pegboard_joint" type="fixed">
+      <parent link="pegboard_frame"/>
+      <child link="pegboard"/>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+    </joint>
+
+    <!-- ===== Reference frames (no geometry) ===== -->
+
+    <!-- Top centre of the 225 x 225 mm robot plate. The UR5e base bolts on here. -->
+    <link name="robot_mount"/>
+    <joint name="robot_mount_joint" type="fixed">
+      <parent link="cell_base"/>
+      <child link="robot_mount"/>
+      <origin xyz="0 0 0.7879" rpy="0 0 0"/>
+    </joint>
+
+    <!-- Centre of the pegboard's front face (the side facing the robot).
+         Same axes as the cell: +X along the board, +Y into the board, +Z up.
+         Use it to place tool positions: e.g. a hook 50 mm left, 80 mm up of centre
+         is at (-0.05, 0, 0.08) in this frame. -->
+    <link name="pegboard_face"/>
+    <joint name="pegboard_face_joint" type="fixed">
+      <parent link="pegboard"/>
+      <child link="pegboard_face"/>
+      <origin xyz="0.0053 0.5075 1.0683" rpy="0 0 0"/>
+    </joint>
+
+  </xacro:macro>
+</robot>

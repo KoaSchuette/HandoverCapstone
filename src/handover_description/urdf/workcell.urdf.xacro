@@ -1,0 +1,108 @@
+<?xml version="1.0"?>
+<robot name="workcell" xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+    <xacro:include filename="$(find ur_description)/urdf/ur_macro.xacro"/>
+    
+
+    <xacro:property name="bench_width"    value="0.687"/>  <!-- along x -->
+    <xacro:property name="bench_depth"    value="0.732"/>  <!-- along y -->
+    <xacro:property name="bench_height"   value="0.744"/>
+    <xacro:property name="bench_offset_x" value="0.231"/>
+    <xacro:property name="riser_height"   value="0.0112"/>
+    <xacro:property name="riser_width"   value="0.225"/>
+
+
+    <xacro:property name="pegboard_depth"    value="0.1"/>
+    <xacro:property name="pegboard_width"    value="0.48"/>
+    <xacro:property name="pegboard_height"   value="1.30"/>
+    <xacro:property name="pegboard_distance" value="-0.7"/>
+    <xacro:property name="connector_height"  value="0.10"/>
+
+
+    <xacro:property name="bench_back_x"     value="${bench_offset_x - bench_width / 2}"/>
+    <xacro:property name="pegboard_face_x"  value="${pegboard_distance + pegboard_depth / 2}"/>
+    <xacro:property name="connector_length" value="${bench_back_x - pegboard_face_x}"/>
+
+    <material name="bench_grey">
+        <color rgba="0.7 0.7 0.7 1.0"/>
+    </material>
+    <material name="pegboard_white">
+        <color rgba="1.0 1.0 1.0 1.00"/>
+    </material>
+    <material name="connector_blue">
+        <color rgba="0.2 0.4 0.8 0.5"/>
+    </material>    
+    <xacro:include filename="$(find handover_description)/urdf/ur5e.xacro"/>
+
+    <xacro:macro name="solid_box" params="sx sy sz xyz material mass">
+        <visual>
+            <origin xyz="${xyz}" rpy="0 0 0"/>
+            <geometry><box size="${sx} ${sy} ${sz}"/></geometry>
+            <material name="${material}"/>
+        </visual>
+        <collision>
+            <origin xyz="${xyz}" rpy="0 0 0"/>
+            <geometry><box size="${sx} ${sy} ${sz}"/></geometry>
+        </collision>
+        <inertial>
+            <origin xyz="${xyz}" rpy="0 0 0"/>
+            <mass value="${mass}"/>
+            <inertia ixx="${mass / 12 * (sy*sy + sz*sz)}"
+                    iyy="${mass / 12 * (sx*sx + sz*sz)}"
+                    izz="${mass / 12 * (sx*sx + sy*sy)}"
+                    ixy="0" ixz="0" iyz="0"/>
+        </inertial>
+    </xacro:macro>
+
+
+    <link name="workbench">
+        <xacro:solid_box sx="${bench_width}" sy = "${bench_depth}" sz="${bench_height}"
+                        xyz="${bench_offset_x} 0 ${bench_height / 2}"
+                        material="bench_grey"
+                        mass="20.0"/>
+    </link>
+    <link name="riser">
+        <xacro:solid_box sx="${riser_width}" sy="${riser_width}" sz="${riser_height}"
+                        xyz= "0 0 ${bench_height + riser_height / 2}"
+                        material = "bench_grey" 
+                        mass="20.0"/>
+        
+    </link>
+
+    <link name="pegboard">
+        <xacro:solid_box sx="${pegboard_depth}" sy="${pegboard_width}" sz="${pegboard_height}"
+                        xyz="0 0 ${pegboard_height / 2}"
+                        material="pegboard_white"
+                        mass="20.0"/>
+        
+    </link>
+    <link name="connector">
+        <xacro:solid_box sx="${connector_length}" sy="${pegboard_width}" sz="${connector_height}"
+                        xyz="${pegboard_depth / 2 + connector_length / 2} 0 ${bench_height - connector_height / 2}"
+                        material="connector_blue"
+                        mass="20.0"/>
+    </link>
+    <xacro:ur5e_with_gripper parent="workbench" base_z="${bench_height + riser_height}"/>
+    
+    <joint name="pegboard_connector" type="fixed">
+        <parent link="pegboard"/>
+        <child link="connector"/>
+        <origin xyz="0 0 0"/>
+    </joint>
+    <joint name="workbench_to_pegboard" type="fixed">
+        <parent link="workbench"/>
+        <child link="pegboard"/>
+        <origin xyz="${pegboard_distance} 0 0"/>
+    </joint>
+    <joint name="workbench_to_riser" type="fixed">
+        <parent link="workbench"/>
+        <child link="riser"/>
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+    </joint>
+    <link name="world"/>
+    <joint name="world_to_workbench" type="fixed">
+        <parent link="world"/>
+        <child link="workbench"/>
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+    </joint>
+</robot>

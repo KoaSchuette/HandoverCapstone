@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+<robot name="workcell" xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+    <!-- Arguments the UR sim launch file passes in -->
+    <xacro:arg name="name" default="ur"/>
+    <xacro:arg name="tf_prefix" default=""/>
+    <xacro:arg name="simulation_controllers" default=""/>
+    <xacro:arg name="ros_namespace" default=""/>
+    <xacro:arg name="transmission_hw_interface" default=""/>
+
+    <!-- The whole cell: bench, pegboard, arm, gripper -->
+    <xacro:include filename="$(find handover_description)/urdf/workcell.urdf.xacro"/>
+
+    <!-- Simulated motors for the arm's joints -->
+    <xacro:include filename="$(find ur_simulation_gz)/urdf/ur_gz.ros2_control.xacro"/>
+    <xacro:ur_ros2_control
+        name="$(arg name)"
+        tf_prefix="$(arg tf_prefix)"
+        transmission_hw_interface="$(arg transmission_hw_interface)"/>
+
+    <!-- Plugin that connects Gazebo's joints to ROS 2 controllers -->
+    <gazebo>
+        <plugin filename="gz_ros2_control-system" name="gz_ros2_control::GazeboSimROS2ControlPlugin">
+            <parameters>$(arg simulation_controllers)</parameters>
+            <ros>
+                <namespace>$(arg ros_namespace)</namespace>
+            </ros>
+        </plugin>
+    </gazebo>
+
+</robot>

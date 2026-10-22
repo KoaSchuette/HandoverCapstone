@@ -9,7 +9,7 @@
     <xacro:arg name="transmission_hw_interface" default=""/>
 
     <!-- The whole cell: bench, pegboard, arm, gripper -->
-    <xacro:include filename="$(find handover_description)/urdf/workcell.urdf.xacro"/>
+    <xacro:include filename="$(find handover_pathing_sim)/urdf/workcell.urdf.xacro"/>
 
     <!-- Simulated motors for the arm's joints -->
     <xacro:include filename="$(find ur_simulation_gz)/urdf/ur_gz.ros2_control.xacro"/>

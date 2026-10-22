@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <?xml-model href="http://download.ros.org/schema/package_format3.xsd" schematypens="http://www.w3.org/2001/XMLSchema"?>
 <package format="3">
-  <name>handover_description</name>
+  <name>handover_pathing_sim</name>
   <version>0.0.0</version>
   <description>TODO: Package description</description>
   <maintainer email="koaschuette@gmail.com">ubuntu</maintainer>

@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <!--
-  Full sim description: work cell + UR5e mounted on the base plate.
+  Full sim description - work cell + UR5e mounted on the base plate.
   Based on ur_simulation_gz/urdf/ur_gz.urdf.xacro; the only changes are
   the cell macro and where the arm is attached (robot_mount instead of world).
 -->

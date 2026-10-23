@@ -2,7 +2,7 @@
 <!--
   The static parts of the work cell, exported from "Capstone Assembly Actual.step".
 
-  Cell frame (= the "world" frame in the sim):
+  Cell frame (= the "world" frame in the sim)
     origin = on the floor, directly under the centre of the robot mounting plate
     +X = right, +Y = toward the pegboard, +Z = up      (same axes as the CAD model)
     units = metres
@@ -23,7 +23,7 @@
         <material name="aluminium"><color rgba="0.62 0.65 0.69 1.0"/></material>
       </visual>
       <collision>
-        <!-- one box per CAD part: much faster than the detailed mesh -->
+        <!-- one box per CAD part - much faster than the detailed mesh -->
         <geometry><mesh filename="${mesh_dir}/collision/cart.stl"/></geometry>
       </collision>
       <inertial>
@@ -91,8 +91,8 @@
     </joint>
 
     <!-- Centre of the pegboard's front face (the side facing the robot).
-         Same axes as the cell: +X along the board, +Y into the board, +Z up.
-         Use it to place tool positions: e.g. a hook 50 mm left, 80 mm up of centre
+         Same axes as the cell - +X along the board, +Y into the board, +Z up.
+         Use it to place tool positions - e.g. a hook 50 mm left, 80 mm up of centre
          is at (-0.05, 0, 0.08) in this frame. -->
     <link name="pegboard_face"/>
     <joint name="pegboard_face_joint" type="fixed">

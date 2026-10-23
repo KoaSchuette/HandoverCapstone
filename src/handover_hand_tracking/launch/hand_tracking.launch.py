@@ -6,15 +6,15 @@ from launch.substitutions import PathJoinSubstitution
 
 def generate_launch_description():
     # Static transform: rotates Leap's Y-up axes into ROS's Z-up
-    leap_tf = Node(
-        package='tf2_ros',
-        executable='static_transform_publisher',
-        arguments=[
-            '--x', '0', '--y', '0', '--z', '0',
-            '--roll', '1.5708', '--pitch', '0', '--yaw', '0',
-            '--frame-id', 'world', '--child-frame-id', 'leap_link',
-        ],
-    )
+    # leap_tf = Node(
+    #     package='tf2_ros',
+    #     executable='static_transform_publisher',
+    #     arguments=[
+    #         '--x', '0', '--y', '0', '--z', '0',
+    #         '--roll', '1.5708', '--pitch', '0', '--yaw', '0',
+    #         '--frame-id', 'world', '--child-frame-id', 'leap_link',
+    #     ],
+    # )
 
     # TODO:same as ros2 run handover_hand_tracking leap_node
     leap = Node(
@@ -35,7 +35,7 @@ def generate_launch_description():
 
 
     return LaunchDescription([
-        leap_tf,
+        # leap_tf,
         leap,
         rviz,
     ])

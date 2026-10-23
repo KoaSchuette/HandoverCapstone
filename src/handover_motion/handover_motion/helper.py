@@ -6,14 +6,14 @@ def bezier(points,s):
     return  points[0]*(1-s)**3+3*s*points[1]*(1-s)**2 +3*points[2]*(1-s)*s**2+ points[3]*s**3
 
 
-def time_law(time, duration):
+def time_law(times, duration):
     if duration <= 0:
             raise ValueError("invalid duration: please enter a duration above 0")
-    if time < 0:
+    if times < 0:
         return 0
-    if time > duration:
+    if times > duration:
         return 1
-    tau = time/duration
+    tau = times/duration
     s = 10*tau**3 - 15*tau**4 + 6*tau**5
     return s
 

@@ -31,6 +31,9 @@
     </material>
     <material name="connector_blue">
         <color rgba="0.2 0.4 0.8 0.5"/>
+    </material>
+    <material name="sensor_black">
+    <color rgba="0.1 0.1 0.1 1.0"/>
     </material>    
     <xacro:include filename="$(find handover_pathing_sim)/urdf/ur5e.xacro"/>
 
@@ -82,8 +85,19 @@
                         material="connector_blue"
                         mass="20.0"/>
     </link>
+    <link name="leap_link">
+        <xacro:solid_box sx="0.084" sy="0.012" sz="0.020"
+                        xyz="0 -0.006 0"
+                        material="sensor_black"
+                        mass="0.029"/>
+    </link>
+
     <xacro:ur5e_with_gripper parent="workbench" base_z="${bench_height + riser_height}"/>
-    
+    <joint name="workbench_to_ultraleap" type="fixed">
+        <parent link="workbench"/>
+        <child link="leap_link"/>
+        <origin xyz="${bench_offset_x + bench_width/2 - 0.010} 0 ${bench_height+0.012}" rpy="${pi/2} 0 ${pi/2}"/>
+    </joint>
     <joint name="pegboard_connector" type="fixed">
         <parent link="pegboard"/>
         <child link="connector"/>

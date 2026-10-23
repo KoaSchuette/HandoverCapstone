@@ -1,0 +1,25 @@
+moveit_setup_assistant_config:
+  urdf:
+    package: handover_pathing_sim
+    relative_path: urdf/workcell.urdf.xacro
+  srdf:
+    relative_path: config/workcell.srdf
+  package_settings:
+    author_name: Koa Schuette
+    author_email: koa.schuette@queensu.ca
+    generated_timestamp: 1792720524
+  control_xacro:
+    command:
+      - position
+    state:
+      - position
+      - velocity
+  modified_urdf:
+    xacros:
+      - control_xacro
+  control_xacro:
+    command:
+      - position
+    state:
+      - position
+      - velocity

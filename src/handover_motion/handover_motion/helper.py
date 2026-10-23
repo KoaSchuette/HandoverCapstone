@@ -1,5 +1,6 @@
 import math
 import numpy as np
+from scipy.spatial.transform import Rotation, Slerp
 
 def bezier(points,s):
     return  points[0]*(1-s)**3+3*s*points[1]*(1-s)**2 +3*points[2]*(1-s)*s**2+ points[3]*s**3
@@ -23,3 +24,10 @@ def find_pull_points(p_0, p_3, d_s ,d_a,a_s,a_a):
      p_2 = p_3 - a_a*d_a
      points = np.array([p_0,p_1,p_2,p_3])
      return points
+
+def find_orientation(q_start, q_end, s, lock):
+     rots = Rotation.from_quat([q_start,q_end])
+     slerp = Slerp([0,lock], rots)
+     if s > lock:
+          return slerp(lock).as_quat()
+     return slerp(s).as_quat()

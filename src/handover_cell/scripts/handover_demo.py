@@ -1,19 +1,28 @@
 #!/usr/bin/env python3
 """Handover demo: pegboard -> turn -> operator."""
-import rclpy
+import rclpy, math
 from rclpy.node import Node
 from rclpy.action import ActionClient
 from moveit_msgs.action import MoveGroup
 from moveit_msgs.msg import Constraints, JointConstraint, MoveItErrorCodes
 
-JOINTS = [
-    "shoulder_pan_joint",
-    "shoulder_lift_joint",
-    "elbow_joint",
-    "wrist_1_joint",
-    "wrist_2_joint",
-    "wrist_3_joint",
-]
+PICKUP = {
+    "shoulder_pan_joint":    48.70,
+    "shoulder_lift_joint": -117.97,
+    "elbow_joint":          141.69,
+    "wrist_1_joint":        -23.72,
+    "wrist_2_joint":         48.70,
+    "wrist_3_joint":          0,
+}
+
+HANDOVER = {
+    "shoulder_pan_joint":  -104.86,
+    "shoulder_lift_joint":  -63.27,
+    "elbow_joint":           95.88,
+    "wrist_1_joint":        -32.67,
+    "wrist_2_joint":         75.16,
+    "wrist_3_joint":          0,
+}
 
 
 class HandoverDemo(Node):
@@ -30,7 +39,7 @@ class HandoverDemo(Node):
         self.get_logger().info("Connected to move_group")
         return True
 
-    def make_goal(self, joints, speed=0.3):
+    def make_goal(self, pose, speed=0.3):
         goal = MoveGroup.Goal()
         req = goal.request
         req.group_name = "ur_manipulator"
@@ -43,9 +52,9 @@ class HandoverDemo(Node):
         req.max_acceleration_scaling_factor = speed
 
         target = Constraints()
-        for name, angle in zip(JOINTS, joints):
+        for name, degrees in pose.items():
             target.joint_constraints.append(JointConstraint(
-                joint_name=name, position=float(angle),
+                joint_name=name, position=math.radians(degrees),
                 tolerance_above=0.01, tolerance_below=0.01, weight=1.0))
         req.goal_constraints.append(target)
 
@@ -67,16 +76,14 @@ def main():
     rclpy.init()
     node = HandoverDemo()
     if node.connect():
-        goal = node.make_goal([0.850, -2.059, 2.473, -0.414, 0.850, 0.0])
-        result = node.send(goal)
-        if result is not None:
-            code = result.error_code.val
-            print("error code:", code)
-            if code == MoveItErrorCodes.SUCCESS:
-                traj = result.planned_trajectory.joint_trajectory
-                end = traj.points[-1].time_from_start
-                print("points:", len(traj.points))
-                print("move time:", end.sec + end.nanosec * 1e-9, "s")
+        for name, pose in [("pickup", PICKUP), ("handover", HANDOVER)]:
+            result = node.send(node.make_goal(pose))
+            code = result.error_code.val if result else None
+            if code != MoveItErrorCodes.SUCCESS:
+                print(name, "failed, error code", code)
+                break
+            end = result.planned_trajectory.joint_trajectory.points[-1].time_from_start
+            print(f"{name}: {end.sec + end.nanosec * 1e-9:.2f} s")
 
 
 if __name__ == "__main__":

@@ -7,4 +7,8 @@ find_package(ament_cmake REQUIRED)
 install(DIRECTORY launch meshes srdf urdf
   DESTINATION share/${PROJECT_NAME})
 
+install(PROGRAMS
+  scripts/handover_demo.py
+  DESTINATION lib/${PROJECT_NAME})
+
 ament_package()

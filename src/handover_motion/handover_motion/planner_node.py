@@ -6,7 +6,7 @@ from rclpy.node import Node
 from std_srvs.srv import Trigger
 from moveit_msgs.srv import GetPositionIK
 from tf2_ros import Buffer, TransformListener
-from helper import time_law, bezier, find_pull_points, find_orientation
+from handover_motion.helper import time_law, bezier, find_pull_points, find_orientation
 from hand_msgs.msg import Hand
 
 class Planner_node(Node):
@@ -30,6 +30,11 @@ class Planner_node(Node):
         """
         Send bezier position and SLERP rotation at time (s) to get back joint solution at time (s)
         """
+        self.req.ik_request.group_name = 'manipulator'
+        self.req.ik_request.pose_stamped.header.frame_id = 'base_link'
+        self.req.ik_request.avoid_collisions = True
+        self.req.ik_request.timeout.sec = 0
+        self.req.ik_request.timeout.nanosec = 50_000_000   # 0.05 s 
         self.req.ik_request.pose_stamped.pose.position.x = float(position[0])
         self.req.ik_request.pose_stamped.pose.position.y = float(position[1])
         self.req.ik_request.pose_stamped.pose.position.z = float(position[2])
@@ -41,13 +46,14 @@ class Planner_node(Node):
     def hand_msg_callback(self, msg):
         self.right_hand = msg
     def handover_callback(self, request , response): #trigger sequence when this fires start 
-        
+        if self.right_hand is None:
+            otp = 
         # first when trigger is set off grab curent position of held tool for starting p0 of bezier curve
         t = self.tf_buffer.lookup_transform('base_link', 'held_tool', rclpy.time.Time())
         
         #pull data from hand and tool orientation for q_start and q_end
-        q_start = np.array[(t.transform.rotation.x,t.transform.rotation.y,t.transform.rotation.z,t.transform.rotation.w)]
-        q_end = np.array[(self.right_hand.palm_pose.orientation.x,self.right_hand.palm_pose.orientation.y,self.right_hand.palm_pose.orientation.z,self.right_hand.palm_pose.orientation.w)]
+        q_start = np.array([t.transform.rotation.x,t.transform.rotation.y,t.transform.rotation.z,t.transform.rotation.w])
+        q_end = np.array([self.right_hand.palm_pose.orientation.x,self.right_hand.palm_pose.orientation.y,self.right_hand.palm_pose.orientation.z,self.right_hand.palm_pose.orientation.w])
         
         #pull data from hand and tool position for p0 and p1
         p_0 = np.array([t.transform.translation.x, t.transform.translation.y, t.transform.translation.z])   # start

@@ -15,7 +15,7 @@ __pycache__/
 # YOLO stuff
 *.pt
 runs/
-
+my_stuff
 # Distribution / packaging
 .Python
 build/

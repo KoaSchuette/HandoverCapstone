@@ -12,6 +12,7 @@
   <xacro:include filename="$(find handover_cell)/urdf/handover_cell_macro.xacro"/>
 
   <xacro:arg name="ur_type" default="ur5e"/>
+  <xacro:arg name="pegboard_offset" default="$(optenv PEGBOARD_OFFSET 0.0)"/>
 
   <!-- parameters passed in by ur_sim_control.launch.py -->
   <xacro:arg name="tf_prefix" default=""/>
@@ -49,7 +50,7 @@
   </joint>
 
   <!-- base, pegboard frame, pegboard, and the robot_mount / pegboard_face frames -->
-  <xacro:handover_cell parent="world"/>
+  <xacro:handover_cell parent="world" pegboard_offset="$(arg pegboard_offset)"/>
 
   <!-- arm, bolted to the top of the robot plate -->
   <xacro:ur_robot

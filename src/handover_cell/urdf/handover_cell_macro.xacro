@@ -12,7 +12,7 @@
 -->
 <robot xmlns:xacro="http://wiki.ros.org/xacro">
 
-  <xacro:macro name="handover_cell" params="parent">
+  <xacro:macro name="handover_cell" params="parent pegboard_offset:=0.15">
 
     <xacro:property name="mesh_dir" value="file://$(find handover_cell)/meshes"/>
 
@@ -56,7 +56,7 @@
     <joint name="pegboard_frame_joint" type="fixed">
       <parent link="cell_base"/>
       <child link="pegboard_frame"/>
-      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <origin xyz="0 ${pegboard_offset} 0" rpy="0 0 0"/>
     </joint>
 
     <!-- ===== Pegboard panel (400 x 300 x 10 mm) ===== -->

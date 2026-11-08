@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  MoveIt semantic description: the stock UR one, plus collision pairs MoveIt
+  should skip because the parts are bolted together or can never move into
+  each other. Without these, MoveIt would see the arm "touching" its own
+  mounting plate and reject every plan.
+
+  The arm links from upper_arm_link outward are still checked against the
+  base, pegboard frame and pegboard, so plans will steer around them.
+-->
+<robot xmlns:xacro="http://wiki.ros.org/xacro" name="$(arg name)">
+  <xacro:arg name="name" default="ur"/>
+  <xacro:include filename="$(find ur_moveit_config)/srdf/ur_macro.srdf.xacro"/>
+  <xacro:ur_srdf/>
+
+  <!-- static parts never move relative to each other -->
+  <disable_collisions link1="ground_plane" link2="cell_base" reason="Adjacent"/>
+  <disable_collisions link1="ground_plane" link2="pegboard_frame" reason="Never"/>
+  <disable_collisions link1="ground_plane" link2="pegboard" reason="Never"/>
+  <disable_collisions link1="cell_base" link2="pegboard_frame" reason="Adjacent"/>
+  <disable_collisions link1="cell_base" link2="pegboard" reason="Never"/>
+  <disable_collisions link1="pegboard_frame" link2="pegboard" reason="Adjacent"/>
+
+  <!-- the arm's fixed base sits on the plate -->
+  <disable_collisions link1="base_link_inertia" link2="cell_base" reason="Adjacent"/>
+  <disable_collisions link1="base_link_inertia" link2="pegboard_frame" reason="Never"/>
+  <disable_collisions link1="base_link_inertia" link2="pegboard" reason="Never"/>
+  <disable_collisions link1="base_link_inertia" link2="ground_plane" reason="Never"/>
+
+  <!-- the shoulder only spins about the base axis, just above the plate -->
+  <disable_collisions link1="shoulder_link" link2="cell_base" reason="Adjacent"/>
+  <disable_collisions link1="shoulder_link" link2="ground_plane" reason="Never"/>
+</robot>

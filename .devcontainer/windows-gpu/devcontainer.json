@@ -1,0 +1,24 @@
+{
+  "name": "HandoverCapstone (Windows / WSL + GPU)",
+  "build": { "dockerfile": "../Dockerfile", "context": "../.." },
+  "remoteUser": "ubuntu",
+  "runArgs": ["--network=host", "--ipc=host", "--gpus=all", "--device=/dev/dxg"],
+  "containerEnv": {
+    "DISPLAY": ":0",
+    "WAYLAND_DISPLAY": "wayland-0",
+    "XDG_RUNTIME_DIR": "/mnt/wslg/runtime-dir",
+    "QT_X11_NO_MITSHM": "1",
+    "QT_QPA_PLATFORM": "xcb",
+    "LD_LIBRARY_PATH": "/usr/lib/wsl/lib",
+    "GALLIUM_DRIVER": "d3d12",
+    "MESA_D3D12_DEFAULT_ADAPTER_NAME": "NVIDIA",
+    "NVIDIA_DRIVER_CAPABILITIES": "all"
+  },
+  "mounts": [
+    "source=/tmp/.X11-unix,target=/tmp/.X11-unix,type=bind",
+    "source=/mnt/wslg,target=/mnt/wslg,type=bind",
+    "source=/usr/lib/wsl,target=/usr/lib/wsl,type=bind,readonly"
+  ],
+  "customizations": { "vscode": { "extensions": ["ms-python.python", "ms-vscode.cpptools"] } },
+  "postCreateCommand": "sudo apt-get update && rosdep install --from-paths src --ignore-src -y"
+}

@@ -29,7 +29,7 @@
     <xacro:arg name="trajectory_port" default="50003"/>
 
     <!-- Import workcell urdf file -->
-    <xacro:include filename="$(find handover_pathing_sim)/urdf/workcell.urdf.xacro" />
+    <xacro:include filename="$(find handover_cell)/urdf/workcell.urdf.xacro" />
 
     <!-- Same macro for mock and real, use_mock_hardware picks the hardware plugin -->
     <xacro:include filename="$(find ur_robot_driver)/urdf/ur.ros2_control.xacro" />

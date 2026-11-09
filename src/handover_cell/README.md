@@ -39,7 +39,11 @@ shoulder (UR5e reach is 0.85 m).
 | Path | What it is |
 |---|---|
 | `urdf/handover_cell_macro.xacro` | the cell links (meshes, collision, mass) and the two reference frames |
-| `urdf/handover_cell.urdf.xacro` | cell + UR5e, used by Gazebo and RViz |
+| `urdf/handover_cell.urdf.xacro` | cell + plain UR5e, used by `cell_sim.launch.py` / `view_cell.launch.py` and the distance study |
+| `urdf/workcell.urdf.xacro` | cell + UR5e with gripper, held tool and Ultraleap, arm turned -90 deg; used by `handover_bringup` (via `handover_moveit_config`) |
+| `urdf/ur5e.xacro` | `ur5e_with_gripper` macro: UR5e + gripper + `tcp` + `held_tool` |
+| `urdf/workcell_gz.urdf.xacro` | `workcell.urdf.xacro` + Gazebo ros2_control, not launched yet |
+| `worlds/handover.sdf` | Gazebo world for `workcell_gz.urdf.xacro` |
 | `srdf/handover_cell.srdf.xacro` | tells MoveIt which bolted-together parts to ignore for collisions |
 | `launch/cell_sim.launch.py` | Gazebo + MoveIt + RViz (wraps `ur_simulation_gz`) |
 | `launch/cell_moveit.launch.py` | MoveIt with the cell-aware SRDF |

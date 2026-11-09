@@ -1,6 +1,6 @@
 moveit_setup_assistant_config:
   urdf:
-    package: handover_pathing_sim
+    package: handover_cell
     relative_path: urdf/workcell.urdf.xacro
   srdf:
     relative_path: config/workcell.srdf

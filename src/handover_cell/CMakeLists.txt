@@ -4,7 +4,7 @@ project(handover_cell)
 find_package(ament_cmake REQUIRED)
 
 # Nothing to compile: just copy the data folders into install/share/handover_cell
-install(DIRECTORY launch meshes srdf urdf
+install(DIRECTORY launch meshes srdf urdf worlds
   DESTINATION share/${PROJECT_NAME})
 
 install(PROGRAMS

@@ -38,15 +38,29 @@
         <joint name="wrist_3_joint" value="-3.1"/>
     </group_state>
     <!--DISABLE COLLISIONS: By default it is assumed that any link of the robot could potentially come into collision with any other link in the robot. This tag disables collision checking between a specified pair of links. -->
-    <disable_collisions link1="base_link_inertia" link2="connector" reason="Never"/>
+    <!-- Static cell parts (handover_cell CAD + floor + Ultraleap) never move relative to each other -->
+    <disable_collisions link1="ground_plane" link2="cell_base" reason="Adjacent"/>
+    <disable_collisions link1="ground_plane" link2="pegboard_frame" reason="Never"/>
+    <disable_collisions link1="ground_plane" link2="pegboard" reason="Never"/>
+    <disable_collisions link1="ground_plane" link2="leap_link" reason="Never"/>
+    <disable_collisions link1="cell_base" link2="pegboard_frame" reason="Adjacent"/>
+    <disable_collisions link1="cell_base" link2="pegboard" reason="Never"/>
+    <disable_collisions link1="cell_base" link2="leap_link" reason="Adjacent"/>
+    <disable_collisions link1="pegboard_frame" link2="pegboard" reason="Adjacent"/>
+    <disable_collisions link1="pegboard_frame" link2="leap_link" reason="Never"/>
+    <disable_collisions link1="pegboard" link2="leap_link" reason="Never"/>
+    <!-- Arm base sits on the robot plate and doesn't move -->
+    <disable_collisions link1="base_link_inertia" link2="cell_base" reason="Adjacent"/>
+    <disable_collisions link1="base_link_inertia" link2="pegboard_frame" reason="Never"/>
     <disable_collisions link1="base_link_inertia" link2="pegboard" reason="Never"/>
-    <disable_collisions link1="base_link_inertia" link2="riser" reason="Default"/>
+    <disable_collisions link1="base_link_inertia" link2="ground_plane" reason="Never"/>
+    <disable_collisions link1="base_link_inertia" link2="leap_link" reason="Never"/>
     <disable_collisions link1="base_link_inertia" link2="shoulder_link" reason="Adjacent"/>
-    <disable_collisions link1="base_link_inertia" link2="workbench" reason="Adjacent"/>
-    <disable_collisions link1="connector" link2="pegboard" reason="Adjacent"/>
-    <disable_collisions link1="connector" link2="riser" reason="Never"/>
-    <disable_collisions link1="connector" link2="shoulder_link" reason="Never"/>
-    <disable_collisions link1="connector" link2="workbench" reason="Never"/>
+    <!-- Shoulder only spins about the base axis, just above the plate -->
+    <disable_collisions link1="shoulder_link" link2="cell_base" reason="Adjacent"/>
+    <disable_collisions link1="shoulder_link" link2="ground_plane" reason="Never"/>
+    <disable_collisions link1="shoulder_link" link2="leap_link" reason="Never"/>
+    <!-- Arm self-collision pairs -->
     <disable_collisions link1="forearm_link" link2="upper_arm_link" reason="Adjacent"/>
     <disable_collisions link1="forearm_link" link2="wrist_1_link" reason="Adjacent"/>
     <disable_collisions link1="forearm_link" link2="wrist_2_link" reason="Never"/>
@@ -57,13 +71,7 @@
     <disable_collisions link1="held_tool" link2="wrist_1_link" reason="Never"/>
     <disable_collisions link1="held_tool" link2="wrist_2_link" reason="Never"/>
     <disable_collisions link1="held_tool" link2="wrist_3_link" reason="Never"/>
-    <disable_collisions link1="pegboard" link2="riser" reason="Never"/>
-    <disable_collisions link1="pegboard" link2="shoulder_link" reason="Never"/>
-    <disable_collisions link1="pegboard" link2="workbench" reason="Adjacent"/>
-    <disable_collisions link1="riser" link2="shoulder_link" reason="Never"/>
-    <disable_collisions link1="riser" link2="workbench" reason="Adjacent"/>
     <disable_collisions link1="shoulder_link" link2="upper_arm_link" reason="Adjacent"/>
-    <disable_collisions link1="shoulder_link" link2="workbench" reason="Never"/>
     <disable_collisions link1="wrist_1_link" link2="wrist_2_link" reason="Adjacent"/>
     <disable_collisions link1="wrist_1_link" link2="wrist_3_link" reason="Never"/>
     <disable_collisions link1="wrist_2_link" link2="wrist_3_link" reason="Adjacent"/>

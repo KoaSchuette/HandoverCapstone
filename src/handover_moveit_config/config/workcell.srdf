@@ -16,7 +16,7 @@
     <group_state name="handover_prep" group="manipulator">
         <joint name="elbow_joint" value="2.5348"/>
         <joint name="shoulder_lift_joint" value="-1.6242"/>
-        <joint name="shoulder_pan_joint" value="0.003"/>
+        <joint name="shoulder_pan_joint" value="1.5708"/>
         <joint name="wrist_1_joint" value="-0.95"/>
         <joint name="wrist_2_joint" value="1.65"/>
         <joint name="wrist_3_joint" value="3.15"/>
@@ -24,7 +24,7 @@
     <group_state name="pick_up_home" group="manipulator">
         <joint name="elbow_joint" value="2.15"/>
         <joint name="shoulder_lift_joint" value="-2.05"/>
-        <joint name="shoulder_pan_joint" value="3.1"/>
+        <joint name="shoulder_pan_joint" value="-1.5708"/>
         <joint name="wrist_1_joint" value="-0.1"/>
         <joint name="wrist_2_joint" value="1.55"/>
         <joint name="wrist_3_joint" value="-3.1"/>
@@ -32,7 +32,7 @@
     <group_state name="home" group="manipulator">
         <joint name="elbow_joint" value="2.15"/>
         <joint name="shoulder_lift_joint" value="-2.05"/>
-        <joint name="shoulder_pan_joint" value="0"/>
+        <joint name="shoulder_pan_joint" value="1.5708"/>
         <joint name="wrist_1_joint" value="-0.1"/>
         <joint name="wrist_2_joint" value="1.55"/>
         <joint name="wrist_3_joint" value="-3.1"/>

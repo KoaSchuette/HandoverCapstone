@@ -14,7 +14,7 @@
     <!-- Which way the arm faces on the plate. On the real cart the pegboard is on
          the arm's base -X side, and in the CAD frame the pegboard is +Y, so the
          arm is turned -90 deg. This keeps our named poses and planner valid. -->
-    <xacro:property name="robot_yaw" value="${-pi/2}"/>
+    <xacro:property name="robot_yaw" value="${pi}"/>
 
     <!-- Ultraleap position relative to the arm's base_link, sitting on the cart's
          top surface with its front face flush with the front edge.
@@ -23,8 +23,8 @@
          The sensor is 20 mm deep and 12 mm tall, with its frame origin on its top face:
            leap_x = 0.562 - 0.010             (centre 10 mm in from the edge)
            leap_z = 0.7604 + 0.012 - 0.7879   (bottom face on the table) -->
-    <xacro:property name="leap_x" value="0.552"/>
-    <xacro:property name="leap_y" value="0.0"/>
+    <xacro:property name="leap_x" value="0"/>
+    <xacro:property name="leap_y" value="0.552"/>
     <xacro:property name="leap_z" value="-0.0155"/>
 
     <material name="sensor_black">
@@ -81,7 +81,7 @@
     <joint name="base_link_to_ultraleap" type="fixed">
         <parent link="base_link"/>
         <child link="leap_link"/>
-        <origin xyz="${leap_x} ${leap_y} ${leap_z}" rpy="${pi/2} 0 ${pi/2}"/>
+        <origin xyz="${leap_x} ${leap_y} ${leap_z}" rpy="${pi/2} 0 0"/>
     </joint>
 
 </robot>

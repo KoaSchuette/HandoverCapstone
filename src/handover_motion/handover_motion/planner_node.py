@@ -118,7 +118,7 @@ class Planner_node(Node):
 
         #pull data from hand and tool position for p0 and p1
         p_0 = np.array([tool_tf.transform.translation.x, tool_tf.transform.translation.y, tool_tf.transform.translation.z])
-        p_3 = palm_base + 0.10 * normal_base 
+        p_3 = palm_base + 0.01 * normal_base 
         
         # Need help with these dont know how to grab hand vector or robot
         d_a = -normal_base

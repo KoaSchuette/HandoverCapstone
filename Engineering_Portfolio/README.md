@@ -15,7 +15,7 @@ A collaborative robot assistant for manufacturing work cells. Working beside a s
 3. **Workbench to robot, then robot to rack:** when the operator places a tool in the return zone, identifies it, picks it up and puts it back in its place on the rack.
 ### Headline requirements
  
-Full list, justifications and test plans are in [01_requirements/](01_requirements/) and the project proposal.
+Full list, justifications and test plans are in each subsystem's `01_requirements/` folder and the project proposal.
  
 | ID | Requirement |
 |---|---|
@@ -31,37 +31,48 @@ Final evaluation: 48 delivery and 48 return trials (4 operators x 3 tools x 4 re
  
 ## Repository layout
  
-The top-level folders follow the course's suggested structure. Inside each folder, work is separated by subsystem, using the same subsystem names everywhere.
+The portfolio is organized by subsystem. Every subsystem folder has the same ten numbered folders inside it, so you always know where to look.
  
 ```
 Engineering_Portfolio/
 ├── README.md             this file
 ├── SUBSYSTEMS.md         map of every subsystem and where its files are
-├── 00_project/              risk register, budget tracking, schedule, and other project management documents 
-├── 01_requirements/         system, subsystem and integration requirements
-├── 02_decisions/            decision records: what we chose, why, what we rejected, how we verified it
-├── 03_calculations/         hand calculations, notebooks, scripts and simulations
-├── 04_design/               CAD, schematics, KiCad, architecture, and interfaces between subsystems
-├── 05_code/                 source code and scripts
-├── 06_experiments/          procedures, raw results, photos, videos and build logs for every test
-├── 07_data/                 raw and processed data
-├── 08_references/           datasheets, manuals, papers
-├── 09_figures/              polished figures used in reports and presentations
-└── 10_deliverables/         final report, presentations, budget statement
+├── 00_project/           risk register, budget, schedule, project proposal
+├── end-effector/
+├── tool-rack/
+├── voice-detection/
+├── handover/
+├── skeletal-tracking/
+├── tool-pickup/
+└── system/               whole-system work (intentionally left empty for now)
 ```
  
-Each of `01_requirements/`, `02_decisions/`, `03_calculations/`, `04_design/`, `05_code/`, `06_experiments/` and `07_data/` contains one subfolder per subsystem.
+Inside each subsystem folder:
+ 
+```
+<subsystem>/
+├── 01_requirements/      subsystem requirements
+├── 02_decisions/         decision records: what we chose, why, what we rejected, how we verified it
+├── 03_calculations/      hand calculations, notebooks, scripts and simulations
+├── 04_design/            CAD, schematics, KiCad, architecture, interfaces
+├── 05_code/              source code and scripts
+├── 06_experiments/       procedures, raw results, photos, videos and build logs
+├── 07_data/              raw and processed data
+├── 08_references/        datasheets, manuals, papers
+├── 09_figures/           polished figures used in reports and presentations
+└── 10_deliverables/      reports and presentations for this subsystem
+```
  
 ### Subsystem names
  
 | Name | Scope |
 |---|---|
 | `end-effector` | Electromagnet end effector: driver and power circuit, brackets, wire clamps, control box board mount |
-| `ros-system` | ROS architecture, nodes, configuration and motion 
-| `tool-detection` | Eye in hand camera, calibration, YOLO model |
 | `tool-rack` | Pegboard tool rack and return zone: CAD and build |
 | `voice-detection` | Command recognition model |
-| `simulation` | Robot simulation models and scenarios |
-| `~system` | The complete handover cycle |
+| `handover` | Robot-to-human handoff: approach, slowdown and release |
+| `skeletal-tracking` | Operator skeleton and hand tracking with the RealSense camera |
+| `tool-pickup` | Identifying the requested tool and picking it up from the rack or return zone |
+| `system` | The complete handover cycle (empty for now) |
  
-Plain names are components that can be tested on their own. The `int-` prefix marks work that combines several components, and `~system` is the whole robot. Add new names to this table and to `SUBSYSTEMS.md` before creating folders for them.
+Add new names to this table and to `SUBSYSTEMS.md` before creating folders for them. A new subsystem gets the same `01_` to `10_` folders.

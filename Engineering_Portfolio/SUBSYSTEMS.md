@@ -4,7 +4,7 @@ A map of every subsystem in this portfolio and where its files are. The real con
  
 **How to use it:** find the subsystem, then follow the links in its row. Every subsystem folder has the same `01_requirements` to `10_deliverables` folders. The design overview, which explains how the subsystem works, is the README at the top of its `04_design` folder.
  
-**Keeping it current:** whoever adds or renames a folder updates the row here in the same commit.
+
  
 ## Subsystems
  

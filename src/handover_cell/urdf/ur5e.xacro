@@ -17,6 +17,7 @@
     <xacro:macro name="ur5e_with_gripper" params="
         parent
         base_z
+        yaw:=0
         name:=ur
         tf_prefix:=''
         gripper_radius:=0.040
@@ -32,7 +33,7 @@
             physical_parameters_file="$(find ur_description)/config/ur5e/physical_parameters.yaml"
             visual_parameters_file="$(find ur_description)/config/ur5e/visual_parameters.yaml"
             force_abs_paths="true">
-            <origin xyz="0 0 ${base_z}" rpy="0 0 0"/>
+            <origin xyz="0 0 ${base_z}" rpy="0 0 ${yaw}"/>
         </xacro:ur_robot>
 
         <link name="${tf_prefix}gripper">

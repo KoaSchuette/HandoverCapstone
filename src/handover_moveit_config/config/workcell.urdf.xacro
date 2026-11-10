@@ -5,7 +5,7 @@
          handover_bringup sets these from mode:=mock|real. -->
     <xacro:arg name="use_mock_hardware" default="true"/>
     <xacro:arg name="mock_sensor_commands" default="false"/>
-    <xacro:arg name="robot_ip" default="0.0.0.0"/>
+    <xacro:arg name="robot_ip" default="192.168.1.102"/>
     <xacro:arg name="ur_type" default="ur5e"/>
     <xacro:arg name="name" default="ur"/>
     <xacro:arg name="tf_prefix" default=""/>
@@ -29,7 +29,7 @@
     <xacro:arg name="trajectory_port" default="50003"/>
 
     <!-- Import workcell urdf file -->
-    <xacro:include filename="$(find handover_pathing_sim)/urdf/workcell.urdf.xacro" />
+    <xacro:include filename="$(find handover_cell)/urdf/workcell.urdf.xacro" />
 
     <!-- Same macro for mock and real, use_mock_hardware picks the hardware plugin -->
     <xacro:include filename="$(find ur_robot_driver)/urdf/ur.ros2_control.xacro" />

@@ -39,6 +39,13 @@ ros2 launch handover_realsense realsense.launch.py
 how to run skeleton tracking node with rviz 
 ros2 launch handover_skeleton_tracking skeleton.launch.py
 
+IF ULTRA LEAP NODE NOTE RUNNING
+
+pip install --break-system-packages cffi pycparser
+pip install --break-system-packages "git+https://github.com/ultraleap/leapc-python-bindings.git#subdirectory=leapc-cffi"
+pip install --break-system-packages "git+https://github.com/ultraleap/leapc-python-bindings.git#subdirectory=leapc-python-api"
+python3 -c "import leap; print('leap OK')"
+
 
 ultraleap output
 

@@ -118,7 +118,7 @@ class Planner_node(Node):
 
         #pull data from hand and tool position for p0 and p1
         p_0 = np.array([tool_tf.transform.translation.x, tool_tf.transform.translation.y, tool_tf.transform.translation.z])
-        p_3 = palm_base + 0.10 * normal_base 
+        p_3 = palm_base + 0.01 * normal_base 
         
         # Need help with these dont know how to grab hand vector or robot
         d_a = -normal_base
@@ -126,7 +126,7 @@ class Planner_node(Node):
         self.get_logger().info(f'p_0 {np.round(p_0, 3)}  p_3 {np.round(p_3, 3)}  d_a {np.round(d_a, 3)}')
         #TUNING VALUES CHANGED LATER BASED ON TEST
         a_s = 0.2
-        a_a = 0.2
+        a_a = 2
 
         #find Bezier points
         points = find_pull_points(p_0, p_3, d_s, d_a, a_s, a_a)
@@ -156,8 +156,8 @@ class Planner_node(Node):
             solutions[i] = [angles[name] for name in self.joint_names]
 
         # find velocity
-        max_speed = 1.5# rad/s, joint speed
-        max_accel = 4.0# rad/s^2, placeholder
+        max_speed = 6# rad/s, joint speed
+        max_accel = 10# rad/s^2, placeholder
         sample_dt = duration / (num_samples - 1)# time between neighbouring samples
 
         velocity = np.zeros((num_samples, 6))

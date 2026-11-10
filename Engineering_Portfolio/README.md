@@ -37,6 +37,7 @@ The top-level folders follow the course's suggested structure. Inside each folde
 Engineering_Portfolio/
 ├── README.md             this file
 ├── SUBSYSTEMS.md         map of every subsystem and where its files are
+├── 00_project/              risk register, budget tracking, schedule, and other project management documents 
 ├── 01_requirements/         system, subsystem and integration requirements
 ├── 02_decisions/            decision records: what we chose, why, what we rejected, how we verified it
 ├── 03_calculations/         hand calculations, notebooks, scripts and simulations
@@ -55,15 +56,12 @@ Each of `01_requirements/`, `02_decisions/`, `03_calculations/`, `04_design/`, `
  
 | Name | Scope |
 |---|---|
-| `electromagnet` | Electromagnet end effector: driver and power circuit, brackets, wire clamps, control box board mount |
-| `toolrack` | Pegboard tool rack and return zone: CAD and build |
-| `camera-calibration` | Camera intrinsics, hand-eye and workspace calibration |
+| `end-effector` | Electromagnet end effector: driver and power circuit, brackets, wire clamps, control box board mount |
+| `ros-system` | ROS architecture, nodes, configuration and motion 
+| `tool-detection` | Eye in hand camera, calibration, YOLO model |
+| `tool-rack` | Pegboard tool rack and return zone: CAD and build |
 | `voice-detection` | Command recognition model |
-| `simulation` | Simulation models and scenarios |
-| `ros-system` | ROS architecture, nodes, configuration and motion planning |
-| `int-rack-to-robot` | Integration: voice request, tool detection, pickup |
-| `int-robot-to-human` | Integration: hand tracking, delivery, force-triggered release |
-| `int-workbench-to-robot` | Integration: return-zone detection, pickup, placement on the rack |
-| `system` | The complete handover cycle |
+| `simulation` | Robot simulation models and scenarios |
+| `~system` | The complete handover cycle |
  
-Plain names are components that can be tested on their own. The `int-` prefix marks work that combines several components, and `system` is the whole robot. Add new names to this table and to `SUBSYSTEMS.md` before creating folders for them.
+Plain names are components that can be tested on their own. The `int-` prefix marks work that combines several components, and `~system` is the whole robot. Add new names to this table and to `SUBSYSTEMS.md` before creating folders for them.

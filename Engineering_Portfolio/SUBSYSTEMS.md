@@ -2,7 +2,7 @@
  
 A map of every subsystem in this portfolio and where its files are. The real content lives in the folders; this page only links to it. For the project overview, see the [main README](README.md).
  
-**How to use it:** find the subsystem, then follow the links in its row. Every subsystem folder has the same `01_requirements` to `10_deliverables` folders. The design overview, which explains how the subsystem works, is the README at the top of its `04_design` folder.
+**How to use it:** Each subsystem has a README.md with an overview and links, plus whichever of the numbered folders (`01_requirements` to `10_deliverables`) it needs. Folder names mean the same thing in every subsystem.
  
 
  

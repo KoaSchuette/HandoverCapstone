@@ -105,8 +105,8 @@ def open_camera(index, width, height, fps, fourcc):
 def main():
     p = argparse.ArgumentParser(description="Display video from an ELP USB camera.")
     p.add_argument("-c", "--camera", type=int, default=0, help="camera index (default 0)")
-    p.add_argument("-W", "--width", type=int, default=1280)
-    p.add_argument("-H", "--height", type=int, default=720)
+    p.add_argument("-W", "--width", type=int, default=1920)
+    p.add_argument("-H", "--height", type=int, default=1200)
     p.add_argument("--fps", type=int, default=30)
     p.add_argument("--fourcc", default="MJPG",
                    help="pixel format: MJPG (default) or YUY2; use '' to leave unchanged")
@@ -119,7 +119,11 @@ def main():
 
     cap = open_camera(args.camera, args.width, args.height, args.fps, args.fourcc)
     if cap is None:
-        ok, first = cap.read()
+        print(f"Could not open camera {args.camera}. Try --list, another index, "
+              "or check that no other app is using the camera.", file=sys.stderr)
+        return 1
+    ok, first = cap.read()
+
     if not ok or first is None:
         print("Camera opened but gave no frame.", file=sys.stderr)
         return 1

@@ -7,7 +7,7 @@ from std_srvs.srv import Trigger
 from moveit_msgs.srv import GetPositionIK
 from tf2_ros import Buffer, TransformListener
 from handover_motion.helper import time_law, bezier, find_pull_points, find_orientation
-from hand_msgs.msg import Hand
+from handover_interfaces.msg import Hand
 from collections import deque
 from sensor_msgs.msg import JointState
 from rclpy.executors import MultiThreadedExecutor

@@ -20,9 +20,9 @@ The rack has to hold three tools at fixed, repeatable positions, with each tool'
 
 At $13.77, this allows for the rest of the $200 budgeted for the frame. The hole grid means a slot can move without making new parts, which matters while the tool layout is still being tuned for the camera. Printing the hooks lets us shape them so each tool hangs with its steel end where the magnet expects it.
 
-## How it will be verified
+## Planned verification
 
-The tool has to hang in the same place every time, closely enough that the magnet still grabs it on a fixed approach. Hang and remove each tool [TBD: number] times and measure how much the steel end moves. Compare that with the misalignment the electromagnet tolerates [TBD: from end-effector testing].
+The electromagnet face has a 25 mm radius, so the steel end can’t sit more than about 25 mm minus half its own width off-centre and still be under the face. The real limit is likely smaller, because holding force drops when the steel doesn’t bridge the magnet’s centre and outer poles. Two tests are planned for after the rack and end effector are built. First, measure the lateral offset and gap at which the electromagnet still holds a screwdriver. Second, hang and remove each tool 10 times, measuring the steel end’s position against a reference mark on the board with calipers. The hooks pass if the spread from the second test stays inside the tolerance from the first.
 
 ## Looking back
 

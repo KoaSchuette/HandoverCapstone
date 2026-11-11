@@ -2,9 +2,8 @@
 
 The tool rack holds the three screwdrivers at fixed, known positions so the UR5e can pick them up without searching for them. It is a pegboard on an aluminium frame that bolts to the back of the robot cart. Because the board's position comes from the CAD model, every tool slot is a known point in the robot's frame before any camera is used.
 
-<!-- TODO: add CAD render of the full cell from my pc-->
-![Work cell with tool rack](04_design/figures/cell_render.png)
-*Figure 1. UR5e on the cart with the pegboard tool rack behind it.*
+![Work cell with tool rack](09_/figures/tool_rack_cad.png)
+*Figure 1. CAD of tool rack without UR5e showing pegboard and extrusions*
 
 ## Requirements it serves
 
@@ -18,8 +17,9 @@ The tool rack holds the three screwdrivers at fixed, known positions so the UR5e
 |---|---|
 | [`02_decisions/`](02_decisions/) | [Pegboard](02_decisions/pegboard.md) · [Fixed position](02_decisions/fixed-position.md) · [Frame and brackets](02_decisions/frame-and-brackets.md) · [Adjustable arms](02_decisions/adjustable-arms.md) |
 | [`03_calculations/`](03_calculations/) | Reach check and arm-length worksheets |
-| [`04_design/`](04_design/) | Key dimensions, interfaces, CAD (STEP + Onshape), drawings, BOM |
+| [`04_design/`](04_design/) | Key dimensions, interfaces, CAD (STEP + Onshape), BOM |
 | [`06_experiments/build-log/`](06_experiments/build-log/) | Build status, photos and notes |
+| [`09_figures/`](09_figures/) | CAD renders and drawings used in this section |
 
 ## Open issues
 

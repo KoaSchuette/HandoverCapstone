@@ -2,7 +2,7 @@
 
 The tool rack holds the three screwdrivers at fixed, known positions so the UR5e can pick them up without searching for them. It is a pegboard on an aluminium frame that bolts to the back of the robot cart. Because the board's position comes from the CAD model, every tool slot is a known point in the robot's frame before any camera is used.
 
-![Work cell with tool rack](09_figures/tool_rack_cad.png)
+![Work cell with tool rack](09_figures/tool_rack_cad.PNG)
 *Figure 1. CAD of tool rack without UR5e showing pegboard and extrusions*
 
 ## Requirements it serves

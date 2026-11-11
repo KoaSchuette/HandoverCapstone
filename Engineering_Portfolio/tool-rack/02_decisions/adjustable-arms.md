@@ -37,8 +37,6 @@ Either one could force the board back out. Making the arms adjustable costs noth
 2. Re-tighten, then repeat the datum check (see [Fixed position](fixed-position.md)).
 3. Update the `pegboard_face` frame in `handover_cell` to the new position, so the robot's targets match the board.
 
-[TBD: bracket and fastener details once the brackets are designed]
-
 ## How it will be verified
 
 - **Sim:** re-run the reach check with the board actually moved to −0.05 m in the model.

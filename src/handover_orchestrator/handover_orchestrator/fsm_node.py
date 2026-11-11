@@ -7,8 +7,7 @@ from rclpy.node import Node
 from rclpy.executors import MultiThreadedExecutor
 from rclpy.callback_groups import MutuallyExclusiveCallbackGroup
 from std_srvs.srv import Trigger
-from hand_msgs.msg import Hand
-from skeleton_msgs.msg import Skeleton
+from handover_interfaces.msg import Hand, Skeleton
 
 
 class State(Enum):

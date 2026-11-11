@@ -11,7 +11,7 @@ from cv_bridge import CvBridge
 from message_filters import Subscriber, ApproximateTimeSynchronizer
 from sensor_msgs.msg import Image, CameraInfo
 from visualization_msgs.msg import Marker, MarkerArray
-from skeleton_msgs.msg import Skeleton
+from handover_interfaces.msg import Skeleton
 
 
 # COCO skeleton: pairs of keypoint indices joined by a bone

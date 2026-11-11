@@ -26,6 +26,17 @@ Visualization Manager:
       Scene Robot:
         Robot Alpha: 0.5
       Value: true
+    - Class: rviz_default_plugins/MarkerArray
+      Name: Leap Hand
+      Namespaces:
+        {}
+      Topic:
+        Depth: 5
+        Durability Policy: Volatile
+        History Policy: Keep Last
+        Reliability Policy: Reliable
+        Value: /hand/markers
+      Value: true
   Global Options:
     Fixed Frame: world
   Tools:

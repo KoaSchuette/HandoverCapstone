@@ -8,6 +8,7 @@
   <license>TODO: License declaration</license>
 
   <depend>rclpy</depend>
+  <depend>handover_interfaces</depend>
   <depend>std_msgs</depend>
   <depend>control_msgs</depend>
   <depend>trajectory_msgs</depend>

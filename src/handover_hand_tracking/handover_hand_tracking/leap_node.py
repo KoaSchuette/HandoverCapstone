@@ -2,7 +2,7 @@ import rclpy
 import leap
 from rclpy.executors import ExternalShutdownException
 from rclpy.node import Node
-from hand_msgs.msg import Hand
+from handover_interfaces.msg import Hand
 from visualization_msgs.msg import Marker, MarkerArray
 from geometry_msgs.msg import Point, Vector3, Quaternion
 

@@ -12,7 +12,7 @@
   <depend>geometry_msgs</depend>
   <depend>sensor_msgs</depend>
   <depend>cv_bridge</depend>
-  <depend>skeleton_msgs</depend>
+  <depend>handover_interfaces</depend>
   <depend>message_filters</depend>
   <depend>visualization_msgs</depend>
 

@@ -25,8 +25,7 @@ The tool rack holds the three screwdrivers at fixed, known positions so the UR5e
 
 - **Reach margin.** The arms start at 35 cm, the fastest position in exp-001. The sim reached the board at −0.05 m but not at −0.07 m, which leaves about 2 cm of margin, and that study didn't move the board in the collision model. Re-check in the sim before final cuts.
 - **The CAD doesn't match the build.** The CAD uses 45 mm uprights and 405 mm arms; the build uses 30 mm extrusion, custom brackets and 35 cm arms. Update the CAD and the sim meshes once the frame is built.
-- **The fabrication milestone slipped** from Oct 30. [TBD: one honest sentence on why]
-- **Return zone.** Planned under `tool-pickup`. Check that it ends up documented somewhere.
+- **The fabrication milestone slipped** from Oct 30. We waited for the ordered parts to arrive so we could confirm the build before starting any 3D prints. The brackets join two different extrusion sizes, so printing them early risked reprinting if the parts didn’t match the CAD. The hooks and brackets are printed once the frame parts are in.
 
 ## Next steps
 

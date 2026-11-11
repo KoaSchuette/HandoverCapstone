@@ -1,8 +1,8 @@
 # System Design Overview: Full Handover Cycle
  
-> **Status: DRAFT for team review.** This page describes the *intended* system design. Most of the state machine is not implemented yet; see [Implementation status](#5-implementation-status). Items marked **(proposed)** in the tables were added during review of the original sketch and need team sign-off.
+> **Status: DESIGN PLAN, not yet implemented.** This page was written before the FSM was built and describes the *intended* system design. The FSM in section 2 does not exist in code yet; see [Implementation status](#5-implementation-status) for what does run today. Items marked **(proposed)** in the tables were added during review of the original sketch and need team sign-off.
 >
-> **Owner:** TBD · **Reviewed against commit:** `3f08db5` (2026-11-10)
+> **Owner:** TBD · **Reviewed against commit:** `3843731` (2026-11-11)
  
 This page covers how the subsystems work together over one complete cycle: a spoken request, picking the tool off the rack, handing it to the operator, and returning tools from the return zone to the rack. Each subsystem's own design is in its own folder (see [SUBSYSTEMS.md](../SUBSYSTEMS.md)).
  
@@ -13,9 +13,8 @@ This page covers how the subsystems work together over one complete cycle: a spo
 3. [ROS 2 node architecture](#3-ros-2-node-architecture)
 4. [Design decisions](#4-design-decisions)
 5. [Implementation status](#5-implementation-status)
-6. [Open questions](#6-open-questions)
-7. [Files in this folder](#7-files-in-this-folder)
-8. [Revision history](#8-revision-history)
+6. [Revision history](#6-revision-history)
+
 ---
  
 ## 1. System behaviour in one paragraph
@@ -54,7 +53,7 @@ stateDiagram-v2
     RACK_PICKUP --> IDLE : not found
 ```
  
-*Figure 1: Task statechart for the collaborative handover assistant (draft). Source: [`fsm_statechart.mmd`](fsm_statechart.mmd). A rendered PNG for reports is at [`imgs/fsm_statechart.png`](imgs/fsm_statechart.png).*
+*Figure 1: Task statechart for the collaborative handover assistant (draft). Source: the Mermaid block above. A separate `.mmd` source and rendered PNG for reports are TBD.*
  
 **Stop and fault handling.** From any state, a stop request, protective stop or fault halts motion and goes to `STOPPED`; an operator reset returns the robot to `IDLE`. This rule applies to every state, so it is written here instead of being drawn as an arrow from each one.
  
@@ -62,6 +61,7 @@ There are two flows:
  
 - **Delivery:** `RACK_PICKUP` → `MOVING_TO_TOOL` → `WAIT_FOR_HAND` → `HANDOVER` → `RELEASE`.
 - **Return:** `WORKSPACE_MOVING_TO_TOOL` → `TOOL_RACK_DROPOFF`.
+
 Any delivery that cannot be completed falls back to `TOOL_RACK_DROPOFF`, so the robot never stays holding a tool.
  
 ### 2.2 States
@@ -86,7 +86,7 @@ Each transition needs a well-defined source. Values below come from the code whe
 |---|---|---|---|
 | request tool | LLM node → FSM | Valid tool ID parsed from the transcript, and FSM is in `IDLE` | Planned |
 | tool found / not found / tool lost | Tool detection, reported through `RACK_PICKUP` action feedback | Detection confidence threshold TBD | Planned |
-| tool picked up | End effector | Grasp check method TBD (see [Open questions](#6-open-questions)) | Planned |
+| tool picked up | End effector | Grasp check method TBD | Planned |
 | hand ready | Ultraleap `/hand/right` | Mean palm speed of the last 10 samples < 0.05 m/s, every sample newer than 0.2 s | **Implemented** in `planner_node.wait_for_steady_hand()`; values are being tuned |
 | hand lost **(proposed)** | Ultraleap `/hand/right` | No hand message for TBD s, confidence below TBD, or hand moves faster than TBD m/s (too fast to follow safely) | Not implemented |
 | at target | Robot controller | `FollowJointTrajectory` result is success | Implemented in `planner_node` |
@@ -94,17 +94,6 @@ Each transition needs a well-defined source. Values below come from the code whe
 | timeout (each state) | FSM timer | `WAIT_FOR_HAND` is 10 s in the current code; all others TBD | Partly |
 | tool in return zone | Tool detection (wrist camera at home pose) | Tool detected inside the return-zone region | Planned |
 | stop request / protective stop / fault | `stop_handover` service, UR driver safety status, any node error | Any one of these | Service declared only |
- 
-### 2.4 Changes from the original sketch
- 
-The first sketch of the FSM is kept in [`imgs/history/fsm_sketch_v0.png`](imgs/history/fsm_sketch_v0.png). These are the changes made in this draft and the reason for each:
- 
-| # | Change | Reason |
-|---|---|---|
-| 1 | Added `RELEASE` → `TOOL_RACK_DROPOFF` on timeout | In v0, `RELEASE` could only exit on "tool grasped", so if the operator never pulled, the robot would wait at the hand forever. |
-| 2 | Added `HANDOVER` → `WAIT_FOR_HAND` on "hand lost" | If tracking drops out or the hand moves too fast to follow, the robot should stop approaching and wait for a steady hand again, not keep driving toward an old target. |
-| 3 | Added stop and fault handling (`STOPPED`) as a rule that applies to every state | v0 had no stop or fault handling, and a collaborative cell needs one. It is written as a rule instead of drawn, so the diagram isn't covered in arrows from every state. |
-| 4 | "Received command" → "request tool"; "Timeout" out of `RACK_PICKUP` → "not found" | Names the event by what it means rather than where it comes from. |
  
 ---
  
@@ -125,7 +114,7 @@ The first sketch of the FSM is kept in [`imgs/history/fsm_sketch_v0.png`](imgs/h
 | Whisper | Perception | TBD | Not started |
 | Skeleton tracker | Perception | `handover_skeleton_tracking` (`skeleton_node`) | Working (YOLO pose, 17 COCO keypoints) |
 | LLM | Language | TBD | Not started |
-| FSM | Decision | `handover_orchestrator` (`fsm_node`) | Skeleton only: state enum and services declared, no transitions |
+| FSM | Decision | `handover_orchestrator` (`fsm_node`) | Not started (placeholder package only) |
 | Motion planner | Planning | `handover_motion` (`planner_node`) | Handover leg working on the real UR5e |
 | IK solver | Planning | MoveIt `move_group` via `handover_moveit_config` | Working |
 | Robot controller | Actuation | `ur_robot_driver` | Working |
@@ -150,7 +139,7 @@ The first sketch of the FSM is kept in [`imgs/history/fsm_sketch_v0.png`](imgs/h
 ## 4. Design decisions
  
 | Decision | Alternatives considered | Why | Record |
-|---|---|---|
+|---|---|---|---|
 | One motion planner node serves all four goal types | Separate pickup planner and handover planner ([v1 diagram](imgs/ros_node_architecture_v1.png)) | Both planners shared the IK solver, robot controller and skeleton input; one node removes duplicated code and means only one node ever commands the arm. | TBD |
 | FSM talks to the planner through actions | Services, topics | Motions are long-running, need feedback (tool found, progress) and must be cancellable for 
 | MoveIt used for IK only | MoveIt planners (OMPL, Pilz) | The Bézier/SLERP path from Biagi et al. sets the shape of the handover motion; MoveIt only checks reachability and joint solutions. | TBD |
@@ -160,15 +149,17 @@ The first sketch of the FSM is kept in [`imgs/history/fsm_sketch_v0.png`](imgs/h
  
 ## 5. Implementation status
  
-Snapshot at commit `3f08db5`. The current code runs the handover leg on its own (triggered by `start_handover`) and does not yet go through the FSM.
- 
-Issues found while writing this page, to fix in `handover_orchestrator`:
- 
-- [ ] `fsm_node` subscribes to `/right/hand`, but `leap_node` publishes `/hand/right`.
-- [ ] `stop_handover` is bound to `start_callback`.
-- [ ] `fsm_node` and `planner_node` both advertise a service named `start_handover`.
-- [ ] `handover_interfaces/srv/ExecuteHandover.srv` is empty.
-- [ ] `fsm_node.main()` only prints, so the node never spins.
+Snapshot at commit `3843731`.
+
+**FSM: not started.** [`fsm_node.py`](../../src/handover_orchestrator/handover_orchestrator/fsm_node.py) is a placeholder. Its `main()` only prints a message, so the node never spins, and none of the states or transitions in section 2 exist in code.
+
+**What runs today.** The handover leg runs on its own inside [`planner_node.py`](../../src/handover_motion/handover_motion/planner_node.py). Calling the `start_handover` service (`std_srvs/Trigger`) waits for a steady hand on `/hand/right` and then moves the held tool to it. Nothing before or after the handover (speech, LLM, tool pickup, return) is connected.
+
+**Required when the FSM is built:**
+
+- `fsm_node` must subscribe to `/hand/right`, the topic `leap_node` publishes. The placeholder subscribes to `/right/hand`, which nothing publishes.
+- `start_handover` must be removed from `planner_node`. The FSM then becomes the only node that starts a motion, and the planner is driven only through the action goals in section 3.2 (FSM ↔ Motion planner row).
+
 ---
  
 
@@ -176,6 +167,7 @@ Issues found while writing this page, to fix in `handover_orchestrator`:
 ## 6. Revision history
  
 | Date | Change | By |
-|---|---|---|---|
+|---|---|---|
 | 2026-11-10 | First draft: statechart, node architecture | Koa Schuette |
+| 2026-11-11 | Marked as design plan; FSM status set to not started; section 5 rewritten; broken links and tables fixed | Koa Schuette |
 

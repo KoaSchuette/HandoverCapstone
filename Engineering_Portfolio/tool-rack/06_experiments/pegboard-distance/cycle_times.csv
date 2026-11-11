@@ -1,0 +1,14 @@
+timestamp,offset_m,leg,status,time_s,bottleneck_joint,bottleneck_deg
+2026-10-28 16:58,-0.1,handover,unreachable,,,
+2026-10-28 17:04,-0.07,handover,unreachable,,,
+2026-10-28 17:03,-0.05,handover,SUCCESS,3.137,shoulder_pan,135.5
+2026-10-28 17:03,-0.05,return,SUCCESS,3.137,shoulder_pan,135.4
+2026-10-28 17:05,0,handover,SUCCESS,3.472,shoulder_pan,153.6
+2026-10-28 17:05,0,return,SUCCESS,3.472,shoulder_pan,153.6
+2026-10-28 17:08,0.05,handover,SUCCESS,3.639,shoulder_pan,162.6
+2026-10-28 17:08,0.05,return,SUCCESS,3.639,shoulder_pan,162.6
+2026-10-28 17:08,0.1,handover,SUCCESS,3.744,shoulder_pan,168.2
+2026-10-28 17:08,0.1,return,SUCCESS,3.743,shoulder_pan,168.2
+2026-10-28 17:09,0.15,handover,SUCCESS,3.816,shoulder_pan,172.2
+2026-10-28 17:09,0.15,return,SUCCESS,3.816,shoulder_pan,172.2
+2026-10-28 17:10,0.2,handover,unreachable,,,

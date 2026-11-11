@@ -11,7 +11,7 @@ from pathlib import Path
 import matplotlib.pyplot as plt
 
 HERE = Path(__file__).resolve().parent
-CSV = HERE.parents[3] / "cycle_times.csv"     # repo root
+CSV = HERE / "cycle_times.csv"
 OUT = HERE / "time_vs_offset.png"
 
 # Predicted handover times (s) from the PTP timing model, made before the runs.

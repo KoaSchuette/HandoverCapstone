@@ -31,7 +31,7 @@ Final evaluation: 48 delivery and 48 return trials (4 operators x 3 tools x 4 re
  
 ## Repository layout
  
-The portfolio is organized by subsystem. Every subsystem folder has the same ten numbered folders inside it, so you always know where to look.
+The portfolio is organized by subsystem. Each subsystem uses the folders below, but only the ones it needs. A folder is created once there’s something to put in it, so an empty or missing folder means that kind of work hasn’t happened yet for that subsystem. Folder names and numbers are the same everywhere, so you always know what a folder contains.
  
 ```
 Engineering_Portfolio/
@@ -47,7 +47,7 @@ Engineering_Portfolio/
 └── system/               whole-system work (intentionally left empty for now)
 ```
  
-Inside each subsystem folder:
+Folders a subsystem can contain:
  
 ```
 <subsystem>/
@@ -75,4 +75,4 @@ Inside each subsystem folder:
 | `tool-pickup` | Identifying the requested tool and picking it up from the rack or return zone |
 | `system` | The complete handover cycle (empty for now) |
  
-Add new names to this table and to `SUBSYSTEMS.md` before creating folders for them. A new subsystem gets the same `01_` to `10_` folders.
+Add new names to this table and to `SUBSYSTEMS.md` before creating folders for them. A new subsystem starts with a README.md and has the `01_` to `10_` folders when it has the data necessary.

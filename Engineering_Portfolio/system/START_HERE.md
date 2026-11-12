@@ -17,13 +17,13 @@ This page covers how the subsystems work together over one complete cycle: a spo
 
 ---
  
-## 1. System behaviour in one paragraph
+## 1. System Behaviour
  
 The robot waits in a home pose with the wrist camera looking at the return zone. When the operator asks for a tool, the speech is transcribed and interpreted into a tool ID, and the FSM sends the motion planner to the rack. The wrist camera locates the tool, the arm picks it up with the electromagnetic end effector, and then the robot waits until the operator's hand (tracked by the Ultraleap) is held steady. It then moves toward the hand, continuously updating the target and the tool orientation as the hand moves, holds the tool there until the operator pulls on it, releases the magnet and returns to the home pose. If a tool appears in the return zone while the robot is idle, the robot picks it up and puts it back in its place on the rack.
  
 ---
  
-## 2. Task state machine
+## 2. Task State Machine
  
 ### 2.1 Statechart
  
@@ -78,7 +78,7 @@ Any delivery that cannot be completed falls back to `TOOL_RACK_DROPOFF`, so the 
 | `TOOL_RACK_DROPOFF` | Puts the held tool back on its peg and returns home | `DROPOFF` | dropoff complete |
 | `STOPPED` **(proposed)** | Not drawn in Figure 1 (see the stop rule above). Motion halted, magnet state held, waits for an operator reset | cancel all goals | operator reset |
  
-### 2.3 Events and guards
+### 2.3 Events and Guards
  
 Each transition needs a well-defined source. Values below come from the code where they exist; **TBD** means no value has been chosen or measured yet.
  
@@ -97,7 +97,7 @@ Each transition needs a well-defined source. Values below come from the code whe
  
 ---
  
-## 3. ROS 2 node architecture
+## 3. ROS 2 Node Architecture
  
 ![ROS 2 node architecture](imgs/ros_node_architecture_v2.png)
  
@@ -136,7 +136,7 @@ Each transition needs a well-defined source. Values below come from the code whe
  
 ---
  
-## 4. Design decisions
+## 4. Design Decisions
  
 | Decision | Alternatives considered | Why | Record |
 |---|---|---|---|
@@ -147,7 +147,7 @@ Each transition needs a well-defined source. Values below come from the code whe
 
 ---
  
-## 5. Implementation status
+## 5. Implementation Status
  
 
 
@@ -164,7 +164,7 @@ Each transition needs a well-defined source. Values below come from the code whe
  
 
  
-## 6. Revision history
+## 6. Revision History
  
 | Date | Change | By |
 |---|---|---|

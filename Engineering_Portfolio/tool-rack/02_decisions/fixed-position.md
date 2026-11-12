@@ -6,7 +6,7 @@ The robot knows where the board is from the CAD model (the `pegboard_face` frame
 
 ## Context
 
-The team’s September spec (Tool Handoff Spec, Sep 24) located the board with ArUco markers so it could be moved without reprogramming. The October proposal dropped the markers. located the board with ArUco markers, so it could be moved without reprogramming. The October proposal dropped the markers.
+The team's September spec (Tool Handoff Spec, Sep 24) located the board with ArUco markers so it could be moved without reprogramming. The October proposal dropped the markers.
 
 ## Options considered
 

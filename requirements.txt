@@ -5,3 +5,5 @@ setuptools<80
 torch
 torchvision
 ultralytics
+faster-whisper
+sounddevice

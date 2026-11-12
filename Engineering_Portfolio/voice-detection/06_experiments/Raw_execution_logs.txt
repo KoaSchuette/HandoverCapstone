@@ -1,0 +1,269 @@
+#Run #3, file: voice_live.py, F-W model size: tiny, sd.querydevices()
+0 Microsoft Sound Mapper - Input, MME (2 in, 0 out)
+>  1 Microphone (Arctis Nova 7), MME (3 in, 0 out)
+   2 Microphone Array (Intel® Smart , MME (4 in, 0 out)
+   3 Microsoft Sound Mapper - Output, MME (0 in, 2 out)
+<  4 Headphones (Arctis Nova 7), MME (0 in, 8 out)
+   5 Speakers (Realtek(R) Audio), MME (0 in, 8 out)
+   6 Optix AG32C (NVIDIA High Defini, MME (0 in, 2 out)
+   7 Primary Sound Capture Driver, Windows DirectSound (2 in, 0 out)
+   8 Microphone (Arctis Nova 7), Windows DirectSound (3 in, 0 out)
+   9 Microphone Array (Intel® Smart Sound Technology for Digital Microphones), Windows DirectSound (4 in, 0 out)
+  10 Primary Sound Driver, Windows DirectSound (0 in, 2 out)
+  11 Headphones (Arctis Nova 7), Windows DirectSound (0 in, 8 out)
+  12 Speakers (Realtek(R) Audio), Windows DirectSound (0 in, 8 out)
+  13 Optix AG32C (NVIDIA High Definition Audio), Windows DirectSound (0 in, 2 out)
+  14 Speakers (Realtek(R) Audio), Windows WASAPI (0 in, 8 out)
+  15 Headphones (Arctis Nova 7), Windows WASAPI (0 in, 2 out)
+  16 Optix AG32C (NVIDIA High Definition Audio), Windows WASAPI (0 in, 2 out)
+  17 Microphone Array (Intel® Smart Sound Technology for Digital Microphones), Windows WASAPI (2 in, 0 out)
+  18 Microphone (Arctis Nova 7), Windows WASAPI (1 in, 0 out)
+  19 Headphones (), Windows WDM-KS (0 in, 2 out)
+  20 Speakers 1 (Realtek HD Audio output with SST), Windows WDM-KS (0 in, 2 out)
+  21 Speakers 2 (Realtek HD Audio output with SST), Windows WDM-KS (0 in, 8 out)
+  22 PC Speaker (Realtek HD Audio output with SST), Windows WDM-KS (2 in, 0 out)
+  23 Stereo Mix (Realtek HD Audio Stereo input), Windows WDM-KS (2 in, 0 out)
+  24 Headphones 1 (Realtek HD Audio 2nd output with SST), Windows WDM-KS (0 in, 2 out)
+  25 Headphones 2 (Realtek HD Audio 2nd output with SST), Windows WDM-KS (0 in, 8 out)
+  26 PC Speaker (Realtek HD Audio 2nd output with SST), Windows WDM-KS (2 in, 0 out)
+  27 Microphone (Realtek HD Audio Mic input), Windows WDM-KS (2 in, 0 out)
+  28 Output 1 (Arctis Nova 7), Windows WDM-KS (0 in, 2 out)
+  29 Output 2 (Arctis Nova 7), Windows WDM-KS (0 in, 8 out)
+  30 Input (Arctis Nova 7), Windows WDM-KS (2 in, 0 out)
+  31 Headphones (Arctis Nova 7), Windows WDM-KS (0 in, 2 out)
+  32 Microphone 1 (Arctis Nova 7), Windows WDM-KS (1 in, 0 out)
+  33 Microphone 2 (Arctis Nova 7), Windows WDM-KS (1 in, 0 out)
+  34 Microphone 3 (Arctis Nova 7), Windows WDM-KS (3 in, 0 out)
+  35 Headset (@System32\drivers\bthhfenum.sys,#2;%1 Hands-Free%0
+;(Tribit StormBox)), Windows WDM-KS (0 in, 1 out)
+  36 Headset (@System32\drivers\bthhfenum.sys,#2;%1 Hands-Free%0
+;(Tribit StormBox)), Windows WDM-KS (1 in, 0 out)
+  37 Headphones (SteelSeries_Sonar_VAD Media Wave Speaker), Windows WDM-KS (0 in, 8 out)
+  38 Line Out (SteelSeries_Sonar_VAD Stream Wave), Windows WDM-KS (0 in, 2 out)
+  39 SteelSeries Sonar - Stream (SteelSeries_Sonar_VAD Stream Wave), Windows WDM-KS (2 in, 0 out)
+  40 Line Out (SteelSeries_Sonar_VAD Chat Capture Wave), Windows WDM-KS (0 in, 2 out)
+  41 SteelSeries Sonar - Microphone (SteelSeries_Sonar_VAD Chat Capture Wave), Windows WDM-KS (2 in, 0 out)
+  42 Output (SteelSeries_Sonar_VAD Chat Wave Speaker), Windows WDM-KS (0 in, 2 out)
+  43 Headphones (SteelSeries_Sonar_VAD Aux Wave Speaker), Windows WDM-KS (0 in, 8 out)
+  44 Headphones (SteelSeries_Sonar_VAD Game Wave Speaker), Windows WDM-KS (0 in, 8 out)
+  45 Headset (@System32\drivers\bthhfenum.sys,#2;%1 Hands-Free%0
+;(BT-DLAB)), Windows WDM-KS (0 in, 1 out)
+  46 Headset (@System32\drivers\bthhfenum.sys,#2;%1 Hands-Free%0
+;(BT-DLAB)), Windows WDM-KS (1 in, 0 out)
+  47 Headset (@System32\drivers\bthhfenum.sys,#2;%1 Hands-Free%0
+;(Jabra Elite 85h)), Windows WDM-KS (0 in, 1 out)
+  48 Headset (@System32\drivers\bthhfenum.sys,#2;%1 Hands-Free%0
+;(Jabra Elite 85h)), Windows WDM-KS (1 in, 0 out)
+  49 Microphone Array 1 (), Windows WDM-KS (2 in, 0 out)
+  50 Microphone Array 2 (), Windows WDM-KS (2 in, 0 out)
+  51 Microphone Array 3 (), Windows WDM-KS (4 in, 0 out)
+  52 Output (NVIDIA High Definition Audio), Windows WDM-KS (0 in, 2 out)
+  53 Headset (@System32\drivers\bthhfenum.sys,#2;%1 Hands-Free%0
+;(i17)), Windows WDM-KS (0 in, 1 out)
+  54 Headset (@System32\drivers\bthhfenum.sys,#2;%1 Hands-Free%0
+;(i17)), Windows WDM-KS (1 in, 0 out)
+  55 Headphones (), Windows WDM-KS (0 in, 2 out)
+  56 Headset (@System32\drivers\bthhfenum.sys,#2;%1 Hands-Free%0
+;(Lenovo PS-1551B)), Windows WDM-KS (0 in, 1 out)
+  57 Headset (@System32\drivers\bthhfenum.sys,#2;%1 Hands-Free%0
+;(Lenovo PS-1551B)), Windows WDM-KS (1 in, 0 out)
+  58 Headphones (), Windows WDM-KS (0 in, 2 out)
+  59 Headphones (), Windows WDM-KS (0 in, 2 out)
+  60 Headset (@System32\drivers\bthhfenum.sys,#2;%1 Hands-Free%0
+;(Ryan’s AirPods)), Windows WDM-KS (0 in, 1 out)
+  61 Headset (@System32\drivers\bthhfenum.sys,#2;%1 Hands-Free%0
+;(Ryan’s AirPods)), Windows WDM-KS (1 in, 0 out)
+  62 Headphones (), Windows WDM-KS (0 in, 2 out)
+  63 Speakers (), Windows WDM-KS (0 in, 2 out)
+  64 Headset (@System32\drivers\bthhfenum.sys,#2;%1 Hands-Free%0
+;(Arctis Nova 7)), Windows WDM-KS (0 in, 1 out)
+  65 Headset (@System32\drivers\bthhfenum.sys,#2;%1 Hands-Free%0
+;(Arctis Nova 7)), Windows WDM-KS (1 in, 0 out)
+  66 Headphones (), Windows WDM-KS (0 in, 2 out)
+  67 Headphones (), Windows WDM-KS (0 in, 2 out)
+  68 Headset (@System32\drivers\bthhfenum.sys,#2;%1 Hands-Free%0
+;(Cystereo 750)), Windows WDM-KS (0 in, 1 out)
+  69 Headset (@System32\drivers\bthhfenum.sys,#2;%1 Hands-Free%0
+;(Cystereo 750)), Windows WDM-KS (1 in, 0 out)
+  70 Headphones (), Windows WDM-KS (0 in, 2 out)
+  C:\Users\mrrya\Documents\MREN403\misc\Lib\site-packages\huggingface_hub\file_download.py:149: UserWarning: `huggingface_hub` cache-system uses symlinks by default to efficiently store duplicated files but your machine does not support them in C:\Users\mrrya\.cache\huggingface\hub. Caching files will still work but in a degraded version that might require more space on your disk. This warning can be disabled by setting the `HF_HUB_DISABLE_SYMLINKS_WARNING` environment variable. For more details, see https://huggingface.co/docs/huggingface_hub/how-to-cache#limitations.
+To support symlinks on Windows, you either need to activate Developer Mode or to run Python as an administrator. In order to activate developer mode, see this article: https://docs.microsoft.com/en-us/windows/apps/get-started/enable-your-device-for-development
+  warnings.warn(message)
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+C:\Users\mrrya\Documents\MREN403\misc\Lib\site-packages\huggingface_hub\file_download.py:149: UserWarning: `huggingface_hub` cache-system uses symlinks by default to efficiently store duplicated files but your machine does not support them in C:\Users\mrrya\.cache\huggingface\hub\models--Systran--faster-whisper-tiny. Caching files will still work but in a degraded version that might require more space on your disk. This warning can be disabled by setting the `HF_HUB_DISABLE_SYMLINKS_WARNING` environment variable. For more details, see https://huggingface.co/docs/huggingface_hub/how-to-cache#limitations.
+To support symlinks on Windows, you either need to activate Developer Mode or to run Python as an administrator. In order to activate developer mode, see this article: https://docs.microsoft.com/en-us/windows/apps/get-started/enable-your-device-for-development
+  warnings.warn(message)
+Detected language 'en' with probability 0.984595
+[0.00s -> 15.52s]  The liver, request, fetch, green, red, blue, yellow, gray, black, small, medium, large,
+[15.52s -> 19.68s]  screwdriver, tool, object wrench.
+
+(misc) PS C:\Users\mrrya\Documents\MREN403\misc> & c:/Users/mrrya/Documents/MREN403/misc/Scripts/python.exe c:/Users/mrrya/Documents/MREN403/misc/voice_live.py
+Starting Recording, start speaking in 1s
+Finished Recording
+Detected language 'en' with probability 1.000000
+(misc) PS C:\Users\mrrya\Documents\MREN403\misc> & c:/Users/mrrya/Documents/MREN403/misc/Scripts/python.exe c:/Users/mrrya/Documents/MREN403/misc/voice_live.py
+Starting Recording, start speaking in 1s
+Finished Recording
+Detected language 'la' with probability 0.239837
+(misc) PS C:\Users\mrrya\Documents\MREN403\misc> & c:/Users/mrrya/Documents/MREN403/misc/Scripts/python.exe c:/Users/mrrya/Documents/MREN403/misc/voice_live.py
+Starting Recording, start speaking in 1s
+Finished Recording
+Detected language 'en' with probability 1.000000
+[30.00s -> 50.00s]  All, all, all, all, all, all, all.
+[50.00s -> 76.00s]  All, all, all, all, all, all.
+[76.00s -> 86.00s]  All, all, all, all, all, all, all.
+(misc) PS C:\Users\mrrya\Documents\MREN403\misc> & c:/Users/mrrya/Documents/MREN403/misc/Scripts/python.exe c:/Users/mrrya/Documents/MREN403/misc/voice_live.py
+Starting Recording, start speaking in 1s
+Finished Recording
+Detected language 'en' with probability 1.000000
+(misc) PS C:\Users\mrrya\Documents\MREN403\misc> & c:/Users/mrrya/Documents/MREN403/misc/Scripts/python.exe c:/Users/mrrya/Documents/MREN403/misc/voice_live.py
+Starting Recording, start speaking in 1s
+Finished Recording
+Detected language 'en' with probability 1.000000
+[0.00s -> 4.40s]  To all known ones of aviation, there is no way B should be able to fly.
+[4.40s -> 7.60s]  Its wings are too small, yet its fat will pop off the ground.
+[7.60s -> 9.60s]  The B, of course, flies anyway.
+(misc) PS C:\Users\mrrya\Documents\MREN403\misc> & c:/Users/mrrya/Documents/MREN403/misc/Scripts/python.exe c:/Users/mrrya/Documents/MREN403/misc/voice_live.py
+Starting Recording, start speaking in 1s
+Now
+Finished Recording
+Detected language 'en' with probability 1.000000
+[0.00s -> 4.50s]  According to all known laws of aviation, there is no way a B should be able to fly.
+[4.50s -> 7.50s]  Its wings are too small to get its fat out of the body off the ground.
+[7.50s -> 9.50s]  The B of course flies anyway.
+(misc) PS C:\Users\mrrya\Documents\MREN403\misc> & c:/Users/mrrya/Documents/MREN403/misc/Scripts/python.exe c:/Users/mrrya/Documents/MREN403/misc/voice_live.py
+Starting Recording, start speaking in 1s
+Now
+Finished Recording
+Detected language 'en' with probability 1.000000
+[0.00s -> 5.00s]  According to all known laws of aviation, there is no way a beach should be able to fly.
+[5.00s -> 8.00s]  It's wings are too small to get its fat little body off the ground.
+[8.00s -> 10.00s]  The B, of course, flies.
+(misc) PS C:\Users\mrrya\Documents\MREN403\misc> & c:/Users/mrrya/Documents/MREN403/misc/Scripts/python.exe c:/Users/mrrya/Documents/MREN403/misc/voice_live.py
+Starting Recording, start speaking in 1s
+Now
+Finished Recording
+Detected language 'en' with probability 1.000000
+[0.00s -> 4.80s]  According to all known laws of aviation, there is no way a bee should be able to fly.
+[4.80s -> 8.50s]  The wings are too small to get fat little body off of the ground.
+[8.50s -> 10.50s]  The bee, of course, flies anyway.
+(misc) PS C:\Users\mrrya\Documents\MREN403\misc> & c:/Users/mrrya/Documents/MREN403/misc/Scripts/python.exe c:/Users/mrrya/Documents/MREN403/misc/voice_live.py
+Starting Recording, start speaking in 1s
+Now
+Finished Recording
+Detected language 'en' with probability 1.000000
+[0.00s -> 5.00s]  According to all known laws of aviation, there is no way a bee should be able to fly.
+[5.00s -> 8.00s]  Its wings are too small to get its fat little body off the ground.
+[8.00s -> 12.00s]  The bee, of course, flies anyway because bees don't care what humans think is impossible.
+(misc) PS C:\Users\mrrya\Documents\MREN403\misc> 
+
+Execution time: 2026-10-20 00:53:45.084288
+Using faster-whisper model: small
+Starting Recording, start speaking in 1s
+Now
+Finished Recording
+Detected language 'en' with probability 1.000000
+[0.00s -> 5.00s]  According to all known laws of aviation, there is no way a bee should be able to fly.
+[5.00s -> 9.00s]  Its wings are too small to get its fat little body off the ground.
+[9.00s -> 14.00s]  The bee, of course, flies anyway, because bees don't care what humans think is impossible.
+
+
+#voice_stream.py
+(misc) PS C:\Users\mrrya\Documents\MREN403\misc> & c:/Users/mrrya/Documents/MREN403/misc/Scripts/python.exe c:/Users/mrrya/Documents/MREN403/misc/voice_stream.py
+Execution time: 2026-10-26 21:49:31.277378
+Using faster-whisper model: medium
+Enter Stream
+Audio duration: 5.018
+Transcription took 5.03 seconds
+[0.00s -> 4.60s]  Hey, grab me the red-handled screwdriver off the board, will you?
+Audio duration: 5.018
+Transcription took 5.10 seconds
+[0.00s -> 7.00s]  Look on the pegboard and get me a tool, the bright blue screwdriver.
+Audio duration: 5.018
+Transcription took 4.79 seconds
+[0.00s -> 7.00s]  Can you fetch the green screwdriver off the rack for me?
+Audio duration: 5.018
+Transcription took 4.95 seconds
+[0.00s -> 5.00s]  Reach up to the rack and grab the yellow screwdriver with the magnetic screwdriver.
+Audio duration: 5.018
+Transcription took 5.00 seconds
+[0.00s -> 2.00s]  tip.
+[2.00s -> 5.00s]  Fetch me that blue screwdriver from the rack real quick.
+Audio duration: 5.018
+Transcription took 4.95 seconds
+[0.00s -> 7.00s]  Right there on the middle rack, grab this screwdriver with the red grip.
+Audio duration: 5.018
+Transcription took 5.06 seconds
+[0.00s -> 4.98s]  Pass me the green screwdriver hanging right near the top of the
+Audio duration: 5.018
+Transcription took 4.91 seconds
+[0.00s -> 2.74s]  board.
+[2.74s -> 5.00s]  Deliver me the yellow screwdriver from the
+Audio duration: 5.018
+Transcription took 5.00 seconds
+[0.00s -> 3.60s]  magnetic strip on the rack.
+[3.60s -> 4.60s]  Bring me the green screwdriver.
+Audio duration: 5.018
+Transcription took 5.05 seconds
+[0.00s -> 6.72s]  hanging on the main board. From the top row of the board
+Audio duration: 5.018
+Traceback (most recent call last):
+  File "c:\Users\mrrya\Documents\MREN403\misc\voice_stream.py", line 50, in <module>
+    segments = list(segments)
+               ^^^^^^^^^^^^^^
+  File "C:\Users\mrrya\Documents\MREN403\misc\Lib\site-packages\faster_whisper\transcribe.py", line 1190, in generate_segments
+    encoder_output = self.encode(segment)
+                     ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\mrrya\Documents\MREN403\misc\Lib\site-packages\faster_whisper\transcribe.py", line 1400, in encode
+    return self.model.encode(features, to_cpu=to_cpu)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+KeyboardInterrupt
+
+#voice_stream.py
+(misc) PS C:\Users\mrrya\Documents\MREN403\misc> & c:/Users/mrrya/Documents/MREN403/misc/Scripts/python.exe c:/Users/mrrya/Documents/MREN403/misc/voice_stream.py
+Execution time: 2026-11-11 12:54:34.723879
+Using faster-whisper model: small
+Enter Stream
+Audio duration: 5.018
+Transcription took 2.49 seconds
+[0.00s -> 5.00s]  Deliver. Request. Fetch. Green.
+Audio duration: 5.018
+Transcription took 2.35 seconds
+[0.00s -> 5.00s]  red, blue, yellow, gray.
+Audio duration: 5.018
+Transcription took 2.38 seconds
+[0.00s -> 5.00s]  Black, small, medium, large.
+Audio duration: 5.018
+Transcription took 2.36 seconds
+[0.00s -> 5.00s]  screwdriver, green, red, blue, yellow.
+Audio duration: 5.018
+Transcription took 2.56 seconds
+[0.00s -> 5.00s]  gray, the letter Fetch.
+Audio duration: 5.018
+Transcription took 2.32 seconds
+[0.00s -> 5.00s]  Exit. Exit.
+Audio duration: 5.018
+Transcription took 2.21 seconds
+[0.00s -> 4.00s]  Exit sequence.
+Exit Stream time: 2026-11-11 12:55:15.173581
+Finished.
+
+(misc) PS C:\Users\mrrya\Documents\MREN403\misc> & c:/Users/mrrya/Documents/MREN403/misc/Scripts/python.exe c:/Users/mrrya/Documents/MREN403/misc/voice_stream.py
+Execution time: 2026-11-11 12:56:59.555156
+Using faster-whisper model: tiny
+Enter Stream
+Audio duration: 5.018
+Transcription took 0.48 seconds
+[0.00s -> 5.00s]  Small, medium, large.
+Audio duration: 5.018
+Transcription took 0.47 seconds
+[0.00s -> 5.00s]  Deliver, request, fetch, screw driver.
+Traceback (most recent call last):
+  File "c:\Users\mrrya\Documents\MREN403\misc\voice_stream.py", line 35, in <module>
+    audio = audio_queue.get()
+            ^^^^^^^^^^^^^^^^^
+  File "C:\Users\mrrya\AppData\Local\Programs\Python\Python312\Lib\queue.py", line 171, in get
+    self.not_empty.wait()
+  File "C:\Users\mrrya\AppData\Local\Programs\Python\Python312\Lib\threading.py", line 355, in wait
+    waiter.acquire()
+KeyboardInterrupt

@@ -14,7 +14,7 @@ A collaborative robot assistant for manufacturing work cells. Working beside a s
 2. **Robot to human:** brings the tool to the operator's hand, slowing as it approaches, and releases it when the operator has grasped it.
 3. **Workbench to robot, then robot to rack:** when the operator places a tool in the return zone, identifies it, picks it up and puts it back in its place on the rack.
 ### Headline requirements
- 
+
 Full list, justifications and test plans are in each subsystem's `01_requirements/` folder and the project proposal.
  
 | ID | Requirement |

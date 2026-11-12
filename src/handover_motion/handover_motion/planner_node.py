@@ -126,7 +126,7 @@ class Planner_node(Node):
         self.get_logger().info(f'p_0 {np.round(p_0, 3)}  p_3 {np.round(p_3, 3)}  d_a {np.round(d_a, 3)}')
         #TUNING VALUES CHANGED LATER BASED ON TEST
         a_s = 0.2
-        a_a = 2
+        a_a = 0.2
 
         #find Bezier points
         points = find_pull_points(p_0, p_3, d_s, d_a, a_s, a_a)
@@ -134,6 +134,7 @@ class Planner_node(Node):
         #CHANGE VALUE FOR HANDOFF DURATION
         duration = 2.0
        
+        #define sample rate
         #define sample rate
         num_samples = 50
        

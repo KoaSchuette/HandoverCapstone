@@ -149,7 +149,7 @@ Each transition needs a well-defined source. Values below come from the code whe
  
 ## 5. Implementation status
  
-Snapshot at commit `3843731`.
+
 
 **FSM: not started.** [`fsm_node.py`](../../src/handover_orchestrator/handover_orchestrator/fsm_node.py) is a placeholder. Its `main()` only prints a message, so the node never spins, and none of the states or transitions in section 2 exist in code.
 
@@ -169,5 +169,5 @@ Snapshot at commit `3843731`.
 | Date | Change | By |
 |---|---|---|
 | 2026-11-10 | First draft: statechart, node architecture | Koa Schuette |
-| 2026-11-11 | Marked as design plan; FSM status set to not started; section 5 rewritten; broken links and tables fixed | Koa Schuette |
+
 

@@ -6,8 +6,7 @@ The code lives in the ROS 2 workspace, not in this folder, so there is only one 
 
 Follow the existing guides; nothing extra is needed for the handover.
 
-- **Dev container and Docker:** [root README](../../../README.md). The container image already includes ROS 2 Jazzy, `ur_robot_driver` and MoveIt.
-- **Ultraleap, graphics and USB access on a Linux host:** [docs/Linux_hardware.md](../../../docs/Linux_hardware.md). Needed for real hand tracking.
+- **Linux setup (Docker, Ultraleap, RealSense, GPU, dev container):** [docs/setup_linux.md](../../../docs/setup_linux.md). The container image already includes ROS 2 Jazzy, `ur_robot_driver` and MoveIt.
 
 Then, inside the container, from the workspace root:
 

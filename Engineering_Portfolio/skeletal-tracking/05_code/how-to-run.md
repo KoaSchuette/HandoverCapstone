@@ -6,8 +6,7 @@ The code lives in the ROS 2 workspace, not in this folder, so there is only one 
 
 Follow the existing guides; nothing extra is needed for skeletal tracking.
 
-- **RealSense D455, Docker and the dev container:** [root README](../../../README.md). Plug the camera into a USB 3 port.
-- **Linux host with a GPU:** [docs/Linux_hardware.md](../../../docs/Linux_hardware.md). Use the `Linux hardware` dev container; it passes the GPU in with `--gpus=all`. The node needs CUDA.
+- **Linux setup (Docker, RealSense, NVIDIA GPU, dev container):** [docs/setup_linux.md](../../../docs/setup_linux.md). The node needs CUDA, so you need an NVIDIA GPU and the default `Linux hardware` dev container ([step 2](../../../docs/setup_linux.md#2-nvidia-gpu-skeleton-node)).
 - **More on the camera:** [docs/realsense_d455_guide.md](../../../docs/realsense_d455_guide.md).
 
 The container image installs the Python packages in [`requirements.txt`](../../../requirements.txt) (`torch`, `ultralytics`). Then, inside the container, from the workspace root:

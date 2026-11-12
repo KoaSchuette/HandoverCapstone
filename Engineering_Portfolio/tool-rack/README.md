@@ -9,7 +9,7 @@ The tool rack holds the three screwdrivers at fixed, known positions so the UR5e
 
 - **R4**: three distinct tools, each with its own fixed slot.
 - **R5**: correct tool picked up in ≥ 96% of attempts. Fixed slots mean the arm goes to a known pose, and the camera only confirms which tool is there.
-- **R1**: delivery and return each ≤ 15 s. Board distance affects pickup → handover time; see [exp-001](../simulation/06_experiments/pegboard-distance/).
+- **R1**: delivery and return each ≤ 15 s. Board distance affects pickup → handover time; see [pegboard-distance](06_experiments/pegboard-distance/).
 
 ## What's in this folder
 

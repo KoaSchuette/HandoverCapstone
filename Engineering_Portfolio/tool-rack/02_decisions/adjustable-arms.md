@@ -6,7 +6,7 @@ Leave the two frame arms that connect the pegboard uprights to the cart uncut an
 
 ## Why the distance matters
 
-Board distance changes how far the arm has to swing between picking up a tool and handing it over. In the [pegboard distance study (exp-001)](../../simulation/06_experiments/exp-001-pegboard-distance/), the pickup → handover move at 0.3 speed scaling took:
+Board distance changes how far the arm has to swing between picking up a tool and handing it over. In the [pegboard distance study](../06_experiments/exp-001-pegboard-distance/), the pickup → handover move at 0.3 speed scaling took:
 
 | Board offset from CAD (m) | −0.07 | −0.05 | 0 (CAD) | +0.05 | +0.10 | +0.15 |
 |---|---|---|---|---|---|---|

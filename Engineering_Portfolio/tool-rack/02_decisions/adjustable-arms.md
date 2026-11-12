@@ -9,7 +9,7 @@ Leave the two frame arms that connect the pegboard uprights to the cart uncut an
 Board distance changes how far the base has to turn between picking up a tool and the staging pose, where the robot holds the tool and waits for the operator's hand before the handover move. In the [pegboard distance study](../06_experiments/pegboard-distance/), the pickup → handover move at 0.3 speed scaling took:
 
 | Board offset from CAD (m) | −0.07 | −0.05 | 0 (CAD) | +0.05 | +0.10 | +0.15 | +0.20 |
-|---|---|---|---|---|---|---|
+|---|---|---|---|---|---|---|---|
 | Pickup → handover (s) | 2.81 | **3.14** | 3.47 | 3.64 | 3.74 | 3.82 | 3.87 |
 
 Moving 5 cm closer saved 0.34 s (about 10%), the largest gain of any step. Going 2 cm further was still faster, but the arm is folded almost back on itself as seen in [Pickup at −0.07 m](../06_experiments/pegboard-distance/pickup_-0.07.png).

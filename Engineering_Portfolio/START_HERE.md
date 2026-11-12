@@ -2,17 +2,20 @@
  
 MREN 403, Group 16, Queen's University (Smith Engineering)
  
-This repository is the engineering portfolio for our capstone project. It is the technical record of the work: requirements, decisions, calculations, designs, code, experiments, and data. It is meant to be understood by teammates, or the next engineer(s) who may continue using the platform after the project ends.
+This folder contains the engineering portfolio for our capstone project. Which documents all technical record of the work: requirements, decisions, calculations, designs, code, experiments, and data.
  
 > **New here? Start with the [system overview](system/START_HERE.md).** It shows how the subsystems work together over one full cycle. Then go to the subsystem you're working on in the [subsystem table](#subsystems).
  
 ## The project
- 
-A collaborative robot assistant for manufacturing work cells. Working beside a single operator at a fixed workbench, a UR5e arm:
- 
-1. **Rack to robot:** takes a spoken request, identifies the requested screwdriver on the tool rack with a camera, and picks it up with an electromagnetic end effector.
-2. **Robot to human:** brings the tool to the operator's hand, slowing as it approaches, and releases it when the operator has grasped it.
-3. **Workbench to robot, then robot to rack:** when the operator places a tool in the return zone, identifies it, picks it up and puts it back in its place on the rack.
+
+The Collaborative Handover Assistant is a robotic tool assistant for manufacturing work cells. It works beside one operator at a fixed workbench, fetching screwdrivers on voice command, handing them over safely, and putting them back on the rack when the operator is done.
+
+### Core functions
+
+1. **Tool retrieval (rack to robot):** The operator asks for a tool out loud. The robot finds that screwdriver on the tool rack with a camera and picks it up with an electromagnetic end effector.
+2. **Handover (robot to human):** The robot brings the tool to the operator's hand and slows down as it gets close. It releases the tool once it detects that the operator is holding it.
+3. **Tool return (workbench to rack):** When the operator puts a tool in the return zone, the robot identifies it, picks it up, and puts it back in its spot on the rack.
+
 ### Headline requirements
 
 Full list, justifications and test plans are in each subsystem's `01_requirements/` folder and the project proposal.

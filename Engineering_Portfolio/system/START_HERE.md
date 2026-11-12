@@ -2,7 +2,7 @@
  
 > **Status: DESIGN PLAN, not yet implemented.** This page was written before the FSM was built and describes the *intended* system design. The FSM in section 2 does not exist in code yet; see [Implementation status](#5-implementation-status) for what does run today. Items marked **(proposed)** in the tables were added during review of the original sketch and need team sign-off.
 >
-> **Owner:** TBD · **Reviewed against commit:** `3843731` (2026-11-11)
+> **Owner:** Koa · **Reviewed against commit:** `3843731` (2026-11-11)
  
 This page covers how the subsystems work together over one complete cycle: a spoken request, picking the tool off the rack, handing it to the operator, and returning tools from the return zone to the rack. Each subsystem's own design is in its own folder (see the [subsystem table](../START_HERE.md#subsystems)).
  
@@ -53,7 +53,7 @@ stateDiagram-v2
     RACK_PICKUP --> IDLE : not found
 ```
  
-*Figure 1: Task statechart for the collaborative handover assistant (draft). Source: the Mermaid block above. A separate `.mmd` source and rendered PNG for reports are TBD.*
+*Figure 1: Task statechart for the collaborative handover assistant (draft).*
  
 **Stop and fault handling.** From any state, a stop request, protective stop or fault halts motion and goes to `STOPPED`; an operator reset returns the robot to `IDLE`. This rule applies to every state, so it is written here instead of being drawn as an arrow from each one.
  

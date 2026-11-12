@@ -10,7 +10,7 @@ How does the pegboard's distance from the robot change the pickup to handover ti
 Pilz PTP times each move by the joint that turns furthest, using a trapezoidal velocity profile at 30% of the joint limits. Worked calculation: [PTP timing worksheet](../../03_calculations/ptp_timing_prediction.pdf).
 
 | Offset (m) | -0.07 | −0.05 | 0 | +0.05 | +0.10 | +0.15 | +0.20 |
-|---|---|---|---|---|---|
+|---|---|---|---|---|---|---|---|
 | Predicted (s) | 2.81 | 3.14 | 3.47 | 3.64 | 3.74 | 3.82 | 3.87 |
 
 ## Method
@@ -23,7 +23,7 @@ Pilz PTP times each move by the joint that turns furthest, using a trapezoidal v
 - **Script:** [`handover_demo.py`](https://github.com/KoaSchuette/HandoverCapstone/blob/9269faa/src/handover_cell/scripts/handover_demo.py) sends three joint goals (pickup → handover → return) with Pilz PTP at 30% speed, executes each, and logs the time and the slowest joint to a CSV.
 - **Pickup pose:** tool 20 cm in front of the board centre, facing it. Joint angles for each offset came from an offline IK model and were checked in the sim with `tf2_echo pegboard_face tool0`, which reads (0, −0.200, 0).
 - **Handover pose:** fixed for every offset (joint values in the script).
-- **Offsets:** −0.10 to +0.20 m in 5 cm steps, plus attempts at −0.07 showing that is almost limit. Runs on Oct 27; re-run on Nov 11 with the return leg added.
+- **Offsets:** −0.10 to +0.20 m in 5 cm steps, plus attempts at −0.07 showing that is almost limit.
 
 ## Results
 
@@ -67,7 +67,6 @@ An earlier, rougher model assumed full speed, a 15 cm pickup standoff and a diff
 - **Coarse steps near the limit.** The tested points closest to the limit are −0.05 and −0.07 m; the 35 cm build start (−0.055 m) falls between them.
 - **One pickup standoff (20 cm).** The reach limit depends on it; a different camera observation pose would move the limit.
 - **Sim only, one planner, 30% speed.** The times don't convert directly to 100%, because the acceleration ramps don't scale linearly. Payload isn't modelled.
-- **The offset setting isn't in the repo yet.** The `PEGBOARD_OFFSET` change that moves the board in the model was used for these runs but hasn't been pushed, so the study can't be reproduced from the repo until it is.
 
 ## Decision
 
@@ -84,4 +83,4 @@ The pickup angles were a hand-made table, one row per offset. Defining the picku
 | [`cycle_times.csv`](cycle_times.csv) | Cleaned study data |
 | [`plot_times.py`](plot_times.py) | Makes Figure 1 from `cycle_times.csv`: `python3 plot_times.py` |
 | `time_vs_offset.png` | Figure 1 |
-| [`handover_demo.py`](https://github.com/KoaSchuette/HandoverCapstone/blob/9269faa/src/handover_cell/scripts/handover_demo.py) | Script that ran the study |
+| [`handover_demo.py`](https://github.com/KoaSchuette/HandoverCapstone/blob/7ac949a/src/handover_cell/scripts/handover_demo.py) | Script that ran the study |

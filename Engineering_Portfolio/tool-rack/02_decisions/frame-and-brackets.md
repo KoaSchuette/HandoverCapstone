@@ -9,7 +9,7 @@ Build the pegboard uprights and arms from 30 mm aluminium extrusion instead of m
 | Option | Cost | For | Against |
 |---|---|---|---|
 | Vention 45 × 45 mm parts, matched to the cart | ≈ $351 | Same system as the cart; off-the-shelf gussets; matches the CAD | More expensive |
-| **30 mm extrusion + custom brackets** (chosen) | $303.49 + bracket material | About $48 cheaper; still T-slot, so the arms can slide | Two extrusion sizes and hardware sets; brackets must be designed and made |
+| **30 mm extrusion + custom brackets** (chosen) | $281.85 + bracket material | About $69 cheaper; still T-slot, so the arms can slide | Two extrusion sizes and hardware sets; brackets must be designed and made |
 
 ## Why
 

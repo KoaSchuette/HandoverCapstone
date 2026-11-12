@@ -15,10 +15,10 @@ The driver circuit powers the electromagnet from the UR5e control box and switch
 
 The circuit was simulated in KiCad with the MOSFET switching the magnet on and off, first without and then with the flyback diode. Without the diode, the voltage spikes to about 3 kV when the MOSFET turns off, far above the IRF540N's 100 V drain-source rating, and the magnet current drops to zero immediately. With the diode, the voltage rises to about 12.8 V and stays there, and the current decays gradually.
 
-![Simulated voltage and current without the flyback diode](simulation_without_flyback.png)
+![Simulated voltage and current without the flyback diode](../09_figures/simulation_without_flyback.png)
 *Figure 2. Simulated voltage (green) and magnet current (purple, dotted) without the flyback diode.*
 
-![Simulated voltage and current with the flyback diode](simulation_with_flyback.png)
+![Simulated voltage and current with the flyback diode](../09_figures/simulation_with_flyback.png)
 *Figure 3. Simulated voltage (green) and magnet current (purple, dotted) with the flyback diode.*
 
 ## Built circuit

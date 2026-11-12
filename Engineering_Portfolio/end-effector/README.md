@@ -17,7 +17,7 @@ Requirement numbers are from the project proposal (Table 2).
 
 - **R3**: hold payloads up to 0.45 kg with no slip during motion. This is the main requirement for this subsystem. The tools weigh about 0.15 kg, so 0.45 kg gives a safety factor of 3.
 - **R5**: correct tool picked up in at least 96% of attempts. The magnet has to grip the tool reliably once the arm is in position, and the wrist camera has to see the tool and confirm it is on the magnet.
-- **R2**: successful handoff in at least 80% of trials. Releasing the tool means switching the magnet off when the operator pulls on it. The pull will be detected with force sensing, which is not implemented yet.
+- **R2**: successful handoff in at least 80% of trials. Releasing the tool means switching the magnet off. Deciding when to switch it off is outside this subsystem.
 - **R4**: three distinct tools. All three screwdrivers have steel ends, so one magnet picks up each of them.
 - **R7**: setup and operation documented well enough for someone outside the team. The wiring, dressing and driver circuit have to be reproducible from this folder.
 - **Safety (proposal section 5.0)**: emergency-stop behaviour must be checked for end-effector operation, including whether losing tool power could drop an object. This drives the choice of where the magnet is powered from. Testing confirmed that the magnet keeps its state through an emergency stop.
@@ -26,14 +26,13 @@ Requirement numbers are from the project proposal (Table 2).
 
 - The electromagnet, driver circuit and mount are built and have been tested by hand. No formal experiments have been run yet.
 - R3 is not yet verified. The proposal calls for a bench test at 0.45 kg, and the feasibility calculation will set what to expect from it.
-- Release by force sensing is not implemented. The plan is to use the UR5e's built-in wrist force/torque sensing rather than buy a separate sensor, which is outside the budget. With the magnet on, a pull against the wrist above a threshold would switch it off.
 
 ## What's in this folder
 
 | Folder | Contents |
 |---|---|
 | [`01_requirements/`](01_requirements/) | End-effector requirements taken from R2, R3, R5 and R7, each with its rationale and test |
-| [`02_decisions/`](02_decisions/) | Why an electromagnet · Driver and power architecture · Release sensing |
+| [`02_decisions/`](02_decisions/) | [Electromagnet](02_decisions/electromagnet.md) · [Power architecture](02_decisions/power-architecture.md) |
 | [`03_calculations/`](03_calculations/) | [Magnet feasibility](03_calculations/magnet-feasibility.md): whether the magnet can hold a 1/4 inch (6.35 mm) steel shaft without slipping, checked for vertical and horizontal lift |
 | [`04_design/`](04_design/) | [Driver circuit](04_design/driver-circuit.md): KiCad schematic, simulation with and without the flyback diode, photos of the built circuit, and the wire connections |
 | [`05_code/`](05_code/) | Empty for now. The magnet is switched from the teach pendant |
@@ -54,4 +53,3 @@ Requirement numbers are from the project proposal (Table 2).
    - Print the mount in PETG or ABS, which soften at higher temperatures than PLA.
    - Add passive cooling by leaving more of the magnet exposed, or by fastening heat sinks to the magnet's body.
 4. Run the 0.45 kg bench test for R3, using the feasibility calculation as the expected result.
-5. Implement release by force sensing, after checking what the UR5e's wrist sensor can do (see the release sensing decision). The sensor's listed accuracy is 4 N, so the pull threshold has to sit well above that.

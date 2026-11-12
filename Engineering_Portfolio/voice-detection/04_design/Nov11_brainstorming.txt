@@ -1,0 +1,7 @@
+Problem: Currently implemented recording of 5s chunks, pass to transcription while the next 5s chunk is getting recorded. If someone is in the midst of speaking a word during that 5s cutoff, it may get chopped in half and be unintelligible. The model would have difficulty transcribing the correct meaning.
+
+What behaviour is important to us?
+-Precision: It's really frustrating to have to repeat commands, and inconvenient to look at the screen to see what wasn't picked up properly. There will be errors, but we want it to be as precise as possible. 
+>Downside: The larger models have more parameters which provides better transcription and more robust results, but much slower.
+
+-Responsive: We're aiming for a short handover time. The longer the delay of the command recording and transcription, the worse. Smaller fixed chunks is a bad idea, because then it is more likely to cut off a word, worsening the precision, but smaller chunks that are designed to avoid cutting off speech (using silence detection to decide when to cut off a segment) might work, and would be more responsive.

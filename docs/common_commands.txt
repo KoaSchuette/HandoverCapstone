@@ -1,0 +1,97 @@
+COMMON COMMANDS
+Plain-text copy of common_commands.md for copy-pasting. Keep both in sync.
+Run inside the dev container, from the repo root, unless it says HOST.
+
+
+=== BUILD AND SOURCE ===
+
+cd /workspaces/HandoverCapstone
+colcon build
+colcon build --packages-select handover_hand_tracking
+source install/setup.bash
+
+
+=== MAKE A NEW PACKAGE ===
+
+Python package with a starter node (run in src/):
+cd /workspaces/HandoverCapstone/src
+ros2 pkg create handover_voice --build-type ament_python --dependencies rclpy std_msgs --node-name command_listener
+                (package name)                                                          (node name)
+
+Custom messages/services: add to the existing handover_interfaces package
+  1. Put the file in src/handover_interfaces/msg/ (MyMsg.msg) or srv/ (MySrv.srv)
+  2. Add it to rosidl_generate_interfaces(...) in src/handover_interfaces/CMakeLists.txt
+     (new message dependencies go in DEPENDENCIES there and in package.xml)
+  3. Rebuild and check:
+colcon build --packages-select handover_interfaces
+source install/setup.bash
+ros2 interface show handover_interfaces/msg/MyMsg
+
+New interfaces package from scratch (must be CMake):
+ros2 pkg create my_interfaces --build-type ament_cmake
+
+
+=== ULTRALEAP (HAND TRACKING) ===
+
+HOST - control panel, to check the sensor sees your hand:
+ultraleap-hand-tracking-control-panel
+
+Node only (publishes /hand/right and /hand/left):
+ros2 run handover_hand_tracking leap_node
+
+Node + RViz:
+ros2 launch handover_hand_tracking hand_tracking.launch.py
+
+If leap_node says "No module named 'leap'", reinstall the bindings:
+pip install --break-system-packages cffi pycparser
+pip install --break-system-packages "git+https://github.com/ultraleap/leapc-python-bindings.git#subdirectory=leapc-cffi"
+pip install --break-system-packages "git+https://github.com/ultraleap/leapc-python-bindings.git#subdirectory=leapc-python-api"
+python3 -c "import leap; print('leap OK')"
+
+
+=== REALSENSE CAMERA ===
+
+ros2 launch handover_realsense realsense.launch.py
+ros2 run rqt_image_view rqt_image_view        (pick /camera/camera/color/image_raw)
+
+
+=== SKELETON TRACKING ===
+Run from the repo root (model path is relative). Needs an NVIDIA GPU.
+
+cd /workspaces/HandoverCapstone
+
+Node only (start the RealSense separately):
+ros2 run handover_skeleton_tracking skeleton_node
+
+RealSense + node + RViz:
+ros2 launch handover_skeleton_tracking skeleton.launch.py
+
+
+=== BRINGUP: FULL HANDOVER STACK ===
+Starts UR driver, MoveIt, RViz, motion planner and Ultraleap node.
+
+MOCK - no robot, arm only moves in RViz:
+ros2 launch handover_bringup handover.launch.py mode:=mock
+
+REAL - moves the UR5e. Run External Control on the teach pendant. Keep the e-stop in reach.
+ros2 launch handover_bringup handover.launch.py mode:=real robot_ip:=192.168.1.102
+
+TEMPLATE - every argument, defaults shown (change what you need):
+ros2 launch handover_bringup handover.launch.py mode:=mock robot_ip:= use_rviz:=true use_leap:=true
+
+  mode       mock | real       (default mock)
+  robot_ip   robot IP          (required for real)
+  use_rviz   true | false      (default true)
+  use_leap   true | false      (default true; false = no hand data, handover waits forever)
+
+Start a handover (second terminal, right hand held still over the Ultraleap):
+ros2 service call /start_handover std_srvs/srv/Trigger
+
+
+=== HANDY CHECKS ===
+
+ros2 node list
+ros2 topic list
+ros2 topic hz /camera/camera/color/image_raw
+ros2 topic echo /hand/right --once
+ros2 topic echo /skeleton/position --once

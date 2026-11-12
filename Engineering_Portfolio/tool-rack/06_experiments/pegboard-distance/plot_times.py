@@ -1,7 +1,7 @@
-"""Plot pickup -> handover time against pegboard offset (exp-001).
+"""Plot pickup -> handover time against pegboard offset (pegboard distance study).
 
-Reads the raw study data from cycle_times.csv at the repo root and saves
-time_vs_offset.png next to this script. Run from anywhere:
+Reads the study data from cycle_times.csv in this folder and saves
+time_vs_offset.png next to it. Run from anywhere:
 
     python3 plot_times.py
 """
@@ -15,10 +15,11 @@ CSV = HERE / "cycle_times.csv"
 OUT = HERE / "time_vs_offset.png"
 
 # Predicted handover times (s) from the PTP timing model, made before the runs.
-PREDICTED = {-0.05: 3.14, 0.00: 3.47, 0.05: 3.64, 0.10: 3.74, 0.15: 3.82}
+PREDICTED = {-0.07: 2.81, -0.05: 3.14, 0.00: 3.47, 0.05: 3.64, 0.10: 3.74,
+             0.15: 3.82, 0.20: 3.87}
 REACH_LIMIT = -0.075   # m, set by the UR5e wrist offset (d4 = 0.133 m)
 CAD_ARM_MM = 405       # arm length at offset 0 in the CAD
-START = -0.055         # m, chosen start position (35 cm arms)
+START = -0.055         # m, chosen start position (board set at 35 cm)
 
 # Measured handover times: successful 'handover' rows only
 measured = {}
@@ -36,9 +37,9 @@ ax.axvspan(-0.11, REACH_LIMIT, color="grey", alpha=0.2)
 ax.axvline(REACH_LIMIT, color="grey", linestyle=":")
 ax.text(REACH_LIMIT - 0.003, 3.25, "pickup\nunreachable", ha="right", color="dimgrey")
 ax.axvline(START, color="green", linestyle="--", linewidth=1)
-ax.text(START + 0.003, 3.75, "build start\n(35 cm arms)", color="green")
+ax.text(START + 0.003, 3.75, "build start\n(set at 35 cm)", color="green")
 
-ax.set_xlim(-0.11, 0.17)
+ax.set_xlim(-0.11, 0.22)
 ax.set_xlabel("Pegboard offset from CAD position (m), positive = further from robot")
 ax.set_ylabel("Pickup → handover time (s)")
 ax.set_title("Pickup → handover time vs pegboard offset\n(Pilz PTP, 30% speed, Gazebo sim)")

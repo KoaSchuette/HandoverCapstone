@@ -2,7 +2,7 @@
 
 ## Decision
 
-Use a standard 1/4" hardboard pegboard, cut to 400 × 300 mm, with 3D-printed hooks to hold the three screwdrivers, rather than a custom-built rack.
+Use a 3/16” perforated hardboard panel, cut to 400 × 300 mm, with 3D-printed hooks to hold the three screwdrivers, rather than a custom-built rack.
 
 ## Context
 

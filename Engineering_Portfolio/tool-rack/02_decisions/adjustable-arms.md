@@ -2,7 +2,7 @@
 
 ## Decision
 
-Cut the two frame arms that connect the pegboard uprights to the cart to **35 cm**, and join them so they can slide along the extrusion. This puts the board about 5 cm closer to the robot than the CAD position (40.5 cm arms). The arms stay adjustable until the camera has been shown to detect the screwdrivers reliably from the observation pose. After that, the position is locked.
+Leave the two frame arms that connect the pegboard uprights to the cart uncut and longer than needed, and clamp the uprights along them so the board can slide toward or away from the robot. Start at 35 cm, the fastest position in the distance study, about 5.5 cm closer than the CAD position (40.5 cm arms). Once the camera has been shown to detect the screwdrivers reliably from the observation pose, cut the arms to the chosen length.
 
 ## Why the distance matters
 
@@ -10,9 +10,9 @@ Board distance changes how far the arm has to swing between picking up a tool an
 
 | Board offset from CAD (m) | −0.07 | −0.05 | 0 (CAD) | +0.05 | +0.10 | +0.15 |
 |---|---|---|---|---|---|---|
-| Pickup → handover (s) | unreachable | **3.14** | 3.47 | 3.64 | 3.74 | 3.82 |
+| Pickup → handover (s) | 2.81 | **3.14** | 3.47 | 3.64 | 3.74 | 3.82 |
 
-Moving 5 cm closer saved 0.34 s (about 10%), the largest gain of any step. Going 2 cm further made the pickup unreachable.
+Moving 5 cm closer saved 0.34 s (about 10%), the largest gain of any step. Going 2 cm further was still faster, but the arm was close to hitting singularity as seen in [Pickup at −0.07 m](../06_experiments/pegboard-distance/pickup_-0.07.png).
 
 ## Options considered
 
@@ -43,7 +43,7 @@ Either one could force the board back out. Making the arms adjustable costs noth
 - **Real robot:** time pickup → handover at 35 cm, then at the CAD position, to confirm the sim's trend.
 - **Camera:** confirm all three screwdrivers are detected from the observation pose at 35 cm.
 
-Lock the position once all three pass.
+Once all three pass, cut the arms to that length.
 
 ## Looking back
 

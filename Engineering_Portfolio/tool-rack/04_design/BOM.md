@@ -7,7 +7,7 @@ Snapshot of the rack parts from the team's Parts Ordering sheet (Running BOM), a
 | # | Part | Part number | Supplier | Qty | Unit | Total | Funded by | Status |
 |---|---|---|---|---|---|---|---|---|
 | 11 | Aluminium extrusion, 30 mm, 10 ft | [5537T97](https://www.mcmaster.com/5537T97/) | McMaster-Carr | 2 | $74.57 | $149.14 | Team | Received |
-| 12 | Pegboard, 2' × 4', cut to 400 × 300 mm | SKU 1000432702 | Home Depot | 1 | $13.77 | $13.77 | Team | Received |
+| 12 | Perforated hardboard panel, 3/16" × 2' × 4', cut to 400 × 300 mm| SKU 1000432702 | Home Depot | 1 | $13.77 | $13.77 | Team | Received |
 | 13 | Feet / stoppers | [5537T983](https://www.mcmaster.com/5537T983/) | McMaster-Carr | 2 | $10.67 | $21.34 | Team | Received |
 | 14 | 30 mm M6 self-aligning nut, 4-pack | [6000N207](https://www.mcmaster.com/6000N207/) | McMaster-Carr | 7 | $7.68 | $53.76 | Team | Partly received |
 | 15 | 45 mm M6 self-aligning nut, 4-pack | [5278N32](https://www.mcmaster.com/5278N32/) | McMaster-Carr | 1 | — | — | Ingenuity Labs | Received |

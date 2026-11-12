@@ -226,7 +226,7 @@ The last line should print `leap OK`. If the first `leapc-cffi` install fails wi
 
 ### Next
 
-To run the subsystems from here, see [common_commands.md](common_commands.md) and each subsystem's code guide in the [engineering portfolio](../Engineering_Portfolio/START_HERE.md).
+To run the subsystems from here, see [common_commands.md](common_commands.md) and each subsystem's code guide in the [engineering portfolio](../Engineering_Portfolio/README.md).
 
 ---
 

@@ -33,7 +33,7 @@ These are broken down into handover requirements H1 to H6, with a test plan, in 
 
 ### Where it sits in the system
 
-The handover runs inside the motion planner node (`handover_motion/planner_node.py`), which will also handle the pickup and dropoff goals (see the [system design](../system/START_HERE.md#4-design-decisions)). In the [task statechart](../system/START_HERE.md#2-task-state-machine), this subsystem covers `WAIT_FOR_HAND`, `HANDOVER` and `RELEASE`. For now the `start_handover` service (`std_srvs/Trigger`) starts it, because the FSM is not built yet.
+The handover runs inside the motion planner node (`handover_motion/planner_node.py`), which will also handle the pickup and dropoff goals (see the [system design](../system/README.md#4-design-decisions)). In the [task statechart](../system/README.md#2-task-state-machine), this subsystem covers `WAIT_FOR_HAND`, `HANDOVER` and `RELEASE`. For now the `start_handover` service (`std_srvs/Trigger`) starts it, because the FSM is not built yet.
 
 To run it, see [`05_code/`](05_code/how-to-run.md).
 
@@ -134,7 +134,7 @@ The commit-once planner delivers the tool to a still hand on the real robot, and
 | Palm-based tool orientation with a per-tool grasp offset | Present the handle (H6) | |
 | Release on pull | H5 | Pull threshold TBD, must sit above the force sensor noise |
 | Abort if the hand is lost or moves too fast; a fallback for the steady-hand wait | Safety (no requirement yet) | System statechart |
-| Connect FSM to Handover portion | One node starts all motions | [System start page, section 5](../system/START_HERE.md#5-implementation-status) |
+| Connect FSM to Handover portion | One node starts all motions | [System start page, section 5](../system/README.md#5-implementation-status) |
 | Move tuning values to ROS parameters and log them | Tune without editing code; repeatable tests | |
 
 

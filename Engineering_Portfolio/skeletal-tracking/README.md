@@ -22,7 +22,7 @@ To run it, see [`05_code/`](05_code/how-to-run.md).
 
 ## 1. Requirements it serves
 
-None of the project requirements (R1 to R7 in the [portfolio start page](../START_HERE.md)) cover operator safety yet. A safety requirement is TBD, for example: stop the arm within a set time when a body part enters a set zone.
+None of the project requirements (R1 to R7 in the [portfolio start page](../README.md)) cover operator safety yet. A safety requirement is TBD, for example: stop the arm within a set time when a body part enters a set zone.
 
 Subsystem requirements are not written yet (TBD).
 
@@ -48,7 +48,7 @@ YOLO26n-pose was run live with the RealSense and viewed in RViz (see the video a
 | Out | Topic | `skeleton/position` | `handover_interfaces/Skeleton`: 17 keypoints (m, camera colour frame) and 17 confidences |
 | Out | Topic | `/skeleton/markers` | `visualization_msgs/MarkerArray` for RViz |
 
-Nothing uses `skeleton/position` yet, and nothing stops the robot from it ([system start page](../system/START_HERE.md)).
+Nothing uses `skeleton/position` yet, and nothing stops the robot from it ([system start page](../system/README.md)).
 
 ## 5. Future work
 

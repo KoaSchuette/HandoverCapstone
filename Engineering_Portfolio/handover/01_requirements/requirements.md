@@ -1,6 +1,6 @@
 # Handover requirements
 
-These requirements break the project requirements (R1, R2, R6 in the [portfolio start page](../../START_HERE.md)) down to the handover leg: from "robot is holding the tool at the staging pose" to "operator has the tool". Picking the tool up is `tool-pickup`; holding it securely (R3) is `end-effector`.
+These requirements break the project requirements (R1, R2, R6 in the [portfolio start page](../../README.md)) down to the handover leg: from "robot is holding the tool at the staging pose" to "operator has the tool". Picking the tool up is `tool-pickup`; holding it securely (R3) is `end-effector`.
 
 Numbers either trace to a source in the **Source** column or are marked **TBD**. Values that come from current code are tuning values, not requirements, until a test or source backs them.
 

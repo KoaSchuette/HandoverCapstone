@@ -4,7 +4,7 @@
 >
 > **Owner:** Koa · **Reviewed against commit:** `3843731` (2026-11-11)
  
-This page covers how the subsystems work together over one complete cycle: a spoken request, picking the tool off the rack, handing it to the operator, and returning tools from the return zone to the rack. Each subsystem's own design is in its own folder (see the [subsystem table](../START_HERE.md#subsystems)).
+This page covers how the subsystems work together over one complete cycle: a spoken request, picking the tool off the rack, handing it to the operator, and returning tools from the return zone to the rack. Each subsystem's own design is in its own folder (see the [subsystem table](../README.md#subsystems)).
  
 ## Contents
  

@@ -10,7 +10,7 @@ This repository holds the ROS 2 workspace (`src/`) and the engineering portfolio
 
 | I want to… | Go to |
 |---|---|
-| Understand the project: requirements, design, decisions, testing, and how to run each subsystem | [Engineering portfolio](Engineering_Portfolio/START_HERE.md) (start with the [system overview](Engineering_Portfolio/system/START_HERE.md)) |
+| Understand the project: requirements, design, decisions, testing, and how to run each subsystem | [Engineering portfolio](Engineering_Portfolio/README.md) (start with the [system overview](Engineering_Portfolio/system/README.md)) |
 | Set up a computer to run it (Linux) | [docs/setup_linux.md](docs/setup_linux.md) |
 | Set up a computer to run it (Windows) | Not written yet |
 | Find a launch or build command quickly | [docs/common_commands.md](docs/common_commands.md) ([plain-text copy](docs/common_commands.txt)) |

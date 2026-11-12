@@ -4,7 +4,7 @@ MREN 403, Group 16, Queen's University (Smith Engineering)
  
 This folder contains the engineering portfolio for our capstone project. Which documents all technical record of the work: requirements, decisions, calculations, designs, code, experiments, and data.
  
-> **New here? Start with the [system overview](system/START_HERE.md).** It shows how the subsystems work together over one full cycle. Then go to the subsystem you're working on in the [subsystem table](#subsystems).
+> **New here? Start with the [system overview](system/README.md).** It shows how the subsystems work together over one full cycle. Then go to the subsystem you're working on in the [subsystem table](#subsystems).
  
 ## The project
 
@@ -38,7 +38,7 @@ The portfolio is organized by subsystem. Each subsystem uses the folders below, 
  
 ```
 Engineering_Portfolio/
-├── START_HERE.md         this file
+├── README.md         this file
 ├── system/               whole-system design: task state machine, node architecture (plan, not built yet)
 ├── 00_project/           risk register, budget, schedule, project proposal (not created yet)
 ├── end-effector/
@@ -71,12 +71,12 @@ Start with `system`, then the subsystem you need. Each one has a start page with
 
 | Subsystem | Owner | Status | Scope | Start page |
 |---|---|---|---|---|
-| `system` | Koa & Ryan Donen | Design plan; FSM not built | The complete cycle: task state machine, ROS node architecture and implementation status | [system](system/START_HERE.md) |
+| `system` | Koa & Ryan Donen | Design plan; FSM not built | The complete cycle: task state machine, ROS node architecture and implementation status | [system](system/README.md) |
 | `end-effector` | Ryan Donen | Prototype Built; Testing phase | Electromagnet end effector: driver and power circuit, brackets, wire clamps, control box board mount | [end-effector](end-effector/README.md) |
 | `tool-rack` | Tanner | Waiting For Parts  | Pegboard tool rack and return zone: CAD and build | [tool-rack](tool-rack/README.md) |
 | `voice-detection` | Ryan Henderson | Early: Diction model testing | Command recognition model | Not written yet |
 | `tool-pickup` | Tanner & Ryan Donen | Model Trainning | Identifying the requested tool and picking it up from the rack or return zone | [tool-pickup](tool-pickup/README.md) |
-| `handover` | Koa | Runs on the real UR5e (commit-once); moving to real-time planning | Robot-to-human handoff: approach, slowdown and release | [handover](handover/START_HERE.md) |
-| `skeletal-tracking` | Koa | Early: one pose model tested | Safety: tracking people's bodies with the RealSense camera so the arm can stop if someone is in its way | [skeletal-tracking](skeletal-tracking/START_HERE.md) |
+| `handover` | Koa | Runs on the real UR5e (commit-once); moving to real-time planning | Robot-to-human handoff: approach, slowdown and release | [handover](handover/README.md) |
+| `skeletal-tracking` | Koa | Early: one pose model tested | Safety: tracking people's bodies with the RealSense camera so the arm can stop if someone is in its way | [skeletal-tracking](skeletal-tracking/README.md) |
 
-Add new names to this table before creating folders for them. A new subsystem starts with a `START_HERE.md` (overview, status, how it works, testing so far, future work, and links into its folders) and adds the `01_` to `10_` folders when it has something to put in them. Some older subsystems still use `README.md` for the same page.
+Add new names to this table before creating folders for them. A new subsystem starts with a `README.md` (overview, status, how it works, testing so far, future work, and links into its folders) and adds the `01_` to `10_` folders when it has something to put in them.

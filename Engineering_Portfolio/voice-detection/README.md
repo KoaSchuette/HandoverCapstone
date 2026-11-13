@@ -28,7 +28,7 @@ This subsystem must reliably parse the verbal command of the operator. The subsy
 | [`06_experiments/`](06_experiments/) | Rough preliminary recording, transcription and model testing logs by recording script terminal output |
 | [`07_data/`](07_data/) | Miscellaneous audio files used for initial transcription testing  |
 | [`08_references/`](02_decisions/) | Websites, Documentation, GitHub links commonly revisited during design |
-| Code | [`src/handover_voice/`](https://github.com/KoaSchuette/HandoverCapstone/tree/ffa9aff/src/handover_voice):  |
+| Code | [`src/handover_voice/`](src/handover_voice):  |
 
 ## Next Steps
 - Integration from developer coding environment to ROS2 Node, Windows -> Linux compatibility

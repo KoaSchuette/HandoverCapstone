@@ -17,6 +17,7 @@ How does the pegboard's distance from the robot change the pickup to handover ti
 - **Pickup pose:** tool 20 cm in front of the board centre, facing it. Joint angles for each offset came from an offline IK model and were checked in the sim with `tf2_echo pegboard_face tool0`, which reads (0, −0.200, 0).
 - **Handover pose:** fixed for every offset (joint values in the script).
 - **Offsets:** −0.10 to +0.20 m in 5 cm steps, plus attempts at −0.07 showing that is almost limit.
+- **Video:** [one full run at the CAD position](simulation-run.mp4) (pickup → handover → return).
 
 ## Results
 
@@ -73,3 +74,4 @@ The pickup angles were a hand-made table, one row per offset. Defining the picku
 | [`plot_times.py`](plot_times.py) | Makes Figure 1 from `cycle_times.csv`: `python3 plot_times.py` |
 | `time_vs_offset.png` | Figure 1 |
 | [`handover_demo.py`](https://github.com/KoaSchuette/HandoverCapstone/blob/7ac949a/src/handover_cell/scripts/handover_demo.py) | Script that ran the study |
+| [`sim-offset-0.mp4`](sim-offset-0.mp4) | Screen recording of one sim run at offset 0 |

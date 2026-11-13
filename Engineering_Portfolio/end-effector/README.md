@@ -14,7 +14,7 @@ The end effector is everything mounted on the end of the UR5e arm that lets it f
 
 ## Requirements it serves
 
-Requirement numbers are from the project proposal (Table 2).
+Requirement numbers are from the project proposal (Table 2). They are broken down into end-effector requirements in [`01_requirements/`](01_requirements/requirements.md).
 
 - **R3**: hold payloads up to 0.45 kg with no slip during motion. This is the main requirement for this subsystem. The tools weigh about 0.15 kg, so 0.45 kg gives a safety factor of 3.
 - **R5**: correct tool picked up in at least 96% of attempts. The magnet has to grip the tool reliably once the arm is in position, and the wrist camera has to see the tool and confirm it is on the magnet.
@@ -25,20 +25,19 @@ Requirement numbers are from the project proposal (Table 2).
 
 ## Status
 
-- The electromagnet, driver circuit and mount are built and have been tested by hand. No formal experiments have been run yet.
+- The electromagnet, driver circuit and mount are built and have been tested by hand. No formal experiments have been run yet. Notes from the test build are in the [mechanical design](04_design/mechanical-design.md#test-build).
+- The magnet is switched from the teach pendant, so the end effector has no code of its own.
 - R3 is not yet verified. The proposal calls for a bench test at 0.45 kg, and the feasibility calculation will set what to expect from it.
 
 ## What's in this folder
 
 | Folder | Contents |
 |---|---|
-| [`01_requirements/`](01_requirements/) | End-effector requirements taken from R2, R3, R5 and R7, each with its rationale and test |
+| [`01_requirements/`](01_requirements/requirements.md) | End-effector requirements E1 to E13, each with its value, parent requirement, source and test |
 | [`02_decisions/`](02_decisions/) | [Electromagnet](02_decisions/electromagnet.md) · [Power architecture](02_decisions/power-architecture.md) |
 | [`03_calculations/`](03_calculations/) | [Magnet feasibility](03_calculations/magnet-feasibility.md): whether the magnet can hold a 1/4 inch (6.35 mm) steel shaft without slipping, checked for vertical and horizontal lift |
 | [`04_design/`](04_design/) | [Mechanical design](04_design/mechanical-design.md): brackets, wire relief clamps, dress clamps and clips, with the STEP files in [`cad/`](04_design/cad/) · [Driver circuit](04_design/driver-circuit.md): KiCad schematic, simulation with and without the flyback diode, photos of the built circuit, and the wire connections |
-| [`05_code/`](05_code/) | Empty for now. The magnet is switched from the teach pendant |
-| [`06_experiments/`](06_experiments/) | Empty for now. Notes from the test build are in the [mechanical design](04_design/mechanical-design.md#test-build) |
-| [`08_references/`](08_references/) | UR5e user manual (v5.8), [ZYE1-P series electromagnet datasheet](https://static.chipdip.ru/lib/802/DOC033802024.pdf) |
+| [`08_references/`](08_references/) | [UR5e user manual (v5.8)](08_references/UR5e_User_Manual_v5.8.pdf), [ZYE1-P series electromagnet datasheet](08_references/ZYE1-P_Electromagnet_Datasheet.pdf) |
 | [`09_figures/`](09_figures/) | Figures used in this section, including the KiCad schematic |
 
 ## Open issues

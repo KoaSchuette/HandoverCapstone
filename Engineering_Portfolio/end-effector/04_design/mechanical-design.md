@@ -8,11 +8,11 @@ The mechanical design holds the electromagnet and the camera on the end of the U
 
 ## Parts
 
-| Part | What it does |
+| Part | Function |
 |---|---|
 | Master bracket | Bolts to the end of the arm. Holds the camera and provides the mounting points for the secondary bracket and the wire relief clamps. |
 | Secondary bracket | Mounts to the master bracket and holds the electromagnet. The space between the two brackets holds the wire connections and the flyback diode. |
-| Wire relief clamps | Mount to the master bracket and clamp the camera wires and the electromagnet's + and − supply wires so that pulling on the cable does not load the connections. The main part is the guide that mounts to the master bracket. The camera and power parts screw together on either side of it to secure the camera wires and the + and − supply wires. |
+| Wire relief clamps | Clamp the camera wires and the electromagnet's + and − supply wires so that pulling on the cable does not load the connections. The main part is a guide that mounts to the master bracket. The camera part and the power part screw together on either side of it. |
 | Board mount | Printed mount for the buck converter and MOSFET driver board. It is the mount shown in Figure 4 of the [driver circuit](driver-circuit.md). |
 | Dress clamps | A full circle with a split in it, tightened onto the robot limb with a bolt. There are two sizes, 75 mm for the upper arm and 85 mm for the lower arm, and two of each are used. |
 | Dress clips | A semicircle that bolts into a dress clamp and secures the wire dressing to the arm. One clip per clamp, in the matching size. |
@@ -27,7 +27,7 @@ The fastener depends on the load the part has to carry. Structural parts, such a
 
 ## Master bracket iterations
 
-The master bracket was printed several times. The changes between prints were small: tolerances on the threads, and the fit of the camera that was ordered. The overall design did not change, and the CAD in [`cad/master_bracket.step`](cad/master_bracket.step) is the final version. The individual prints were not saved, so the photo shows the four variants that were kept.
+The master bracket was printed several times. The changes between prints were small: tolerances on the threads, and the fit of the camera that was ordered. The overall design did not change, and the CAD in [`cad/master_bracket.step`](cad/master_bracket.step) is the final version. The photo shows four of the printed variants.
 
 <img src="../09_figures/master_bracket_iterations.jpg" alt="Four printed variants of the master bracket" width="560">
 
@@ -35,11 +35,11 @@ The master bracket was printed several times. The changes between prints were sm
 
 ## Test build
 
-The current build is a test build, tested by hand. Two things came out of it, both listed in the [open issues](../README.md#open-issues): the wire relief clamps bend the cable sharply, and the magnet warms the PLA mount.
+The current build is a test build that has been tested by hand. Two things came out of it, both listed in the [open issues](../README.md#open-issues): the wire relief clamps bend the cable sharply, and the magnet warms the PLA mount.
 
 ### Wire relief clamp bend
 
-When wrist 3 is at −π, the cable is bent sharply where it leaves the wire relief clamp. The bend is visibly sharp and is hard on the wire and on the connection the clamp is meant to protect.
+With wrist 3 at −π, the cable is bent sharply where it leaves the wire relief clamp. The bend is visible in Figure 4 and is hard on the wire and on the connection the clamp is meant to protect.
 
 <img src="../09_figures/strain_relief_issue.jpg" alt="Cable bent sharply at the wrist" width="500">
 
@@ -49,11 +49,11 @@ When wrist 3 is at −π, the cable is bent sharply where it leaves the wire rel
 
 *Figure 5. The current printed wire relief clamp: the two small parts that screw on either side (left) and the main part that mounts to the master bracket (right).*
 
-An angled exit from the clamp is being considered to give the cable a gentler bend. It has not been designed or tested yet.
+An angled exit from the clamp is being considered to give the cable a gentler bend. It has not yet been designed or tested.
 
 ## Files
 
-| File | What it is |
+| File | Description |
 |---|---|
 | [`cad/master_bracket.step`](cad/master_bracket.step) | Master bracket |
 | [`cad/secondary_bracket.step`](cad/secondary_bracket.step) | Secondary bracket |
@@ -62,4 +62,4 @@ An angled exit from the clamp is being considered to give the cable a gentler be
 | [`cad/dress_clamp_85mm.step`](cad/dress_clamp_85mm.step), [`dress_clip_85mm.step`](cad/dress_clip_85mm.step) | Dress clamp and clip for the 85 mm lower arm |
 | [`cad/supply_isolation_mount.step`](cad/supply_isolation_mount.step) | Board mount for the buck converter and MOSFET driver board |
 
-Each file is one part exported from Onshape as STEP. The overall assembly is not exported, so Figure 1 is the only view of the parts together.
+Each file is a single part exported from Onshape in STEP format.

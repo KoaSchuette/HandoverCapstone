@@ -80,7 +80,7 @@ The margin is $F_n / F_{required}$, with $F_n = 28.4\ \mathrm{N}$. The check pas
 
 ## Sources
 
-- [ZYE1-P series electro holding magnets datasheet](https://static.chipdip.ru/lib/802/DOC033802024.pdf): 400 N rating.
+- [ZYE1-P series electro holding magnets datasheet](../08_references/ZYE1-P_Electromagnet_Datasheet.pdf): 400 N rating.
 - [Magnet Energy: Maxwell magnetic force equation](https://www.magnetnrg.com/?p=370): $F = B^2 A / 2\mu_0$.
 - [US patent 10547218, background on electromagnets](https://image-ppubs.uspto.gov/dirsearch-public/print/downloadPdf/10547218): iron-core field limited to about 1.6 T to 2 T.
 - [Misumi: coefficient of friction](https://us.misumi-ec.com/blog/coefficient-of-friction/): 0.5 to 0.8 for clean, dry steel on steel.

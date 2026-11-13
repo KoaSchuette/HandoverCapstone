@@ -18,7 +18,7 @@ The Collaborative Handover Assistant is a robotic tool assistant for manufacturi
 
 ### Headline requirements
 
-Full list, justifications and test plans are in each subsystem's `01_requirements/` folder and the project proposal.
+Full list, justifications and test plans are in each subsystem's `01_requirements/` folder and the [project proposal](deliverables/project-proposal.pdf).
  
 | ID | Requirement |
 |---|---|
@@ -40,7 +40,8 @@ The portfolio is organized by subsystem. Each subsystem uses the folders below, 
 Engineering_Portfolio/
 ├── README.md         this file
 ├── system/               whole-system design: task state machine, node architecture (plan, not built yet)
-├── 00_project/           risk register, budget, schedule, project proposal (not created yet)
+├── 00_project/           risk register, budget, schedule (not created yet)
+├── deliverables/         course deliverables as they are submitted
 ├── end-effector/
 ├── tool-rack/
 ├── voice-detection/
@@ -62,7 +63,7 @@ Folders a subsystem can contain:
 ├── 07_data/              raw and processed data, including test videos
 ├── 08_references/        datasheets, manuals, papers
 ├── 09_figures/           polished figures used in reports and presentations
-└── 10_deliverables/      reports and presentations for this subsystem
+└── 10_deliverables/      reports and presentations specific to this subsystem. Whole-team course deliverables go in the top-level `deliverables/` folder
 ```
  
 ## Subsystems
@@ -72,11 +73,15 @@ Start with `system`, then the subsystem you need. Each one has a start page with
 | Subsystem | Owner | Status | Scope | Start page |
 |---|---|---|---|---|
 | `system` | Koa & Ryan Donen | Design plan; FSM not built | The complete cycle: task state machine, ROS node architecture and implementation status | [system](system/README.md) |
-| `end-effector` | Ryan Donen | Prototype Built; Testing phase | Electromagnet end effector: driver and power circuit, brackets, wire clamps, control box board mount | [end-effector](end-effector/README.md) |
+| `end-effector` | Ryan Donen | Prototype Built; Testing phase | Electromagnet end effector: driver and power circuit, brackets, wire relief clamps, driver circuit board mount | [end-effector](end-effector/README.md) |
 | `tool-rack` | Tanner | Waiting For Parts  | Pegboard tool rack and return zone: CAD and build | [tool-rack](tool-rack/README.md) |
-| `voice-detection` | Ryan Henderson | Early: Diction model testing | Command recognition model | Not written yet |
-| `tool-pickup` | Tanner & Ryan Donen | Model Trainning | Identifying the requested tool and picking it up from the rack or return zone | [tool-pickup](tool-pickup/README.md) |
+| `voice-detection` | Ryan Henderson | Early: Diction model testing | Command recognition model | [voice-detection](voice-detection/README.md) |
+| `tool-pickup` | Tanner & Ryan Donen | Calibration done | Identifying the requested tool and picking it up from the rack or return zone | [tool-pickup](tool-pickup/README.md) |
 | `handover` | Koa | Runs on the real UR5e (commit-once); moving to real-time planning | Robot-to-human handoff: approach, slowdown and release | [handover](handover/README.md) |
 | `skeletal-tracking` | Koa | Early: one pose model tested | Safety: tracking people's bodies with the RealSense camera so the arm can stop if someone is in its way | [skeletal-tracking](skeletal-tracking/README.md) |
 
 Add new names to this table before creating folders for them. A new subsystem starts with a `README.md` (overview, status, how it works, testing so far, future work, and links into its folders) and adds the `01_` to `10_` folders when it has something to put in them.
+
+## Course deliverables
+
+The [`deliverables/`](deliverables/) folder holds the documents the team submits for the course, kept at the same level as the subsystem folders because they belong to the whole project. Each one is added when it is completed, and the folder's [README](deliverables/README.md) lists them. So far it holds the [project proposal](deliverables/project-proposal.pdf).

@@ -18,7 +18,7 @@ The electromagnet is rated 12 V DC at 0.84 A (see [electromagnet](electromagnet.
 | Tool I/O, 12 V supply | The 12 V supply is rated 11.5 to 12.5 V at 1000 mA typical (2000 mA peak for up to 1 s, 10% duty), above the magnet's 0.84 A. No converter needed. | Needs a Lumberg M8 8-pin cable, which would have to be bought. The power drops to 0 V and the digital outputs go high impedance on an emergency stop. The tool digital outputs are not current-limited. 0.84 A is 84% of the typical rating. |
 | **Controller I/O, 24 V supply with buck converter and MOSFET** (chosen) | The magnet keeps its state through an emergency stop. No M8 cable needed. The internal supply is rated for 2 A and the magnet needs about 0.42 A of it. Wiring to the control box is needed anyway for the USB camera. | Needs a buck converter and a separate switching circuit. |
 
-The tool I/O figures are from section 5.7 of the UR5e user manual (v5.8), and the controller I/O figures from section 5.4.
+The tool I/O figures are from section 5.7 of the [UR5e user manual (v5.8)](../08_references/UR5e_User_Manual_v5.8.pdf), and the controller I/O figures from section 5.4.
 
 ## Why
 
@@ -30,7 +30,7 @@ The manual states that the tool digital outputs are not current-limited and make
 
 ### 12 V and the XL4016
 
-The magnet is rated for 12 V and the controller supply is 24 V, so a step-down was needed. The XL4016 module was on hand.
+The magnet is rated for 12 V and the controller supply is 24 V, so a step-down was needed. The XL4016 module was available.
 
 ### Low-side MOSFET
 

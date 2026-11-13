@@ -26,7 +26,6 @@ Tool pickup is the rack → robot step: the camera on the robot's wrist finds th
 | Folder | Contents |
 |---|---|
 | [`02_decisions/`](02_decisions/) | [Camera](02_decisions/camera.md) |
-| [`03_calculations/`](03_calculations/) | Field of view and mm-per-pixel worksheet |
 | [`06_experiments/`](06_experiments/) | [Intrinsic calibration](06_experiments/intrinsic-calibration/) |
 | Code | [`src/handover_eye_in_hand/`](https://github.com/KoaSchuette/HandoverCapstone/tree/ffa9aff/src/handover_eye_in_hand): capture and calibration scripts, and the calibration result |
 

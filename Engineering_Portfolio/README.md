@@ -73,9 +73,9 @@ Start with `system`, then the subsystem you need. Each one has a start page with
 | Subsystem | Owner | Status | Scope | Start page |
 |---|---|---|---|---|
 | `system` | Koa & Ryan Donen | Design plan; FSM not built | The complete cycle: task state machine, ROS node architecture and implementation status | [system](system/README.md) |
-| `end-effector` | Ryan Donen | Prototype Built; Testing phase | Electromagnet end effector: driver and power circuit, brackets, wire clamps, control box board mount | [end-effector](end-effector/README.md) |
+| `end-effector` | Ryan Donen | Prototype Built; Testing phase | Electromagnet end effector: driver and power circuit, brackets, wire relief clamps, driver circuit board mount | [end-effector](end-effector/README.md) |
 | `tool-rack` | Tanner | Waiting For Parts  | Pegboard tool rack and return zone: CAD and build | [tool-rack](tool-rack/README.md) |
-| `voice-detection` | Ryan Henderson | Early: Diction model testing | Command recognition model | Not written yet |
+| `voice-detection` | Ryan Henderson | Early: Diction model testing | Command recognition model | [voice-detection](voice-detection/README.md) |
 | `tool-pickup` | Tanner & Ryan Donen | Calibration done | Identifying the requested tool and picking it up from the rack or return zone | [tool-pickup](tool-pickup/README.md) |
 | `handover` | Koa | Runs on the real UR5e (commit-once); moving to real-time planning | Robot-to-human handoff: approach, slowdown and release | [handover](handover/README.md) |
 | `skeletal-tracking` | Koa | Early: one pose model tested | Safety: tracking people's bodies with the RealSense camera so the arm can stop if someone is in its way | [skeletal-tracking](skeletal-tracking/README.md) |

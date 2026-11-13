@@ -4,7 +4,7 @@
 
 The end effector is everything mounted on the end of the UR5e arm that lets it find, grip and release a tool, plus the systems needed to run it. It has three parts:
 
-- **End-of-arm tooling.** A 50 mm electromagnet (ZYE1-P49, rated 400 N, 12 V DC, 0.84 A) that grips the steel end of a screwdriver, and the wrist-mounted eye-in-hand camera used to find tools on the rack and confirm the tool is on the magnet.
+- **End-of-arm tooling.** A 49 mm electromagnet (ZYE1-P49, rated 400 N, 12 V DC, 0.83 A) that grips the steel end of a screwdriver, and the wrist-mounted eye-in-hand camera used to find tools on the rack and confirm the tool is on the magnet.
 - **Power and drive circuit.** The robot control box supplies 24 V, a buck converter steps it down to the magnet's 12 V, and a MOSFET switches the magnet on and off. A controller digital output drives the MOSFET, and a flyback diode across the magnet absorbs the voltage spike when it switches off.
 - **Wire management and dressing.** Wire relief clamps, dress clamps and clips carry the magnet and camera wiring along the arm without loading the connections, and a printed mount holds the driver circuit boards.
 

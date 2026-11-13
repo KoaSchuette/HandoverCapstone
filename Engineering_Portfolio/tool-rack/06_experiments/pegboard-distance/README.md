@@ -3,27 +3,21 @@
 How does the pegboard's distance from the robot change the pickup to handover time, and how close can it go? The board sits on adjustable arms (see [adjustable arms](../../02_decisions/adjustable-arms.md)), so this study set where to start them. It feeds requirement **R1** (delivery and return each ≤ 15 s).
 
 ![Pickup to handover time vs pegboard offset](time_vs_offset.png)
-*Figure 1. Measured and predicted pickup to handover time against board offset. Shaded: pickup unreachable. Top axis: the arm length that gives each offset (405 mm + offset).*
+*Figure 1. Pickup to handover time against board offset, from the sim. Shaded: pickup unreachable. Top axis: the arm length that gives each offset (405 mm + offset).*
 
-## Prediction (made before the runs)
-
-Pilz PTP times each move by the joint that turns furthest, using a trapezoidal velocity profile at 30% of the joint limits. Worked calculation: [PTP timing worksheet](../../03_calculations/ptp_timing_prediction.pdf).
-
-| Offset (m) | -0.07 | −0.05 | 0 | +0.05 | +0.10 | +0.15 | +0.20 |
-|---|---|---|---|---|---|---|---|
-| Predicted (s) | 2.81 | 3.14 | 3.47 | 3.64 | 3.74 | 3.82 | 3.87 |
 
 ## Method
 
-- **Sim:** the full Gazebo + MoveIt cell ([`handover_cell`](https://github.com/KoaSchuette/HandoverCapstone/tree/9269faa/src/handover_cell)), relaunched for each offset with the board moved in the model:
+- **Sim:** the full Gazebo + MoveIt cell ([`handover_cell`](https://github.com/KoaSchuette/HandoverCapstone/tree/7ac949a/src/handover_cell)), relaunched for each offset with the board moved in the model:
   ```bash
   PEGBOARD_OFFSET=0.1 ros2 launch handover_cell cell_sim.launch.py
   PEGBOARD_OFFSET=0.1 ros2 run handover_cell handover_demo.py
   ```
-- **Script:** [`handover_demo.py`](https://github.com/KoaSchuette/HandoverCapstone/blob/9269faa/src/handover_cell/scripts/handover_demo.py) sends three joint goals (pickup → handover → return) with Pilz PTP at 30% speed, executes each, and logs the time and the slowest joint to a CSV.
+- **Script:** [`handover_demo.py`](https://github.com/KoaSchuette/HandoverCapstone/blob/7ac949a/src/handover_cell/scripts/handover_demo.py) sends three joint goals (pickup → handover → return) with Pilz PTP at 30% speed, executes each, and logs the time and the slowest joint to a CSV.
 - **Pickup pose:** tool 20 cm in front of the board centre, facing it. Joint angles for each offset came from an offline IK model and were checked in the sim with `tf2_echo pegboard_face tool0`, which reads (0, −0.200, 0).
 - **Handover pose:** fixed for every offset (joint values in the script).
 - **Offsets:** −0.10 to +0.20 m in 5 cm steps, plus attempts at −0.07 showing that is almost limit.
+- **Video:** [one full run at the CAD position](simulation-run.mp4) (pickup → handover → return).
 
 ## Results
 
@@ -40,7 +34,7 @@ Pilz PTP times each move by the joint that turns furthest, using a trapezoidal v
 
 Data: [`cycle_times.csv`](cycle_times.csv)
 
-- **Every measured time is within 0.005 s of the prediction.** The timing model fully explains the result: a closer board means less base rotation to reach the operator.
+- **Closer is faster because the base turns less.** The base turns furthest at every offset, so it sets the move time; a closer board means less base rotation to reach the operator.
 - **Return = handover** at every offset. PTP time depends only on how far each joint turns, which is the same in both directions. That's a sanity check that passed.
 - **Per tool delivered and returned,** the moves take 6.27 s at −0.05 m and 7.63 s at +0.15 m. Moving 20 cm costs 1.36 s per tool.
 - **The gain shrinks with distance:** and is steepest near the reach limit: 0.33 s from −0.07 to −0.05, then 0.34, 0.17, 0.11, 0.07 and 0.05 s per step.
@@ -57,10 +51,6 @@ Confirmed in the sim at −0.10 m: a direct IK request returned error −31 (no 
 
  ![Pickup at −0.07 m](pickup_-0.07.png)
  *Pickup at −0.07 m: the arm is folded almost back on itself, with the wrist 5 mm outside the reach limit. The sim arm has no gripper or camera, so the real clearance would be smaller.*
-
-## What didn't match: the first prediction
-
-An earlier, rougher model assumed full speed, a 15 cm pickup standoff and a different handover pose. It predicted that **−0.10 m would be fastest** and that **wrist 2** would be the slowest joint. Both were wrong: −0.10 m is past the reach limit, and with the real handover pose the base rotation dominates. Rebuilding the model with the actual poses and speed is what made the second prediction accurate.
 
 ## Limitations
 
@@ -84,3 +74,4 @@ The pickup angles were a hand-made table, one row per offset. Defining the picku
 | [`plot_times.py`](plot_times.py) | Makes Figure 1 from `cycle_times.csv`: `python3 plot_times.py` |
 | `time_vs_offset.png` | Figure 1 |
 | [`handover_demo.py`](https://github.com/KoaSchuette/HandoverCapstone/blob/7ac949a/src/handover_cell/scripts/handover_demo.py) | Script that ran the study |
+| [`simulation-run.mp4`](simulation-run.mp4) | Screen recording of one sim run at offset 0 |

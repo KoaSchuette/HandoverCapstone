@@ -226,3 +226,5 @@ __marimo__/
 
 # Streamlit
 .streamlit/secrets.toml
+src/handover_eye_in_hand/calibration/images/
+src/handover_eye_in_hand/calibration/undistorted_check.png

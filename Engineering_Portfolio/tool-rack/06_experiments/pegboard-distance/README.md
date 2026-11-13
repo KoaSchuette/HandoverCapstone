@@ -74,4 +74,4 @@ The pickup angles were a hand-made table, one row per offset. Defining the picku
 | [`plot_times.py`](plot_times.py) | Makes Figure 1 from `cycle_times.csv`: `python3 plot_times.py` |
 | `time_vs_offset.png` | Figure 1 |
 | [`handover_demo.py`](https://github.com/KoaSchuette/HandoverCapstone/blob/7ac949a/src/handover_cell/scripts/handover_demo.py) | Script that ran the study |
-| [`simulation-run.mp4`](sim-offset-0.mp4) | Screen recording of one sim run at offset 0 |
+| [`simulation-run.mp4`](simulation-run.mp4) | Screen recording of one sim run at offset 0 |

@@ -16,6 +16,7 @@ from rclpy.action import ActionClient
 from control_msgs.action import FollowJointTrajectory
 from trajectory_msgs.msg import JointTrajectory, JointTrajectoryPoint
 from builtin_interfaces.msg import Duration
+from sensor_msgs.msg import JointState
 
 
 class Planner_node(Node):
@@ -36,10 +37,15 @@ class Planner_node(Node):
 
         # trigger service
         self.srv = self.create_service(Trigger, 'start_handover', self.handover_callback,callback_group=self.srv_group)
+        self.srv_rukig = self.create_service(Trigger, 'start_rukig_handover', self.rukig_handover_callback,callback_group=self.srv_group)
 
         # hand tracking
         self.right_hand = None
         self.hand_sub = self.create_subscription(Hand, '/hand/right', self.hand_msg_callback, 10)
+
+        #get joint states from real or sim controller
+        self.joint_states = None
+        self.joint_states_sub = self.create_subscription(JointState,'/joint_states', self.joint_states_callback,10)
 
         self.declare_parameter('controller_name', 'scaled_joint_trajectory_controller')
         controller_name = self.get_parameter('controller_name').value
@@ -47,6 +53,9 @@ class Planner_node(Node):
                                         f'/{controller_name}/follow_joint_trajectory')
         self.joint_names = ['shoulder_pan_joint', 'shoulder_lift_joint', 'elbow_joint',
                             'wrist_1_joint', 'wrist_2_joint', 'wrist_3_joint']
+
+    def joint_states_callback(self, msg):
+        self.joint_states = msg
     def send_request(self, position, orientation):
         """
         Send bezier position and SLERP rotation at time (s) to get back joint solution at time (s)
@@ -201,7 +210,7 @@ class Planner_node(Node):
     
     def wait_for_steady_hand(self, timeout=10.0):
         window = deque(maxlen=10)
-        speed_threshold = 0.05 
+        speed_threshold = 0.10 # change me 
         max_age = 0.2
         last_stamp = None
 
@@ -218,8 +227,11 @@ class Planner_node(Node):
                     window.clear()
                 elif is_new:
                     v = hand.palm_velocity
-                    window.append(np.linalg.norm([v.x, v.y, v.z]))
+                    speed = np.linalg.norm([v.x, v.y, v.z])
+                    window.append(speed)
                     last_stamp = hand.header.stamp
+                    self.get_logger().info(
+                        f'speed {speed:.3f} m/s  avg {sum(window)/len(window):.3f}  n={len(window)}')     # comment me out later   
                     if len(window) == window.maxlen and sum(window) / len(window) < speed_threshold:
                         return hand
             time.sleep(0.05)

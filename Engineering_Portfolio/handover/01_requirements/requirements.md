@@ -2,7 +2,7 @@
 
 These requirements break the project requirements (R1, R2, R6 in the [portfolio start page](../../README.md)) down to the handover leg: from "robot is holding the tool at the staging pose" to "operator has the tool". Picking the tool up is `tool-pickup`; holding it securely (R3) is `end-effector`.
 
-Numbers either trace to a source in the **Source** column or are marked **TBD**. Values that come from current code are tuning values, not requirements, until a test or source backs them.
+
 
 ## Requirements
 
@@ -25,6 +25,6 @@ Numbers either trace to a source in the **Source** column or are marked **TBD**.
 ## Sources
 
 1. F. Biagi, D. Onfiani, S. Silenzi, C. Iani, L. Biagiotti, "Adaptive vs. Static Robot-to-Human Handover: A Study on Orientation and Approach Direction," arXiv:2604.22378, Apr. 2026. Sections III-C and III-D.
-2. Universal Robots, UR5e datasheet, force sensing (tool flange): range ±50.0 N, precision ±3.5 N, accuracy ±4.0 N. https://cdn.elmark.com.pl/34833
 
-> **Check:** H5 assumes the pull is measured with the UR5e's built-in tool flange force/torque sensor. If the end effector uses a separate sensor, replace source [2] with its datasheet.
+
+

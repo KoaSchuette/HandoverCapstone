@@ -151,6 +151,7 @@ $$
 \end{cases}
 $$
 
+
 From the time law, $s = 0.7$ at $\tau \approx 0.61$, so with $T = 2.0$ s the tool reaches its final orientation about 1.2 s into the motion and only translates for the last 0.8 s. This matches the paper's intent that the orientation settles before the tool reaches the hand [1]. (Right now $\mathbf{q}_{\text{end}} = \mathbf{q}_{\text{start}}$, so nothing rotates yet.)
 
 ## 6. Leap to base transform

@@ -6,7 +6,7 @@ from rclpy.node import Node
 from std_srvs.srv import Trigger
 from moveit_msgs.srv import GetPositionIK
 from tf2_ros import Buffer, TransformListener
-from handover_motion.helper import time_law, bezier, find_pull_points, find_orientation
+from handover_motion.bezier_planner import plan_bezier
 from handover_interfaces.msg import Hand
 from collections import deque
 from sensor_msgs.msg import JointState
@@ -16,7 +16,6 @@ from rclpy.action import ActionClient
 from control_msgs.action import FollowJointTrajectory
 from trajectory_msgs.msg import JointTrajectory, JointTrajectoryPoint
 from builtin_interfaces.msg import Duration
-from sensor_msgs.msg import JointState
 
 
 class Planner_node(Node):
@@ -54,17 +53,110 @@ class Planner_node(Node):
         self.joint_names = ['shoulder_pan_joint', 'shoulder_lift_joint', 'elbow_joint',
                             'wrist_1_joint', 'wrist_2_joint', 'wrist_3_joint']
 
+    # ------------------------------------------------------------------
+    # subscriber callbacks
+    # ------------------------------------------------------------------
     def joint_states_callback(self, msg):
         self.joint_states = msg
+
+    def hand_msg_callback(self, msg):
+        self.right_hand = msg
+
+    # ------------------------------------------------------------------
+    # trigger callbacks (one per planner)
+    # ------------------------------------------------------------------
+    def handover_callback(self, request , response): #trigger sequence when this fires start
+        """Bezier planner (batch): plan whole path, IK every sample, send once."""
+        hand_steady = False
+        while not hand_steady:
+            # dont need fallback OTP point yet later TODO
+            hand = self.wait_for_steady_hand()
+            if hand is not None:
+                hand_steady = True
+                # for now waiting till it sees a hand
+            time.sleep(0.05)
+
+        p_0, q_start, palm_base, normal_base, q_palm = self.get_hand_in_base(hand)
+        # q_end = q_palm
+        q_end = q_start
+
+        times, positions, orientations = plan_bezier(p_0, q_start, q_end, palm_base, normal_base)
+        self.get_logger().info(
+            f'p_0 {np.round(p_0, 3)}  p_3 {np.round(positions[-1], 3)}  d_a {np.round(-normal_base, 3)}')
+
+        solutions, fail_t = self.solve_ik_path(times, positions, orientations)
+        if solutions is None:
+            response.success = False
+            response.message = f'IK failed at t = {fail_t:.2f} s'
+            return response
+
+        velocity, error = self.check_joint_limits(times, solutions)
+        if error is not None:
+            self.get_logger().warn(error)
+            response.success = False
+            response.message = error
+            return response
+
+        self.get_logger().info(f'IK ok for all {len(solutions)} samples')
+        self.send_trajectory(times, solutions, velocity)
+        response.success = True
+        response.message = 'trajectory sent'
+        return response
+
+    def rukig_handover_callback(self, request, response):  # TESTING
+        """Live planner (streaming): TODO SETUP block, then start timer."""
+        response.success = False
+        response.message = 'not implemented'
+        return response
+
+    # ------------------------------------------------------------------
+    # shared helpers (any planner can use these)
+    # ------------------------------------------------------------------
+    def get_hand_in_base(self, hand):
+        """
+        puts hand position in base link frame
+        """
+        # first when trigger is set off grab curent position of held tool
+        tool_tf = self.tf_buffer.lookup_transform('base_link', 'held_tool', rclpy.time.Time())
+        leap_tf = self.tf_buffer.lookup_transform('base_link', 'leap_link', rclpy.time.Time())
+        #rotation matric given from sim
+        r = leap_tf.transform.rotation
+        R_leap = Rotation.from_quat([r.x, r.y, r.z, r.w])
+        #sensor data
+        o = hand.palm_pose.orientation
+        R_palm = Rotation.from_quat([o.x, o.y, o.z, o.w])
+
+        #pull data from tool orientation and position
+        t = tool_tf.transform
+        q_start = np.array([t.rotation.x, t.rotation.y, t.rotation.z, t.rotation.w])
+        p_0 = np.array([t.translation.x, t.translation.y, t.translation.z])
+
+        #translation from leap to base
+        t_leap = leap_tf.transform.translation
+        offset = np.array([t_leap.x, t_leap.y, t_leap.z])
+
+        # raw leap data
+        pp = hand.palm_pose.position
+        palm_leap = np.array([pp.x, pp.y, pp.z])
+        n = hand.palm_normal
+        normal_leap = np.array([n.x, n.y, n.z])
+
+        # translate into base_link
+        palm_base = R_leap.apply(palm_leap) + offset
+        normal_base = R_leap.apply(normal_leap)
+        q_palm = (R_leap * R_palm).as_quat()
+
+        return p_0, q_start, palm_base, normal_base, q_palm
+
     def send_request(self, position, orientation):
         """
-        Send bezier position and SLERP rotation at time (s) to get back joint solution at time (s)
+        sends position to ik solver form moveit returns in joint state
         """
         self.req.ik_request.group_name = 'manipulator'
         self.req.ik_request.pose_stamped.header.frame_id = 'base_link'
         self.req.ik_request.avoid_collisions = True
         self.req.ik_request.timeout.sec = 0
-        self.req.ik_request.timeout.nanosec = 50_000_000   # 0.05 s 
+        self.req.ik_request.timeout.nanosec = 50_000_000   # 0.05 s
         self.req.ik_request.pose_stamped.pose.position.x = float(position[0])
         self.req.ik_request.pose_stamped.pose.position.y = float(position[1])
         self.req.ik_request.pose_stamped.pose.position.z = float(position[2])
@@ -81,94 +173,31 @@ class Planner_node(Node):
 
         return result.solution.joint_state
 
-    def hand_msg_callback(self, msg):
-        self.right_hand = msg
-    def handover_callback(self, request , response): #trigger sequence when this fires start 
-        hand_steady = False
-        while not hand_steady:
-            # dont need fallback OTP point yet later TODO
-            hand = self.wait_for_steady_hand()
-            if hand is not None:
-                hand_steady = True
-                # for now waiting till it sees a hand
-        
-            time.sleep(0.05)
-        
-    
-
-        # first when trigger is set off grab curent position of held tool for starting p0 of bezier curve
-        tool_tf = self.tf_buffer.lookup_transform('base_link', 'held_tool', rclpy.time.Time())
-        leap_tf = self.tf_buffer.lookup_transform('base_link', 'leap_link', rclpy.time.Time())
-        #rotation matric given from sim
-        r = leap_tf.transform.rotation
-        R_leap = Rotation.from_quat([r.x, r.y, r.z, r.w])
-        #sensor data
-        o = hand.palm_pose.orientation
-        R_palm = Rotation.from_quat([o.x, o.y, o.z, o.w])
-
-        
-        #pull data from hand and tool orientation for q_start and q_end
-        q_start = np.array([tool_tf.transform.rotation.x,tool_tf.transform.rotation.y,tool_tf.transform.rotation.z,tool_tf.transform.rotation.w])
-        # q_end = (R_leap * R_palm).as_quat()
-        q_end = q_start
-        #translation from leap to base
-        t_leap = leap_tf.transform.translation
-        offset = np.array([t_leap.x, t_leap.y, t_leap.z])
-
-        # raw leap data
-        pp = hand.palm_pose.position
-        palm_leap = np.array([pp.x, pp.y, pp.z])
-        n = hand.palm_normal
-        normal_leap = np.array([n.x, n.y, n.z])
-
-        # translate into base_link
-        palm_base = R_leap.apply(palm_leap) + offset
-        normal_base = R_leap.apply(normal_leap)
-
-        #pull data from hand and tool position for p0 and p1
-        p_0 = np.array([tool_tf.transform.translation.x, tool_tf.transform.translation.y, tool_tf.transform.translation.z])
-        p_3 = palm_base + 0.01 * normal_base 
-        
-        # Need help with these dont know how to grab hand vector or robot
-        d_a = -normal_base
-        d_s = p_3 - p_0
-        self.get_logger().info(f'p_0 {np.round(p_0, 3)}  p_3 {np.round(p_3, 3)}  d_a {np.round(d_a, 3)}')
-        #TUNING VALUES CHANGED LATER BASED ON TEST
-        a_s = 0.2
-        a_a = 0.2
-
-        #find Bezier points
-        points = find_pull_points(p_0, p_3, d_s, d_a, a_s, a_a)
-
-        #CHANGE VALUE FOR HANDOFF DURATION
-        duration = 2.0
-       
-        #define sample rate
-        #define sample rate
-        num_samples = 50
-       
-        times = np.linspace(0.0, duration, num_samples)
-        
-        # TO IK solver
+    def solve_ik_path(self, times, positions, orientations):
+        """
+        uses send_request over en entire path returns the solution to be sent the controller
+        """
+        # clear seed so first IK seeds from MoveIt's current state
         self.req.ik_request.robot_state.joint_state = JointState()
-        solutions = np.zeros((num_samples, 6)) 
-        for i,t in enumerate(times):
-            s = time_law(t,duration)
-            position = bezier(points, s)
-            orientation = find_orientation(q_start,q_end,s,0.7)
-
-            joint_state = self.send_request(position, orientation)
+        solutions = np.zeros((len(times), 6))
+        for i, t in enumerate(times):
+            joint_state = self.send_request(positions[i], orientations[i])
             if joint_state is None:
-                response.success = False
-                response.message = f'IK failed at t = {t:.2f} s'
-                return response
+                return None, t
             angles = dict(zip(joint_state.name, joint_state.position))
             solutions[i] = [angles[name] for name in self.joint_names]
+        return solutions, None
 
-        # find velocity
-        max_speed = 6# rad/s, joint speed
-        max_accel = 10# rad/s^2, placeholder
-        sample_dt = duration / (num_samples - 1)# time between neighbouring samples
+    def check_joint_limits(self, times, solutions, max_speed=6.0, max_accel=10.0):
+        """
+        Checks if joint limits are reach and path is valid 
+        also prevent large jerks
+        Finite-difference joint velocity and check speed / accel limits.
+        max_speed rad/s, max_accel rad/s^2 (placeholder)
+        Returns (velocity (N,6), None) or (velocity, error message)
+        """
+        num_samples = len(times)
+        sample_dt = (times[-1] - times[0]) / (num_samples - 1)# time between neighbouring samples
 
         velocity = np.zeros((num_samples, 6))
         dq = solutions[2:] - solutions[:-2]
@@ -179,19 +208,14 @@ class Planner_node(Node):
         for i in range(len(velocity) - 1):
             joint_speed = np.abs(velocity[i]).max()
             joint_accel = np.abs((velocity[i + 1] - velocity[i]) / sample_dt).max()
-
             if joint_accel > max_accel:
-                self.get_logger().warn(f'Joint acceleration too high: {joint_accel:.2f} rad/s^2 at sample {i}')
-                response.success = False
-                response.message = f'Joint acceleration too high: {joint_accel:.2f} rad/s^2 at sample {i}'
-                return response
+                return velocity, f'Joint acceleration too high: {joint_accel:.2f} rad/s^2 at sample {i}'
             if joint_speed > max_speed:
-                self.get_logger().warn(f'Joint speed too high: {joint_speed:.2f} rad/s at sample {i}')
-                response.success = False
-                response.message = f'Joint speed too high: {joint_speed:.2f} rad/s at sample {i}'
-                return response
+                return velocity, f'Joint speed too high: {joint_speed:.2f} rad/s at sample {i}'
+        return velocity, None
 
-        self.get_logger().info(f'IK ok for all {len(solutions)} samples')
+    def send_trajectory(self, times, solutions, velocity):
+        """Pack joint solutions into a JointTrajectory and send to the controller."""
         traj = JointTrajectory()
         traj.joint_names = self.joint_names
         for i, t in enumerate(times):
@@ -200,26 +224,22 @@ class Planner_node(Node):
             point.velocities = velocity[i].tolist()
             point.time_from_start = Duration(sec=int(t), nanosec=int((t - int(t)) * 1e9))
             traj.points.append(point)
-        
+
         goal = FollowJointTrajectory.Goal()
         goal.trajectory = traj
         self.traj_client.send_goal_async(goal)
-        response.success = True
-        response.message = 'trajectory sent'
-        return response
-    
+
     def wait_for_steady_hand(self, timeout=10.0):
         window = deque(maxlen=10)
-        speed_threshold = 0.10 # change me 
+        speed_threshold = 0.10 # change me
         max_age = 0.2
         last_stamp = None
 
-
-        start = time.monotonic()    
+        start = time.monotonic()
         while time.monotonic() - start < timeout:
             hand = self.right_hand
             if hand is not None:
-                
+
                 age = (self.get_clock().now() - rclpy.time.Time.from_msg(hand.header.stamp)).nanoseconds / 1e9
                 #check for new hand msg
                 is_new = hand.header.stamp != last_stamp
@@ -231,12 +251,14 @@ class Planner_node(Node):
                     window.append(speed)
                     last_stamp = hand.header.stamp
                     self.get_logger().info(
-                        f'speed {speed:.3f} m/s  avg {sum(window)/len(window):.3f}  n={len(window)}')     # comment me out later   
+                        f'speed {speed:.3f} m/s  avg {sum(window)/len(window):.3f}  n={len(window)}')     # comment me out later
                     if len(window) == window.maxlen and sum(window) / len(window) < speed_threshold:
                         return hand
             time.sleep(0.05)
         return None
-def main():   
+
+
+def main():
     rclpy.init()
     node = Planner_node()
     executor = MultiThreadedExecutor()

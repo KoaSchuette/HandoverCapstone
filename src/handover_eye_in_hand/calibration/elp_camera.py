@@ -25,7 +25,7 @@ import cv2
 def pick_backend():
     system = platform.system()
     if system == "Windows":
-        return cv2.CAP_DSHOW      # faster startup and better control than MSMF
+        return cv2.CAP_DSHOW    
     if system == "Linux":
         return cv2.CAP_V4L2
     if system == "Darwin":
@@ -111,6 +111,7 @@ def main():
     p.add_argument("--fourcc", default="MJPG",
                    help="pixel format: MJPG (default) or YUY2; use '' to leave unchanged")
     p.add_argument("--list", action="store_true", help="list available cameras and exit")
+    p.add_argument("--flip", action=argparse.BooleanOptionalAction, default=True, help="rotate every frame 180 deg (camera is mounted upside down); --no-flip to disable")
     args = p.parse_args()
 
     if args.list:
@@ -179,6 +180,8 @@ def main():
                 continue
             failures = 0
             reopens = 0
+            if args.flip:
+                frame = cv2.rotate(frame, cv2.ROTATE_180)
 
             # Measure real frame rate, updated about once per second.
             frame_count += 1

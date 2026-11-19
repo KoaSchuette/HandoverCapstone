@@ -15,6 +15,7 @@ rosidl_generate_interfaces(${PROJECT_NAME}
   "msg/Finger.msg"
   "msg/Hand.msg"
   "msg/Skeleton.msg"
+  "srv/RackPickupTrigger.srv"
   DEPENDENCIES geometry_msgs std_msgs
 )
 

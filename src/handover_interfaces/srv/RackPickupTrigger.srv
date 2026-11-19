@@ -1,0 +1,9 @@
+# Request:
+# Function { 0 = pickup, }
+uint8 function
+# Subject { 0 = R, 1 = G, 2 = B, }
+uint8 subject
+---
+# Response:
+bool success
+string message

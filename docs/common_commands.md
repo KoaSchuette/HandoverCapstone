@@ -119,14 +119,20 @@ ros2 launch handover_bringup handover.launch.py mode:=mock robot_ip:= use_rviz:=
 # Bezier (needs scaled_joint_trajectory_controller):
 ros2 service call /start_handover std_srvs/srv/Trigger
 
-# live Ruckig (needs forward_position_controller, the default):
+# live Ruckig (needs forward_position_controller, the default).
+# MOCK ONLY, once after every launch: nudge the arm so Servo starts (see below)
+ros2 topic pub --once /forward_position_controller/commands std_msgs/msg/Float64MultiArray "{data: [1.5708, -2.05, 2.15, -0.1, 1.55, 0.001]}"
 ros2 service call /start_rukig_handover std_srvs/srv/Trigger
 
 # stop the live Ruckig handover:
 ros2 service call /stop_handover std_srvs/srv/Trigger
 ```
 
-The Ruckig service name is spelled `rukig` in `planner_node.py`. If that gets renamed, update this command. Ruckig also stops itself if the hand leaves the Ultraleap's view; the planner logs `stale msg detected`.
+The Ruckig service name is spelled `rukig` in `planner_node.py`. If that gets renamed, update this command.
+
+The live Ruckig handover sends poses to MoveIt Servo, which moves the arm. **In mock, nudge the arm once after every launch, before the first live handover.** Servo only starts once it has seen the joints change, and a mock arm standing still never changes. Until then the launch terminal prints `Waiting to receive robot state update.` every second and the arm won't move, even though `/start_rukig_handover` replies `success=True`. Send the nudge command above and wait for those messages to stop. The nudge values are the `home` pose with wrist 3 moved 0.001 rad. The controller jumps straight to whatever it's sent, so only use it while the arm is still at `home` (right after launch). The real arm usually doesn't need it.
+
+If the hand leaves the Ultraleap's view, the handover pauses (the planner logs `stale msg detected`) and carries on when the hand comes back. Use `/stop_handover` to end it.
 
 ## Switch controllers
 

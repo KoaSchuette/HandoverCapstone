@@ -55,8 +55,8 @@ class Planner_node(Node):
         self.hand_sub = self.create_subscription(Hand, '/hand/right', self.hand_msg_callback, 10)
 
         # get joint states from real or sim controller
-        self.joint_states = None
-        self.joint_states_sub = self.create_subscription(JointState,'/joint_states', self.joint_states_callback,10)
+        # self.joint_states = None
+        # self.joint_states_sub = self.create_subscription(JointState,'/joint_states', self.joint_states_callback,10)
 
         self.declare_parameter('controller_name', 'scaled_joint_trajectory_controller')
         controller_name = self.get_parameter('controller_name').value
@@ -168,10 +168,7 @@ class Planner_node(Node):
         hand = self.right_hand
         age = (self.get_clock().now()-rclpy.time.Time.from_msg(hand.header.stamp)).nanoseconds/1e9
         if age > MAX_AGE:
-            self.get_logger().info("stale msg detected")
-            self.ruckig_timer.cancel()
-            self.destroy_timer(self.ruckig_timer)
-            self.ruckig_timer = None
+            self.get_logger().info("stale msg detected", throttle_duration_sec=1.0)
             return
         p_0, q_start, palm_base, normal_base, q_palm = self.get_hand_in_base(hand)
         position, quaterion = self.ruckig_planner.step(palm_base, q_palm, normal_base)

@@ -10,7 +10,8 @@ from launch.launch_description_sources import PythonLaunchDescriptionSource
 from launch.substitutions import LaunchConfiguration, PathJoinSubstitution
 from launch_ros.actions import Node
 from launch_ros.substitutions import FindPackageShare
-
+from moveit_configs_utils import MoveItConfigsBuilder
+from launch_param_builder import ParameterBuilder
 
 def include(package, launch_file, **kwargs):
     return IncludeLaunchDescription(
@@ -33,13 +34,17 @@ def launch_setup(context):
         'ur_robot_driver', 'ur_control.launch.py',
         launch_arguments={
             'ur_type': 'ur5e',
-            'robot_ip': robot_ip if mode == 'real' else '0.0.0.0',
+            'robot_ip': robot_ip if mode == 'real' else '192.168.1.102',
             'use_mock_hardware': 'true' if mode == 'mock' else 'false',
             'description_file': PathJoinSubstitution(
                 [FindPackageShare('handover_moveit_config'), 'config', 'workcell.urdf.xacro']),
             'launch_rviz': 'false',
+            'initial_joint_controller': 'forward_position_controller',
         }.items(),
     )
+
+    moveit_config = MoveItConfigsBuilder('workcell', package_name='handover_moveit_config').to_moveit_configs()
+    servo_params = {'moveit_servo': ParameterBuilder('handover_moveit_config').yaml('config/servo.yaml').to_dict()}
 
     return [
         robot,
@@ -49,6 +54,11 @@ def launch_setup(context):
         Node(package='handover_motion', executable='planner_node', output='screen'),
         Node(package='handover_hand_tracking', executable='leap_node', output='screen',
              condition=IfCondition(LaunchConfiguration('use_leap'))),
+        Node(package='moveit_servo', executable='servo_node', name='servo_node', output='screen',
+             parameters=[servo_params,
+                         moveit_config.robot_description,
+                         moveit_config.robot_description_semantic,
+                         moveit_config.robot_description_kinematics]),
     ]
 
 

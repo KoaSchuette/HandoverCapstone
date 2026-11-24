@@ -21,7 +21,7 @@
         name:=ur
         tf_prefix:=''
         gripper_radius:=0.040
-        gripper_length:=0.05
+        gripper_length:=0.06025
         gripper_mass:=0.5">
 
         <xacro:ur_robot
@@ -65,29 +65,29 @@
         <joint name="${tf_prefix}tool0_to_gripper" type="fixed">
             <parent link="${tf_prefix}tool0"/>
             <child link="${tf_prefix}gripper"/>
-            <origin xyz="0 0 0" rpy="0 0 0"/>
+            <origin xyz="0 0 0" rpy="0 0 ${pi}"/>
         </joint>
 
         <link name="${tf_prefix}tcp"/>
 
         <link name="${tf_prefix}held_tool">
             <visual>
-                <origin xyz="0 0 0.05" rpy="0 0 0"/>
+                <origin xyz="0 0 0" rpy="0 0 0"/>
                 <geometry><cylinder radius="0.015" length="0.10"/></geometry>
                 <material name="tool_orange"/>
             </visual>
             <collision>
-                <origin xyz="0 0 0.05" rpy="0 0 0"/>
+                <origin xyz="0 0 0" rpy="0 0 0"/>
                 <geometry><cylinder radius="0.015" length="0.10"/></geometry>
             </collision>
 
             <visual>
-                <origin xyz="0 0 -0.05" rpy="0 0 0"/>
+                <origin xyz="0 0 -0.010" rpy="0 0 0"/>
                 <geometry><cylinder radius="0.005" length="0.10"/></geometry>
                 <material name="tool_grey"/>
             </visual>
             <collision>
-                <origin xyz="0 0 -0.05" rpy="0 0 0"/>
+                <origin xyz="0 0 -0.010" rpy="0 0 0"/>
                 <geometry><cylinder radius="0.005" length="0.10"/></geometry>
             </collision>
 
@@ -106,7 +106,8 @@
         <joint name="${tf_prefix}tcp_to_held_tool" type="fixed">
             <parent link="${tf_prefix}tcp"/>
             <child link="${tf_prefix}held_tool"/>
-            <origin xyz="0 -0.05 0.005" rpy="1.5708 0 0"/>
+            <!-- this moves the TF -->
+            <origin xyz="0 -0.10 0.005" rpy="1.5708 0 0"/>
         </joint>
 
     </xacro:macro>

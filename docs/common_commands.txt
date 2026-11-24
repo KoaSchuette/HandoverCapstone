@@ -85,7 +85,38 @@ ros2 launch handover_bringup handover.launch.py mode:=mock robot_ip:= use_rviz:=
   use_leap   true | false      (default true; false = no hand data, handover waits forever)
 
 Start a handover (second terminal, right hand held still over the Ultraleap):
+
+Bezier (needs scaled_joint_trajectory_controller, see SWITCH CONTROLLERS):
 ros2 service call /start_handover std_srvs/srv/Trigger
+
+Live Ruckig (needs forward_position_controller, the default):
+ros2 service call /start_rukig_handover std_srvs/srv/Trigger
+
+Stop the live Ruckig handover:
+ros2 service call /stop_handover std_srvs/srv/Trigger
+
+Service name is spelled "rukig" in planner_node.py; this command breaks if that gets renamed.
+Ruckig also stops itself if the hand leaves the Ultraleap's view ("stale msg detected").
+
+
+=== SWITCH CONTROLLERS ===
+One controller drives the arm at a time. Bringup starts forward_position_controller (the default,
+set in handover.launch.py), which the live Ruckig handover streams to.
+Bezier handovers and RViz Plan & Execute use scaled_joint_trajectory_controller instead.
+Run while bringup is running.
+
+Show active / inactive:
+ros2 control list_controllers
+
+Before a Bezier handover or RViz Plan & Execute:
+ros2 control switch_controllers --activate scaled_joint_trajectory_controller --deactivate forward_position_controller
+
+Back to default, before a live Ruckig handover:
+ros2 control switch_controllers --activate forward_position_controller --deactivate scaled_joint_trajectory_controller
+
+Lasts for this run only; restarting bringup resets to the default.
+Wrong controller active: Bezier/RViz fail with "Controller is not running";
+Ruckig gives no error, the arm just doesn't move.
 
 
 === HANDY CHECKS ===

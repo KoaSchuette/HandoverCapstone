@@ -3,10 +3,13 @@ import numpy as np
 import time
 import rclpy
 from rclpy.node import Node
+from std_msgs.msg import Float64MultiArray
 from std_srvs.srv import Trigger
-from moveit_msgs.srv import GetPositionIK
+from geometry_msgs.msg import PoseStamped
+from moveit_msgs.srv import GetPositionIK, ServoCommandType
 from tf2_ros import Buffer, TransformListener
 from handover_motion.bezier_planner import plan_bezier
+from handover_motion.live_planner import LivePlanner
 from handover_interfaces.msg import Hand
 from collections import deque
 from sensor_msgs.msg import JointState
@@ -18,10 +21,13 @@ from trajectory_msgs.msg import JointTrajectory, JointTrajectoryPoint
 from builtin_interfaces.msg import Duration
 
 
+MAX_AGE = 0.2
+
 class Planner_node(Node):
     def __init__(self):
         super().__init__("planner_node")
         self.srv_group = MutuallyExclusiveCallbackGroup()
+        self.live_group = MutuallyExclusiveCallbackGroup()
         self.ik_group = MutuallyExclusiveCallbackGroup()
 
         # IK client
@@ -29,6 +35,9 @@ class Planner_node(Node):
         while not self.cli.wait_for_service(timeout_sec=1.0):
             self.get_logger().info('service not available, waiting again...')
         self.req = GetPositionIK.Request()
+        # Servo mode-switch client (no wait loop, so the node still starts without Servo)
+        self.servo_cli = self.create_client(ServoCommandType, '/servo_node/switch_command_type',
+                                            callback_group=self.ik_group)
 
         # TF lisitener to grab pose
         self.tf_buffer = Buffer()
@@ -38,20 +47,31 @@ class Planner_node(Node):
         self.srv = self.create_service(Trigger, 'start_handover', self.handover_callback,callback_group=self.srv_group)
         self.srv_rukig = self.create_service(Trigger, 'start_rukig_handover', self.rukig_handover_callback,callback_group=self.srv_group)
 
+        # stop trigger service
+        self.srv_stop = self.create_service(Trigger, 'stop_handover', self.stop_handover_callback, callback_group=self.srv_group)
+
         # hand tracking
         self.right_hand = None
         self.hand_sub = self.create_subscription(Hand, '/hand/right', self.hand_msg_callback, 10)
 
-        #get joint states from real or sim controller
+        # get joint states from real or sim controller
         self.joint_states = None
         self.joint_states_sub = self.create_subscription(JointState,'/joint_states', self.joint_states_callback,10)
 
         self.declare_parameter('controller_name', 'scaled_joint_trajectory_controller')
         controller_name = self.get_parameter('controller_name').value
-        self.traj_client = ActionClient(self, FollowJointTrajectory,
-                                        f'/{controller_name}/follow_joint_trajectory')
-        self.joint_names = ['shoulder_pan_joint', 'shoulder_lift_joint', 'elbow_joint',
-                            'wrist_1_joint', 'wrist_2_joint', 'wrist_3_joint']
+        self.traj_client = ActionClient(self, FollowJointTrajectory,f'/{controller_name}/follow_joint_trajectory')
+        self.joint_names = ['shoulder_pan_joint', 'shoulder_lift_joint', 'elbow_joint','wrist_1_joint', 'wrist_2_joint', 'wrist_3_joint']
+
+        # Rukig Variables
+        self.ruckig_planner = None #Planner object
+        self.dt = 0.02 #frequency to call next step TUNING PARAMETER aim for 0.01 100Hz` `
+        self.ruckig_timer = None  #inialize the timer as nothing
+
+        #Rukig Robot Publisher to Controller
+        self.forward_position_pub = self.create_publisher(Float64MultiArray, '/forward_position_controller/commands',10)
+        # Rukig Servo Publisher
+        self.servo_pub = self.create_publisher(PoseStamped,'/servo_node/pose_target_cmds',10)
 
     # ------------------------------------------------------------------
     # subscriber callbacks
@@ -104,10 +124,85 @@ class Planner_node(Node):
         return response
 
     def rukig_handover_callback(self, request, response):  # TESTING
-        """Live planner (streaming): TODO SETUP block, then start timer."""
-        response.success = False
-        response.message = 'not implemented'
+        """Live planner (streaming).
+           initalize the ruckig object and starts the planner
+           Creates a timer to step through the s
+        """
+        # put Servo in pose mode
+        if not self.servo_cli.service_is_ready():
+            response.success = False
+            response.message = 'Servo not running'
+            return response
+        servo_req = ServoCommandType.Request()
+        servo_req.command_type = ServoCommandType.Request.POSE
+        servo_result = self.servo_cli.call(servo_req)
+        if not servo_result.success:
+            response.success = False
+            response.message = 'Servo mode switch failed'
+            return response
+
+        if self.ruckig_timer is not None:
+            response.success = False
+            response.message = 'Planner Already running'
+            return response
+        elif self.right_hand is None:
+            #TODO add edge case to move to a predicted point if no hand is detected
+            response.success = False
+            response.message = 'No Hand detected'
+            return response
+
+        #Start the planner
+        self.ruckig_planner = LivePlanner(self.dt)
+        p_0, q_start, palm_base, normal_base, q_palm = self.get_hand_in_base(self.right_hand)
+        self.ruckig_planner.start(p_0,q_start)
+        self.ruckig_timer = self.create_timer(self.dt, self.ruckig_step,callback_group=self.live_group)  #Start timere to call the step function ever tick
+
+        response.success = True
+        response.message = 'Ruckig Handover started'
         return response
+    def ruckig_step(self):
+        # msg = Float64MultiArray()
+        new_msg = PoseStamped()
+        new_msg.header.frame_id = 'base_link'
+        new_msg.header.stamp = self.get_clock().now().to_msg()
+        hand = self.right_hand
+        age = (self.get_clock().now()-rclpy.time.Time.from_msg(hand.header.stamp)).nanoseconds/1e9
+        if age > MAX_AGE:
+            self.get_logger().info("stale msg detected")
+            self.ruckig_timer.cancel()
+            self.destroy_timer(self.ruckig_timer)
+            self.ruckig_timer = None
+            return
+        p_0, q_start, palm_base, normal_base, q_palm = self.get_hand_in_base(hand)
+        position, quaterion = self.ruckig_planner.step(palm_base, q_palm, normal_base)
+        # joint_state = self.send_request(position,quaterion)
+        # if joint_state is None:
+        #     return
+        # msg.data = list(joint_state.position)
+        new_msg.pose.position.x = float(position[0])
+        new_msg.pose.position.y = float(position[1])
+        new_msg.pose.position.z = float(position[2])
+        new_msg.pose.orientation.x = float(quaterion[0])
+        new_msg.pose.orientation.y = float(quaterion[1])
+        new_msg.pose.orientation.z = float(quaterion[2])
+        new_msg.pose.orientation.w = float(quaterion[3])
+        self.servo_pub.publish(new_msg)
+        # self.forward_position_pub.publish(msg)
+
+
+
+    def stop_handover_callback(self, request, response):
+        if self.ruckig_timer is not None:
+            self.ruckig_timer.cancel()
+            self.destroy_timer(self.ruckig_timer)
+            self.ruckig_timer = None
+            response.success = True
+            response.message = 'Timer stopped'
+        else:
+            response.success = False
+            response.message = 'No Timer to Stop'
+        return response
+    
 
     # ------------------------------------------------------------------
     # shared helpers (any planner can use these)

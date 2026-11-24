@@ -113,11 +113,36 @@ ros2 launch handover_bringup handover.launch.py mode:=mock robot_ip:= use_rviz:=
 | `use_rviz` | `true` | `false` = no RViz |
 | `use_leap` | `true` | `false` = no Ultraleap node. Nothing publishes a hand then, so a handover will wait forever. |
 
-**Start a handover** (second terminal, sourced), with your right hand held still over the Ultraleap:
+**Start a handover** (second terminal, sourced), with your right hand held still over the Ultraleap. Each planner needs its own controller active; see [Switch controllers](#switch-controllers).
 
 ```bash
+# Bezier (needs scaled_joint_trajectory_controller):
 ros2 service call /start_handover std_srvs/srv/Trigger
+
+# live Ruckig (needs forward_position_controller, the default):
+ros2 service call /start_rukig_handover std_srvs/srv/Trigger
+
+# stop the live Ruckig handover:
+ros2 service call /stop_handover std_srvs/srv/Trigger
 ```
+
+The Ruckig service name is spelled `rukig` in `planner_node.py`. If that gets renamed, update this command. Ruckig also stops itself if the hand leaves the Ultraleap's view; the planner logs `stale msg detected`.
+
+## Switch controllers
+
+Only one controller drives the arm at a time. Bringup starts `forward_position_controller` by default (set in [`handover.launch.py`](../src/handover_bringup/launch/handover.launch.py)), which the live Ruckig handover streams joint positions to. Bezier handovers and RViz **Plan & Execute** use `scaled_joint_trajectory_controller` instead. Run these in a second terminal while bringup is running:
+
+```bash
+ros2 control list_controllers   # shows which controllers are active and which are inactive
+
+# before a Bezier handover or RViz Plan & Execute:
+ros2 control switch_controllers --activate scaled_joint_trajectory_controller --deactivate forward_position_controller
+
+# back to the default, before a live Ruckig handover:
+ros2 control switch_controllers --activate forward_position_controller --deactivate scaled_joint_trajectory_controller
+```
+
+The switch only lasts for the current run. Restarting bringup goes back to the default. With the wrong controller active, Bezier and RViz fail with `Controller is not running`, while Ruckig gives no error and the arm just doesn't move.
 
 ## Handy checks
 

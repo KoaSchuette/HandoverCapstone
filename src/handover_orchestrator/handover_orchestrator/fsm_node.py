@@ -8,11 +8,12 @@ from rclpy.executors import MultiThreadedExecutor
 from rclpy.callback_groups import MutuallyExclusiveCallbackGroup
 from std_srvs.srv import Trigger
 from handover_interfaces.msg import Hand, Skeleton
+from handover_interfaces.srv import RackPickupTrigger
 
 
 class State(Enum):
     IDLE = auto()
-    PICK_UP = auto()
+    RACK_PICK_UP = auto()
     WAIT_FOR_HAND = auto()
     HANDOVER = auto()
     RELEASE = auto()
@@ -27,23 +28,58 @@ class Fsm_node(Node):
         self.latest_hand = None
 
         #mark these variables almost like mutexs
-        self.service_group = MutuallyExclusiveCallbackGroup()
+        self.srv_group = MutuallyExclusiveCallbackGroup()
         self.tick_group = MutuallyExclusiveCallbackGroup()
 
+        # Define server triggers:   
+        # LLM Service
+        self.srv = self.create_service(RackPickupTrigger, 'tool_request', self.tool_request_callback,callback_group=self.srv_group)
 
-        #define serives trigger to start and stop the handover seqence
-        self.start_srv = self.create_service(Trigger, 'start_handover', self.start_callback, callback_group=self.service_group)
-        self.stop_srv = self.create_service(Trigger, 'stop_handover', self.start_callback, callback_group=self.service_group)
+        # # to start the handover seqence
+        # self.start_cli = self.create_client(Trigger, 'start_handover', callback_group=self.srv)
+        # while not self.start_cli.wait_for_service(timeout_sec=1.0):
+        #     self.get_logger().info('start_handover service not available, waiting...')
 
-        #hand subscriber
-        self.hand_sub = self.create_subscription(Hand, '/right/hand',self.hand_callback, 10)
-        #heart beat timer runs a tick callback every 0.1s
-        self.timer = self.create_timer(0.1, self.tick, callback_group=self.tick_group)
+        # # to stop the handover seqence
+        # self.stop_cli = self.create_client(Trigger, 'stop_handover',  callback_group=self.srv)
+        # while not self.stop_cli.wait_for_service(timeout_sec=1.0):
+        #     self.get_logger().info('stop_handover service not available, waiting...')
 
+        # #hand subscriber
+        # self.hand_sub = self.create_subscription(Hand, '/right/hand',self.hand_callback, 10)
+        # #heart beat timer runs a tick callback every 0.1s
+        # self.timer = self.create_timer(0.1, self.tick, callback_group=self.tick_group)
+
+
+    # Tool request callback, called when a tool request is received from the LLM
+    def tool_request_callback(self, request, response):
+        with self.state_lock:
+            if self.state == State.IDLE:
+                self.get_logger().info(f'Tool request received {request.function}, {request.subject}, starting rack pickup sequence.')
+                self.state = State.RACK_PICK_UP
+                response.success = True
+                response.message = 'Tool request accepted, starting rack pickup sequence.'
+            else:
+                self.get_logger().info(f'Tool request received, but robot in state {self.state.name}, rejecting request.')
+                response.success = False
+                response.message = f'Tool request rejected, robot in state {self.state.name}.'
+        return response
 
 
 def main():
     print('Hi from handover_orchestrator.')
+    rclpy.init()
+    node = Fsm_node()
+    executor = MultiThreadedExecutor()
+    executor.add_node(node)
+    try:
+        executor.spin()
+    except KeyboardInterrupt:
+        pass
+    finally:
+        node.destroy_node()
+        rclpy.shutdown()
+
 
 
 if __name__ == '__main__':

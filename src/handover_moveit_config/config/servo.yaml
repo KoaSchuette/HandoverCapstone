@@ -33,7 +33,7 @@ smoothing_filter_plugin_name: "online_signal_smoothing::AccelerationLimitedPlugi
 # If is_primary_planning_scene_monitor is set to true, the Servo server's PlanningScene advertises the /get_planning_scene service,
 # which other nodes can use as a source for information about the planning environment.
 # NOTE: If a different node in your system is responsible for the "primary" planning scene instance (e.g. the MoveGroup node),
-# then is_primary_planning_scene_monitor needs to be set to false.
+# then is_primary_planning_scene_monitor needs toros2 topic pub --once /forward_position_controller/commands std_msgs/msg/Float64MultiArray "{data: [1.5708, -2.05, 2.15, -0.1, 1.55, 0.001]}" be set to false.
 is_primary_planning_scene_monitor: false
 check_octomap_collisions: false  # Check collision against the octomap (if a 3D sensor plugin is available)
 
@@ -41,8 +41,8 @@ check_octomap_collisions: false  # Check collision against the octomap (if a 3D 
 move_group_name: manipulator  # Often 'manipulator' or 'arm'
 
 ## Configure handling of singularities and joint limits
-lower_singularity_threshold: 17.0  # Start decelerating when the condition number hits this (close to singularity)
-hard_stop_singularity_threshold: 30.0  # Stop when the condition number hits this
+lower_singularity_threshold: 25.0  # Start decelerating when the condition number hits this (close to singularity)
+hard_stop_singularity_threshold: 40.0  # Stop when the condition number hits this
 leaving_singularity_threshold_multiplier: 2.0  # Multiply the hard stop limit by this when leaving singularity (see https://github.com/moveit/moveit2/pull/620)
 # Added as a buffer to joint variable position bounds [in that joint variable's respective units].
 # Can be of size 1, which applies the margin to all joints, or the same size as the number of degrees of freedom of the active joint group.

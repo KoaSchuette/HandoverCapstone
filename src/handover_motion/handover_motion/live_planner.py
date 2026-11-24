@@ -27,7 +27,7 @@ class LivePlanner:
         self.q_ref = None
         self.r_target = None
         self.approach_distance = ap
-        self.task_offset = Rotation.from_euler('y', -90, degrees=True)
+        self.task_offset = Rotation.from_euler('y', 90, degrees=True)
 
 
     def start(self,p_0,q_start, v_0=None, a_0=None):

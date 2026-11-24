@@ -77,8 +77,8 @@ class Planner_node(Node):
             time.sleep(0.05)
 
         p_0, q_start, palm_base, normal_base, q_palm = self.get_hand_in_base(hand)
-        # q_end = q_palm
-        q_end = q_start
+        q_end = q_palm
+        # q_end = q_start
 
         times, positions, orientations = plan_bezier(p_0, q_start, q_end, palm_base, normal_base)
         self.get_logger().info(
@@ -188,7 +188,7 @@ class Planner_node(Node):
             solutions[i] = [angles[name] for name in self.joint_names]
         return solutions, None
 
-    def check_joint_limits(self, times, solutions, max_speed=6.0, max_accel=10.0):
+    def check_joint_limits(self, times, solutions, max_speed=10.0, max_accel=30.0):
         """
         Checks if joint limits are reach and path is valid 
         also prevent large jerks
@@ -250,8 +250,8 @@ class Planner_node(Node):
                     speed = np.linalg.norm([v.x, v.y, v.z])
                     window.append(speed)
                     last_stamp = hand.header.stamp
-                    self.get_logger().info(
-                        f'speed {speed:.3f} m/s  avg {sum(window)/len(window):.3f}  n={len(window)}')     # comment me out later
+                    # self.get_logger().info(
+                        # f'speed {speed:.3f} m/s  avg {sum(window)/len(window):.3f}  n={len(window)}')     # comment me out later
                     if len(window) == window.maxlen and sum(window) / len(window) < speed_threshold:
                         return hand
             time.sleep(0.05)

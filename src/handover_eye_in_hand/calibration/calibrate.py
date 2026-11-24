@@ -3,8 +3,8 @@
 import glob, cv2, yaml
 import numpy as np
 
-COLS, ROWS = 9, 6
-SQUARE = 0.020
+COLS, ROWS = 13, 8
+SQUARE = 0.040
 
 #corner pose
 objp = np.zeros((COLS*ROWS, 3), np.float32)
@@ -64,7 +64,7 @@ info = {
     "projection_matrix": {"rows": 3, "cols": 4,
                           "data": np.hstack([K, np.zeros((3, 1))]).flatten().tolist()},
 }
-out = "../config/elp_ar0234_1920x1200.yaml"
+out = "../config/elp_robot_calibio.yaml"
 with open(out, "w") as f:
     yaml.safe_dump(info, f, sort_keys=False)
 print(f"\nsaved {out}")

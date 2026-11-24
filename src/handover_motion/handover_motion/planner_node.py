@@ -69,7 +69,7 @@ class Planner_node(Node):
         self.ruckig_timer = None  #inialize the timer as nothing
 
         #Rukig Robot Publisher to Controller
-        self.forward_position_pub = self.create_publisher(Float64MultiArray, '/forward_position_controller/commands',10)
+        # self.forward_position_pub = self.create_publisher(Float64MultiArray, '/forward_position_controller/commands',10)
         # Rukig Servo Publisher
         self.servo_pub = self.create_publisher(PoseStamped,'/servo_node/pose_target_cmds',10)
 

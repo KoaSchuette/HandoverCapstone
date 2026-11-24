@@ -70,9 +70,9 @@ class Planner_node(Node):
         self.dt = 0.02 #frequency to call next step TUNING PARAMETER aim for 0.01 100Hz` `
         self.ruckig_timer = None  #inialize the timer as nothing
         #old hand data for low pass filter
-        self.palm_f = None
-        self.normal_f = None
-        self.q_f = None
+        # self.palm_f = None
+        # self.normal_f = None
+        # self.q_f = None
 
         #Rukig Robot Publisher to Controller
         # self.forward_position_pub = self.create_publisher(Float64MultiArray, '/forward_position_controller/commands',10)
@@ -165,9 +165,9 @@ class Planner_node(Node):
         hand = self.right_hand
         self.ruckig_planner = LivePlanner(self.dt)
         p_0, q_start, palm_base, normal_base, q_palm = self.get_hand_in_base(hand)
-        self.palm_f = hand.palm_pose.position
-        self.normal_f = hand.palm_normal
-        self.q_f = hand.palm_pose.orientation
+        # self.palm_f = hand.palm_pose.position
+        # self.normal_f = hand.palm_normal
+        # self.q_f = hand.palm_pose.orientation
         self.ruckig_planner.start(p_0,q_start)
         self.ruckig_timer = self.create_timer(self.dt, self.ruckig_step,callback_group=self.live_group)  #Start timere to call the step function ever tick
 
@@ -184,19 +184,8 @@ class Planner_node(Node):
         if hand is None:
             self.get_logger().info("No hand detected", throttle_duration_sec=1.0)
             return
-        # low pass filter for position
-        self.palm_f.x = ALPHA_POS * hand.palm_pose.position.x + (1 - ALPHA_POS) * self.palm_f.x
-        self.palm_f.y = ALPHA_POS * hand.palm_pose.position.y + (1 - ALPHA_POS) * self.palm_f.y
-        self.palm_f.z = ALPHA_POS * hand.palm_pose.position.z + (1 - ALPHA_POS) * self.palm_f.z
-        # low pass filter for normal
-        self.normal_f.x = ALPHA_POS * hand.palm_normal.x + (1 - ALPHA_POS) * self.normal_f.x
-        self.normal_f.y = ALPHA_POS * hand.palm_normal.y + (1 - ALPHA_POS) * self.normal_f.y
-        self.normal_f.z = ALPHA_POS * hand.palm_normal.z + (1 - ALPHA_POS) * self.normal_f.z
-        # low pass filter for orientation
-        self.q_f.x = ALPHA_ROT * hand.palm_pose.orientation.x + (1 - ALPHA_ROT) * self.q_f.x
-        self.q_f.y = ALPHA_ROT * hand.palm_pose.orientation.y + (1 - ALPHA_ROT) * self.q_f.y
-        self.q_f.z = ALPHA_ROT * hand.palm_pose.orientation.z + (1 - ALPHA_ROT) * self.q_f.z
-        self.q_f.w = ALPHA_ROT * hand.palm_pose.orientation.w + (1 - ALPHA_ROT) * self.q_f.w    
+        
+        
         age = (self.get_clock().now()-rclpy.time.Time.from_msg(hand.header.stamp)).nanoseconds/1e9
         if age > MAX_AGE:
             self.get_logger().info("stale msg detected", throttle_duration_sec=1.0)

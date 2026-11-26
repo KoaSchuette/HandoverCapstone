@@ -1,4 +1,4 @@
-#oct 25th, 26th
+#nov 16th
 from faster_whisper import WhisperModel
 import sounddevice as sd
 import time
@@ -10,7 +10,8 @@ print("Execution time:", datetime.now())
 #= set-up
 model_size = "small" #"tiny" #"base" #"small" #"medium" #"large-v3"
 fs = 16000 #44100 and 48000 is standard according to SD. faster-whisper processes at 16k default
-sd.default.device = 1 #Microphone (Arctis Nova 7), MME (3 in, 0 out)
+#sd.default.device = 1 #Microphone (Arctis Nova 7), MME (3 in, 0 out)
+print(sd.default.device)
 audio_queue = queue.Queue()
 
 print("Using faster-whisper model:", model_size)
@@ -44,7 +45,7 @@ with sd.InputStream(channels=1, samplerate=fs, callback=callback):
 
             start = time.perf_counter()
 
-            segments, _ = model.transcribe(clip, beam_size=5, language="en")
+            segments, _ = model.transcribe(clip, beam_size=5, language="en", vad_filter=True)
             segments = list(segments)
 
             elapsed = time.perf_counter() - start

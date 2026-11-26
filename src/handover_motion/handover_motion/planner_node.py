@@ -27,8 +27,8 @@ from handover_motion.live_planner import LivePlanner
 
 MAX_AGE = 0.2
 JOINT_TARGETS = {
-    'home':         [1.5708, -2.05, 2.15, -0.1, 1.55, 0.0],
-    'pick_up_home': [-1.5708, -2.05, 2.15, -0.1, 1.55, -3.1],
+    'home':         [1.5708, -1.95, 1.91, 3.14, -1.55, -3.14],
+    # 'pick_up_home': [-1.5708, -2.05, 2.15, -0.1, 1.55, -3.1],
 }
 HOME_GAIN = 1.0      # rad/s per rad of error
 HOME_MAX_VEL = 0.4   # rad/s
@@ -66,16 +66,16 @@ class Planner_node(Node):
 
         #go home trigger service
         self.srv_home = self.create_service(Trigger, 'go_home', self.go_home_callback, callback_group=self.srv_group)
-        self.home_trigger = None
-
+        self.home_timer = None
+        self.jog_pub = self.create_publisher(JointJog, '/servo_node/delta_joint_cmds', 10)
 
         # hand tracking
         self.right_hand = None
-        self.hand_sub = self.create_subscription(Hand, '/hand/right', self.hand_msg_callback,callback_group=self.hand_group)
+        self.hand_sub = self.create_subscription(Hand, '/hand/right', self.hand_msg_callback,10,callback_group=self.hand_group)
 
         # get joint states from real or sim controller
         self.joint_states = None
-        self.joint_states_sub = self.create_subscription(JointState,'/joint_states', self.joint_states_callback,callback_group=self.joint_group)
+        self.joint_states_sub = self.create_subscription(JointState,'/joint_states', self.joint_states_callback,10,callback_group=self.joint_group)
 
         self.declare_parameter('controller_name', 'scaled_joint_trajectory_controller')
         controller_name = self.get_parameter('controller_name').value

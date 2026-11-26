@@ -24,7 +24,7 @@ setup(
     },
     entry_points={
         'console_scripts': [
-            'command_listener = handover_voice.command_listener:main'
+            'interpreter_node = handover_voice.interpreter_node:main'
         ],
     },
 )

@@ -1,34 +1,46 @@
-from scipy.spatial.transform import Rotation
-import numpy as np
 import time
+from collections import deque
+
+import numpy as np
+from scipy.spatial.transform import Rotation
+
 import rclpy
 from rclpy.node import Node
-from std_msgs.msg import Float64MultiArray
-from std_srvs.srv import Trigger
-from geometry_msgs.msg import PoseStamped
-from moveit_msgs.srv import GetPositionIK, ServoCommandType
-from tf2_ros import Buffer, TransformListener
-from handover_motion.bezier_planner import plan_bezier
-from handover_motion.live_planner import LivePlanner
-from handover_interfaces.msg import Hand
-from collections import deque
-from sensor_msgs.msg import JointState
+from rclpy.action import ActionClient
 from rclpy.executors import MultiThreadedExecutor
 from rclpy.callback_groups import MutuallyExclusiveCallbackGroup
-from rclpy.action import ActionClient
-from control_msgs.action import FollowJointTrajectory
-from trajectory_msgs.msg import JointTrajectory, JointTrajectoryPoint
+from tf2_ros import Buffer, TransformListener
+
 from builtin_interfaces.msg import Duration
+from control_msgs.action import FollowJointTrajectory
+from control_msgs.msg import JointJog
+from geometry_msgs.msg import PoseStamped
+from moveit_msgs.srv import GetPositionIK, ServoCommandType
+from sensor_msgs.msg import JointState
+from std_srvs.srv import Trigger
+from trajectory_msgs.msg import JointTrajectory, JointTrajectoryPoint
+
+from handover_interfaces.msg import Hand
+from handover_motion.bezier_planner import plan_bezier
+from handover_motion.live_planner import LivePlanner
 
 
 MAX_AGE = 0.2
-ALPHA_POS = 0.5
-ALPHA_ROT = 0.5
+JOINT_TARGETS = {
+    'home':         [1.5708, -2.05, 2.15, -0.1, 1.55, 0.0],
+    'pick_up_home': [-1.5708, -2.05, 2.15, -0.1, 1.55, -3.1],
+}
+HOME_GAIN = 1.0      # rad/s per rad of error
+HOME_MAX_VEL = 0.4   # rad/s
+HOME_ERROR = 0.005     # rad, "close enough"
+
 
 class Planner_node(Node):
     def __init__(self):
         super().__init__("planner_node")
         self.srv_group = MutuallyExclusiveCallbackGroup()
+        self.hand_group = MutuallyExclusiveCallbackGroup()
+        self.joint_group = MutuallyExclusiveCallbackGroup()
         self.live_group = MutuallyExclusiveCallbackGroup()
         self.ik_group = MutuallyExclusiveCallbackGroup()
 
@@ -45,20 +57,25 @@ class Planner_node(Node):
         self.tf_buffer = Buffer()
         self.tf_listener = TransformListener(self.tf_buffer, self, spin_thread=True)
 
-        # trigger service
+        # start handover trigger service
         self.srv = self.create_service(Trigger, 'start_handover', self.handover_callback,callback_group=self.srv_group)
         self.srv_rukig = self.create_service(Trigger, 'start_rukig_handover', self.rukig_handover_callback,callback_group=self.srv_group)
 
         # stop trigger service
         self.srv_stop = self.create_service(Trigger, 'stop_handover', self.stop_handover_callback, callback_group=self.srv_group)
 
+        #go home trigger service
+        self.srv_home = self.create_service(Trigger, 'go_home', self.go_home_callback, callback_group=self.srv_group)
+        self.home_trigger = None
+
+
         # hand tracking
         self.right_hand = None
-        self.hand_sub = self.create_subscription(Hand, '/hand/right', self.hand_msg_callback, 10)
+        self.hand_sub = self.create_subscription(Hand, '/hand/right', self.hand_msg_callback,callback_group=self.hand_group)
 
         # get joint states from real or sim controller
-        # self.joint_states = None
-        # self.joint_states_sub = self.create_subscription(JointState,'/joint_states', self.joint_states_callback,10)
+        self.joint_states = None
+        self.joint_states_sub = self.create_subscription(JointState,'/joint_states', self.joint_states_callback,callback_group=self.joint_group)
 
         self.declare_parameter('controller_name', 'scaled_joint_trajectory_controller')
         controller_name = self.get_parameter('controller_name').value
@@ -69,14 +86,8 @@ class Planner_node(Node):
         self.ruckig_planner = None #Planner object
         self.dt = 0.02 #frequency to call next step TUNING PARAMETER aim for 0.01 100Hz` `
         self.ruckig_timer = None  #inialize the timer as nothing
-        #old hand data for low pass filter
-        # self.palm_f = None
-        # self.normal_f = None
-        # self.q_f = None
 
         #Rukig Robot Publisher to Controller
-        # self.forward_position_pub = self.create_publisher(Float64MultiArray, '/forward_position_controller/commands',10)
-        # Rukig Servo Publisher
         self.servo_pub = self.create_publisher(PoseStamped,'/servo_node/pose_target_cmds',10)
 
     # ------------------------------------------------------------------
@@ -128,7 +139,9 @@ class Planner_node(Node):
         response.success = True
         response.message = 'trajectory sent'
         return response
-
+    # ------------------------------------------------------------------
+    # Ruckig Handover Functions
+    # ------------------------------------------------------------------
     def rukig_handover_callback(self, request, response):  # TESTING
         """Live planner (streaming).
            initalize the ruckig object and starts the planner
@@ -157,25 +170,17 @@ class Planner_node(Node):
             response.message = 'No Hand detected'
             return response
 
-        #Start the planner        # joint_state = self.send_request(position,quaterion)
-        # if joint_state is None:
-        #     return
-        # msg.data = list(joint_state.position)
-
         hand = self.right_hand
         self.ruckig_planner = LivePlanner(self.dt)
         p_0, q_start, palm_base, normal_base, q_palm = self.get_hand_in_base(hand)
-        # self.palm_f = hand.palm_pose.position
-        # self.normal_f = hand.palm_normal
-        # self.q_f = hand.palm_pose.orientation
         self.ruckig_planner.start(p_0,q_start)
         self.ruckig_timer = self.create_timer(self.dt, self.ruckig_step,callback_group=self.live_group)  #Start timere to call the step function ever tick
 
         response.success = True
         response.message = 'Ruckig Handover started'
         return response
+    
     def ruckig_step(self):
-        # msg = Float64MultiArray()
         new_msg = PoseStamped()
         new_msg.header.frame_id = 'base_link'
         new_msg.header.stamp = self.get_clock().now().to_msg()
@@ -185,17 +190,13 @@ class Planner_node(Node):
             self.get_logger().info("No hand detected", throttle_duration_sec=1.0)
             return
         
-        
         age = (self.get_clock().now()-rclpy.time.Time.from_msg(hand.header.stamp)).nanoseconds/1e9
         if age > MAX_AGE:
             self.get_logger().info("stale msg detected", throttle_duration_sec=1.0)
             return
         p_0, q_start, palm_base, normal_base, q_palm = self.get_hand_in_base(hand)
         position, quaterion = self.ruckig_planner.step(palm_base, q_palm, normal_base)
-        # joint_state = self.send_request(position,quaterion)
-        # if joint_state is None:
-        #     return
-        # msg.data = list(joint_state.position)
+
         new_msg.pose.position.x = float(position[0])
         new_msg.pose.position.y = float(position[1])
         new_msg.pose.position.z = float(position[2])
@@ -204,9 +205,6 @@ class Planner_node(Node):
         new_msg.pose.orientation.z = float(quaterion[2])
         new_msg.pose.orientation.w = float(quaterion[3])
         self.servo_pub.publish(new_msg)
-        # self.forward_position_pub.publish(msg)
-
-
 
     def stop_handover_callback(self, request, response):
         if self.ruckig_timer is not None:
@@ -219,8 +217,72 @@ class Planner_node(Node):
             response.success = False
             response.message = 'No Timer to Stop'
         return response
-    
+    # ------------------------------------------------------------------
+    # Go Home Trigger
+    # ------------------------------------------------------------------
+    def stop_ruckig(self):
+        """Cancel the Ruckig timer if it is running."""
+        if self.ruckig_timer is not None:
+            self.ruckig_timer.cancel()
+            self.destroy_timer(self.ruckig_timer)
+            self.ruckig_timer = None
 
+    def go_home_callback(self, request, response):
+        """Drive the arm to the 'home' joint state through Servo joint jog."""
+        if self.home_timer is not None:
+            response.success = False
+            response.message = 'Already moving home'
+            return response
+        if self.joint_states is None:
+            response.success = False
+            response.message = 'No joint states yet'
+            return response
+        if not self.servo_cli.service_is_ready():
+            response.success = False
+            response.message = 'Servo not running'
+            return response
+
+        # stop the handover so the two don't fight over Servo
+        self.stop_ruckig()
+
+        # put Servo in joint jog mode
+        servo_req = ServoCommandType.Request()
+        servo_req.command_type = ServoCommandType.Request.JOINT_JOG
+        servo_result = self.servo_cli.call(servo_req)
+        if not servo_result.success:
+            response.success = False
+            response.message = 'Servo mode switch failed'
+            return response
+
+        self.joint_target = np.array(JOINT_TARGETS['home'])
+        self.home_timer = self.create_timer(self.dt, self.home_step,
+                                            callback_group=self.live_group)
+        response.success = True
+        response.message = 'Moving home'
+        return response
+
+    def home_step(self):
+        """One tick: P-control each joint toward the target, publish speeds to Servo."""
+        angles = dict(zip(self.joint_states.name, self.joint_states.position))
+        current = np.array([angles[name] for name in self.joint_names])
+        error = self.joint_target - current
+
+        msg = JointJog()
+        msg.header.stamp = self.get_clock().now().to_msg()
+        msg.joint_names = self.joint_names
+
+        if np.abs(error).max() < HOME_ERROR:
+            msg.velocities = [0.0] * 6
+            self.jog_pub.publish(msg)
+            self.home_timer.cancel()
+            self.destroy_timer(self.home_timer)
+            self.home_timer = None
+            self.get_logger().info('Reached home')
+            return
+
+        velocity = np.clip(HOME_GAIN * error, -HOME_MAX_VEL, HOME_MAX_VEL)
+        msg.velocities = velocity.tolist()
+        self.jog_pub.publish(msg)
     # ------------------------------------------------------------------
     # shared helpers (any planner can use these)
     # ------------------------------------------------------------------

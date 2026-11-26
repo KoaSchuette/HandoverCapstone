@@ -3,7 +3,7 @@ import time
 
 import ollama
 
-from commands import FUNCTION_CODES, SUBJECT_CODES, normalise
+from handover_voice.commands import FUNCTION_CODES, SUBJECT_CODES, normalise
 
 MODEL = "qwen2.5:3b"
 

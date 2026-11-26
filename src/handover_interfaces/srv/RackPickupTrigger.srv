@@ -1,7 +1,15 @@
 # Request:
-# Function { 0 = pickup, }
+# Function codes (same numbering as handover_voice/commands.py)
+uint8 FUNCTION_DELIVER_TOOL=3
+uint8 FUNCTION_CANCEL_TASK=4
+uint8 FUNCTION_PAUSE_TASK=5
+uint8 FUNCTION_RESUME_TASK=6
 uint8 function
-# Subject { 0 = R, 1 = G, 2 = B, }
+# Subject codes
+uint8 SUBJECT_NONE=0
+uint8 SUBJECT_RED=1
+uint8 SUBJECT_GREEN=2
+uint8 SUBJECT_BLUE=3
 uint8 subject
 ---
 # Response:

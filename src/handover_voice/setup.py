@@ -24,6 +24,7 @@ setup(
     },
     entry_points={
         'console_scripts': [
+            'transcription_node = handover_voice.transcription_node:main',
             'interpreter_node = handover_voice.interpreter_node:main'
         ],
     },

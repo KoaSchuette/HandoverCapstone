@@ -12,9 +12,9 @@ import rclpy
 from rclpy.node import Node
 from std_msgs.msg import String
 
-FS = 48000                  # 16000 Hz
-BLOCK = 512                 # 32 ms
-MIC = 10                    # input device number from devices.py (None = system default)
+FS = 48000                  # Default Whisper option: 16000 Hz
+BLOCK = 1536                 # 32 ms at 48kHz
+MIC = None                    # input device number from devices.py (None = system default)
 MODEL_SIZE = "small"        # Whisper Model: "tiny" #"base" #"small" #"medium" #"large-v3"
 
 THRESHOLD = 0.008           # between background (0.002) and speech (0.01+)
@@ -23,7 +23,7 @@ PREROLL_BLOCKS = 10         # keep about 0.3 s from before speech is detected
 MIN_LOUD_BLOCKS = 8         # need about 0.25 s of actual loud audio to count as speech
 
 
-class TranscriptionNode:
+class TranscriptionNode(Node):
     def __init__(self):
         super().__init__('transcription_node')
         self.transcription = self.create_publisher(String, '/transcription', 10)
@@ -43,10 +43,10 @@ class TranscriptionNode:
         self.stop_event.set()        # ask the loop to exit
         self.worker.join()
 
-    def stream_callback(self, indata, status):
+    def stream_callback(self, indata, frames, time, status):
         if status:
             print("Status:", status)
-            self.audio_queue.put(indata.copy())
+        self.audio_queue.put(indata.copy())
 
     def transcribe(self, clip):
         segments, _ = self.model.transcribe(clip, beam_size=5, language="en", vad_filter=True)
@@ -101,10 +101,12 @@ class TranscriptionNode:
                                 #clip_path = f"clips/clip_{clip_number:03d}.wav"
                                 #transcription_path = f"clips/clip_{clip_number:03d}.txt"
                                         
-                                transcription = self.transcribe(clip)
-                                msg.data = transcription
-                                self.transcription.publish(msg)
-                                #TODO: fix msg
+                                clip_transcription = self.transcribe(clip)
+                                if clip_transcription.strip():  # Only publish if transcription is not empty
+                                    msg = String()
+                                    msg.data = clip_transcription
+                                    self.transcription.publish(msg)
+                                
 
                                 #save_wav(clip, clip_path)
                                 #save_transcription(transcription, transcription_path)
@@ -126,6 +128,7 @@ def main():
         pass
 
     finally:
+        transcription_node.stop()
         transcription_node.destroy_node()
 
         if rclpy.ok():

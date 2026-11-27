@@ -4,14 +4,15 @@ import queue
 import wave
 
 import numpy as np
+from scipy.signal import resample_poly
 import sounddevice as sd
 
 import time
 from faster_whisper import WhisperModel
 
-FS = 16000
+FS = 48000 #16000
 BLOCK = 512                 # 32 ms
-MIC = None                  # input device number from devices.py (None = system default)
+MIC = 10                    # input device number from devices.py (None = system default)
 
 THRESHOLD = 0.008           # between background (0.002) and speech (0.01+)
 SILENCE_BLOCKS = 16         # 16 x 32 ms = about 0.5 s of quiet ends a command
@@ -91,6 +92,7 @@ try:
                     quiet_count += 1
                     if quiet_count >= SILENCE_BLOCKS:
                         clip = np.concatenate(utterance).ravel()
+                        clip = resample_poly(clip, 1, FS//16000).astype(np.float32)  # resample to 16 kHz for faster-whisper
                         if loud_count < MIN_LOUD_BLOCKS:
                             print(f"discarded: too short ({loud_count} loud blocks)")
                         else:
